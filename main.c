@@ -2,6 +2,19 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <signal.h>
+
+void	ft_sigint()
+{
+	printf("Cya\n");
+	exit (0);
+}
+
+void	ft_sigquit()
+{
+	printf("Bye\n");
+	exit (0);
+}
 
 void	ft_readline()
 {
@@ -22,5 +35,7 @@ void	ft_readline()
 
 int	main()
 {
+	signal(SIGINT, ft_sigint);	//ctrl - C
+	signal(SIGQUIT, ft_sigquit); //ctrl - \ /
 	ft_readline();
 }
