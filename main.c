@@ -3,6 +3,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <signal.h>
+#include <unistd.h>
 
 void	ft_sigint()
 {
@@ -37,5 +38,7 @@ int	main()
 {
 	signal(SIGINT, ft_sigint);	//ctrl - C
 	signal(SIGQUIT, ft_sigquit); //ctrl - \ /
+	printf("ttyname(0): %s\n", ttyname(0));
+	printf("ttyname(1): %s\n", ttyname(1));
 	ft_readline();
 }
