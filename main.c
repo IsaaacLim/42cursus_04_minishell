@@ -114,7 +114,7 @@ void	ft_fstat()
 
 	struct stat *buf = malloc(sizeof(struct stat));
 	fd = open("myfile.txt", O_RDONLY);
-	if (stat(file, buf) == 0)
+	if (fstat(fd, buf) == 0)
 	{
 		size = buf->st_size;
 		printf("\"%s\" info:\n", file);
@@ -132,16 +132,30 @@ void	ft_unlink()
 	unlink(file); //deletes file
 }
 
+void	ft_execve()
+{
+	char cwd[PATH_MAX];
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
+		printf("Current working dir: %s\n", cwd);
+
+	char *args[] = {"ls", "-l", "-a", (char *)0};
+	char	*env_args[] = {"PATH=/Users/jinlim/Documents/42Projects/42-minishell", (char *)0};
+	execve(args[0], args, env_args);
+
+	printf("Error\n");
+}
+
 int	main()
 {
 	signal(SIGINT, ft_sigint);	//ctrl - C
 	signal(SIGQUIT, ft_sigquit); //ctrl - \ /
-	ft_tty();
+	// ft_tty();
 	// ft_readline();
 	ft_getpath();
 	// ft_changepath();
 	// ft_getpath();
-	ft_stat();
-	ft_fstat();
+	// ft_stat();
+	// ft_fstat();
 	// ft_unlink();
+	// ft_execve();
 }
