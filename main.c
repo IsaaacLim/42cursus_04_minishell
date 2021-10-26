@@ -145,6 +145,30 @@ void	ft_execve()
 	printf("Error\n");
 }
 
+//https://www.geeksforgeeks.org/dup-dup2-linux-system-call/
+void	ft_dup()
+{
+	int	fd;
+	int	dup_fd;
+
+	fd = open("dup.txt", O_WRONLY | O_APPEND | O_CREAT, 0777);
+	if (fd < 0)
+		perror("open");
+	dup_fd = dup(fd);
+	write(fd, "This will be output to the file named dup.txt\n", 46);
+	write(dup_fd, "This will also be output to the file named dup.txt\n", 51);
+
+	int	fd2;
+	int	dup_fd2;
+
+	fd2 = open("dup2.txt", O_WRONLY | O_APPEND | O_CREAT, 0777);
+	if (fd2 < 0)
+		perror("open2");
+	printf("Still prints in STDOUT but not for long\n");
+	dup_fd2 = dup2(fd2, STDOUT_FILENO);
+	printf("I will be printed in the file dup2.txt\n");
+}
+
 void	ft_pipe()
 {
 	int		pipefd1[2]; //C => P
@@ -205,5 +229,6 @@ int	main()
 	// ft_fstat();
 	// ft_unlink();
 	// ft_execve();
-	ft_pipe(); //got issues with 2 way communication
+	ft_dup();
+	// ft_pipe(); //got issues with 2 way communication
 }

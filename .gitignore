@@ -1,3 +1,5 @@
 a.out
 *.o
 minishell
+dup.txt
+dup2.txt
