@@ -1,20 +1,29 @@
-NAME	=	minishell
+NAME		=	minishell
 
-SRCS	=	main.c
-OBJS	=	$(SRCS:.c=.o)
+SRCS_DIR	=	./srcs/
+SRCS_LST	=	main.c	input.c
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST))
 
-CC		=	gcc
-CFLAGS	=	-g
+OBJS		=	$(SRCS:.c=.o)
 
-RL_LIB	=	-L/usr/include -lreadline
+HDRS_DIR	=	./includes/
+HDRS_LST	=	minishell.h
+HDRS		=	$(addprefix $(HDRS_DIR), $(HDRS_LST))
+
+INCLUDES	=	-I $(HDRS_DIR)
+
+RL_LIB		=	-L/usr/include -lreadline
+
+CC			=	gcc
+CFLAGS		=	-g
 
 all: $(NAME)
 
 $(NAME) : $(OBJS)
 	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
 
-# %.o : %.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
+$(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
 clean:
 	rm -f $(OBJS)
