@@ -10,7 +10,11 @@ HDRS_DIR	=	./includes/
 HDRS_LST	=	minishell.h
 HDRS		=	$(addprefix $(HDRS_DIR), $(HDRS_LST))
 
-INCLUDES	=	-I $(HDRS_DIR)
+LIBFT_DIR	=	./libft/
+LIBFT		=	$(LIBFT_DIR)libft.a
+LIBFT_HDRS	=	$(LIBFT_DIR)includes/
+
+INCLUDES	=	-I $(HDRS_DIR) -I $(LIBFT_HDRS)
 
 RL_LIB		=	-L/usr/include -lreadline
 
@@ -19,16 +23,21 @@ CFLAGS		=	-g
 
 all: $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
 
 $(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
+$(LIBFT):
+	make -C $(LIBFT_DIR)
+
 clean:
+	make clean -C $(LIBFT_DIR)
 	rm -f $(OBJS)
 
-fclean:
+fclean:	clean
+	make fclean -C $(LIBFT_DIR)
 	rm -f $(NAME)
 
 re: fclean all
