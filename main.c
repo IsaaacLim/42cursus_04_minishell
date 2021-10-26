@@ -15,6 +15,8 @@
 
 #include <fcntl.h>
 
+#include <dirent.h>
+
 void	ft_sigint()
 {
 	printf("Cya\n");
@@ -216,6 +218,22 @@ void	ft_pipe()
 	}
 }
 
+void	ft_dir()
+{
+	struct dirent *pDirent;
+	DIR	*pDir;
+
+	pDir = opendir ("../42-minishell");
+	if (pDir == NULL)
+	{
+		printf("Cannot open directory\n");
+		exit (0);
+	}
+	while ((pDirent = readdir(pDir)) != NULL)
+		printf ("[%s]\n", pDirent->d_name);
+	closedir(pDir);
+}
+
 int	main()
 {
 	signal(SIGINT, ft_sigint);	//ctrl - C
@@ -229,6 +247,7 @@ int	main()
 	// ft_fstat();
 	// ft_unlink();
 	// ft_execve();
-	ft_dup();
+	// ft_dup();
 	// ft_pipe(); //got issues with 2 way communication
+	ft_dir();
 }
