@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "libft.h"
 
 void	ft_readline()
 {
@@ -7,9 +8,9 @@ void	ft_readline()
 	while (1)
 	{
 		input = readline("Enter text: ");
-		if (strlen(input) > 0)
+		if (ft_strlen(input) > 0)
 			add_history(input);
-		if (!strcmp(input, "exit"))
+		if (!ft_strncmp(input, "exit", 4))
 			exit (0);
 		free(input);
 	}
