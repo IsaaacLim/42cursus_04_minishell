@@ -1,7 +1,9 @@
 NAME		=	libft.a
 
 SRCS_DIR	=	./srcs/
-SRCS_LST	=	ft_strlen.c		ft_strncmp.c
+SRCS_LST	=	ft_bzero.c		ft_calloc.c		ft_lstadd_back.c	\
+				ft_lstlast.c	ft_lstnew.c		ft_memcpy.c			\
+				ft_split.c		ft_strlen.c		ft_strncmp.c
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST))
 
 OBJS		=	$(SRCS:.c=.o)
