@@ -69,7 +69,7 @@ void	ft_readline()
 			ft_createList(&input_lst, cmd_input);
 		}
 		free(cmd_input);
-		ft_putlst(input_lst);
-		ft_lstclear(&input_lst, &ft_lstdel);
+		ft_putlst(input_lst); //temporary
+		ft_lstclear(&input_lst, &ft_lstdel); //temporary
 	}
 }
