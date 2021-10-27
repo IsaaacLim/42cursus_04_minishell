@@ -13,7 +13,7 @@ void	ft_lstdel(void *content)
 ** Prints all content stored in the List
 ** Will modify this for "echo"
 */
-void	ft_putlst(t_list *lst)
+void	ft_putlst(t_list *lst) //temporary
 {
 	while (lst)
 	{

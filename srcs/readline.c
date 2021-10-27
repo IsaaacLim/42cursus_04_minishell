@@ -1,5 +1,8 @@
 #include "minishell.h"
 
+/*
+** Input are stored into a linked list to be parsed to other functions
+*/
 static void	ft_createList(t_list **input_lst, char *cmd_input)
 {
 	t_list	*new;
@@ -17,6 +20,14 @@ static void	ft_createList(t_list **input_lst, char *cmd_input)
 	}
 }
 
+/*
+** Run infinitely unless "exit" or force termninated
+** Input are stored into a linked list to be parsed to other functions
+*** TO DO:
+*** Change command prompt
+*** Clear list before new inputs (& only after first input)
+*** Check for memory leaks upon "exit" 
+*/
 void	ft_readline()
 {
 	char	*cmd_input;
@@ -26,7 +37,7 @@ void	ft_readline()
 	{
 		cmd_input = readline("Enter text: ");
 		if (!ft_strncmp(cmd_input, "exit", 5))
-			exit (0); //check for leaks if exit
+			exit (0);
 		else if (ft_strlen(cmd_input) > 0)
 		{
 			add_history(cmd_input);
