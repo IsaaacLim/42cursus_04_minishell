@@ -1,13 +1,13 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	ft_error(char *message)
+void	ft_error(char *message) //temporary
 {
 	printf("%s", message);
 	exit (0);
 }
 
-void	ft_putlst(t_list *list)
+void	ft_putlst(t_list *list) //temporary
 {
 	while (list)
 	{
@@ -17,7 +17,7 @@ void	ft_putlst(t_list *list)
 	printf("\n");
 }
 
-void	ft_lstdel(void *content)
+void	ft_lstdel(void *content) //temporary
 {
 	ft_bzero(content, ft_strlen(content));
 	free(content);
