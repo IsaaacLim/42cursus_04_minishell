@@ -5,7 +5,7 @@
 - Headers are in `includes`, source files are in `src`, Makefile is in the root dir.
 - libft has it's own separate, but similar structure.
 2. Header file
-- functions are arranged alphabetically of their function **name**, not function **type**. *(let me know your preference)*
+- Functions are arranged alphabetically according to function **name**, not function **type**. *(let me know your preference)*
 3. Libft functions
 - I try to work with the original libft as much as possible.
 - I only include functions that are being used for the project so that it'll be less clustered.
@@ -16,5 +16,6 @@
 - Static functions are declared for tracability.
 - Functions under the same functionality category are grouped under the same file.
 > But for clarity purposes, I won't purposely design each function to be compact, but rather create many functions that does only one task
+
 > "//temporary" are noted on features will that likely be relocated.
 - Object files are named according to the general purpose of the functions contained in it.
