@@ -7,7 +7,7 @@ void	ft_error(char *message)
 	exit (0);
 }
 
-void	ft_putlist(t_list *list)
+void	ft_putlst(t_list *list)
 {
 	while (list)
 	{
@@ -15,6 +15,12 @@ void	ft_putlist(t_list *list)
 		list = list->next;
 	}
 	printf("\n");
+}
+
+void	ft_lstdel(void *content)
+{
+	ft_bzero(content, ft_strlen(content));
+	free(content);
 }
 
 static void	ft_clearArray(char **arr)
@@ -30,7 +36,7 @@ static void	ft_clearArray(char **arr)
 	free(arr);
 }
 
-static void	ft_createList(t_list **input_list, char *cmd_input)
+static void	ft_createList(t_list **input_lst, char *cmd_input)
 {
 	t_list	*new;
 	char	**temp_arr;
@@ -43,16 +49,14 @@ static void	ft_createList(t_list **input_list, char *cmd_input)
 	while (temp_arr[++i])
 	{
 		new = ft_lstnew(temp_arr[i]);
-		ft_lstadd_back(input_list, new);
+		ft_lstadd_back(input_lst, new);
 	}
-	// printf("%s\n", (char *)(*input_list)->content);
-	// ft_clearArray(temp_arr);
 }
 
 void	ft_readline()
 {
 	char	*cmd_input;
-	t_list	*input_list;
+	t_list	*input_lst;
 
 	while (1)
 	{
@@ -62,10 +66,10 @@ void	ft_readline()
 		else if (ft_strlen(cmd_input) > 0)
 		{
 			add_history(cmd_input);
-			ft_createList(&input_list, cmd_input);
+			ft_createList(&input_lst, cmd_input);
 		}
 		free(cmd_input);
-		// printf("%s\n", (char *)input_list->content);
-		ft_putlist(input_list);
+		ft_putlst(input_lst);
+		ft_lstclear(&input_lst, &ft_lstdel);
 	}
 }
