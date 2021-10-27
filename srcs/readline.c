@@ -1,40 +1,4 @@
 #include "minishell.h"
-#include "libft.h"
-
-void	ft_error(char *message) //temporary
-{
-	printf("%s", message);
-	exit (0);
-}
-
-void	ft_putlst(t_list *list) //temporary
-{
-	while (list)
-	{
-		printf("%s ", (char *)list->content);
-		list = list->next;
-	}
-	printf("\n");
-}
-
-void	ft_lstdel(void *content) //temporary
-{
-	ft_bzero(content, ft_strlen(content));
-	free(content);
-}
-
-static void	ft_clearArray(char **arr)
-{
-	int	i;
-
-	i = -1;
-	while (arr[++i])
-	{
-		ft_bzero(arr[i], ft_strlen(arr[i]));
-		free(arr[i]);
-	}
-	free(arr);
-}
 
 static void	ft_createList(t_list **input_lst, char *cmd_input)
 {
@@ -61,7 +25,7 @@ void	ft_readline()
 	while (1)
 	{
 		cmd_input = readline("Enter text: ");
-		if (!ft_strncmp(cmd_input, "exit", 4))
+		if (!ft_strncmp(cmd_input, "exit", 5))
 			exit (0); //check for leaks if exit
 		else if (ft_strlen(cmd_input) > 0)
 		{
