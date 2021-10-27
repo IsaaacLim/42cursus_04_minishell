@@ -13,7 +13,8 @@
 4. Minishell functions
 - Functions name are as concise as my creativity allows it.
 > But for clarity purposes, I'll make it as long as it's required.
+- Static functions are declared for tracability.
 - Functions under the same functionality category are grouped under the same file.
 > But for clarity purposes, I won't purposely design each function to be compact, but rather create many functions that does only one task
 > "//temporary" are noted on features will that likely be relocated.
-- Static functions are declared for tracability.
+- Object files are named according to the general purpose of the functions contained in it.
