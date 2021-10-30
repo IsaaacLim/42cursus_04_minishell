@@ -1,25 +1,43 @@
-NAME	=	minishell
+NAME		=	minishell
 
-SRCS	=	main.c
-OBJS	=	$(SRCS:.c=.o)
+SRCS_DIR	=	./srcs/
+SRCS_LST	=	error.c		lst_utils.c		main.c		readline.c
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST))
 
-CC		=	gcc
-CFLAGS	=	-g
+OBJS		=	$(SRCS:.c=.o)
 
-RL_LIB	=	-L/usr/include -lreadline
+HDRS_DIR	=	./includes/
+HDRS_LST	=	minishell.h
+HDRS		=	$(addprefix $(HDRS_DIR), $(HDRS_LST))
+
+LIBFT_DIR	=	./libft/
+LIBFT		=	$(LIBFT_DIR)libft.a
+LIBFT_HDRS	=	$(LIBFT_DIR)includes/
+
+INCLUDES	=	-I $(HDRS_DIR) -I $(LIBFT_HDRS)
+
+RL_LIB		=	-L/usr/include -lreadline
+
+CC			=	gcc
+CFLAGS		=	-g
 
 all: $(NAME)
 
-$(NAME) : $(OBJS)
+$(NAME) : $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
 
-# %.o : %.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
+$(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
+	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
 clean:
+	make clean -C $(LIBFT_DIR)
 	rm -f $(OBJS)
 
-fclean:
+fclean:	clean
+	make fclean -C $(LIBFT_DIR)
 	rm -f $(NAME)
 
 re: fclean all
