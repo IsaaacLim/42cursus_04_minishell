@@ -1,7 +1,8 @@
+CD		=	cd
 ENV		=	env
 PWD		=	pwd
 
-ALL		=	$(ENV) $(PWD)
+ALL		=	$(CD) $(ENV) $(PWD)
 
 SRCS	=	$(addsuffix .c, $(ALL))
 
@@ -11,6 +12,9 @@ CC		=	gcc
 CFLAGS	=	-g
 
 all: $(ALL)
+
+$(CD) : $(CD).o
+	$(CC) $(CFLAGS) $< -o $@
 
 $(ENV) : $(ENV).o
 	$(CC) $(CFLAGS) $< -o $@
