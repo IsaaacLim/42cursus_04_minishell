@@ -13,7 +13,7 @@ HDRS		=	./includes/libft.h
 
 INCLUDES	=	-I ./includes/
 
-CC			=	CC
+CC			=	gcc
 CFLAGS		=	-Wall -Werror -Wextra -g3
 
 all:		$(NAME)
