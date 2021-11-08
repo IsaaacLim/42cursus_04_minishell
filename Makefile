@@ -23,7 +23,7 @@ CFLAGS		=	-g
 
 all: $(NAME)
 
-$(NAME) : $(LIBFT) $(OBJS)
+$(NAME) : $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
 
 $(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
