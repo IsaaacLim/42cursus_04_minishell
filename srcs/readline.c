@@ -42,9 +42,9 @@ void	ft_readline()
 		{
 			add_history(cmd_input);
 			ft_createList(&input_lst, cmd_input);
+			ft_putlst(input_lst); //temporary
+			ft_lstclear(&input_lst, &ft_lstdel); //temporary
 		}
 		free(cmd_input);
-		ft_putlst(input_lst); //temporary
-		ft_lstclear(&input_lst, &ft_lstdel); //temporary
 	}
 }
