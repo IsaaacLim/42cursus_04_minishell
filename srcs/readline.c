@@ -37,7 +37,11 @@ void	ft_readline()
 	{
 		cmd_input = readline("Enter text: ");
 		if (!ft_strncmp(cmd_input, "exit", 5))
-			exit (0);
+		{
+			free(cmd_input);
+			// rl_clear_history(); //implicit declaration of function
+			return ;
+		}
 		else if (ft_strlen(cmd_input) > 0)
 		{
 			add_history(cmd_input);
