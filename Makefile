@@ -21,7 +21,9 @@ RL_LIB		=	-L/usr/include -lreadline
 CC			=	gcc
 CFLAGS		=	-g
 
-all: $(NAME)
+BUILT_INS	=	./SRCS/BUILT_INS/
+
+all: $(NAME) $(BUILT_INS)
 
 $(NAME) : $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
@@ -29,14 +31,19 @@ $(NAME) : $(OBJS) $(LIBFT)
 $(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
 	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 
-$(LIBFT):
+$(LIBFT) :
 	make -C $(LIBFT_DIR)
+	make -C $(BUILT_INS) #need to fix this
+
+# $(BUILT_INS) :
 
 clean:
+	make clean -C $(BUILT_INS)
 	make clean -C $(LIBFT_DIR)
 	rm -f $(OBJS)
 
 fclean:	clean
+	make fclean -C $(BUILT_INS)
 	make fclean -C $(LIBFT_DIR)
 	rm -f $(NAME)
 
