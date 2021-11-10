@@ -37,15 +37,15 @@ void	ft_fork(char *argv[], t_subprocess *p)
 		perror("Could not create fork"); //need exit?
 	if (pid == 0) //child process
 	{
-		// close (0);
+		close (0);
 		// close (1);
-		// close (2); //close parent pipes
-		// close (child_in[1]); //close child stdin (write)
-		// close (child_out[0]); //close child stdout (read)
-		// close (child_err[0]); //close child stderr (read)
-		// ft_mod_fd(child_in[0], 0); //child stdin (read) -> STDIN_FILENO
+		close (2); //close parent pipes
+		close (child_in[1]); //close child stdin (write)
+		close (child_out[0]); //close child stdout (read)
+		close (child_err[0]); //close child stderr (read)
+		ft_mod_fd(child_in[0], 0); //child stdin (read) -> STDIN_FILENO
 		// ft_mod_fd(child_out[1], 1); //child stdout (write) -> STDOUT_FILENO
-		// ft_mod_fd(child_err[1], 2); //child stderr (write) -> STDERR_FILENO
+		ft_mod_fd(child_err[1], 2); //child stderr (write) -> STDERR_FILENO
 		char *envp[] = {NULL};
 		execve(argv[1], argv, envp);
 		printf("Didn't work\n");
