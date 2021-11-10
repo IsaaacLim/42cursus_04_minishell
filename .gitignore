@@ -4,6 +4,8 @@ a.out
 minishell
 dup.txt
 dup2.txt
+testing-isaac/execve
+testing-isaac/hello
 
 srcs/built_ins/*
 !srcs/built_ins/*.c
