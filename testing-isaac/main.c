@@ -248,6 +248,6 @@ int	main()
 	// ft_unlink();
 	// ft_execve();
 	// ft_dup();
-	// ft_pipe(); //got issues with 2 way communication
-	ft_dir();
+	ft_pipe(); //got issues with 2 way communication
+	// ft_dir();
 }
