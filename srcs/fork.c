@@ -1,10 +1,10 @@
 #include "minishell.h"
 
-void	ft_mod_fd(int fd_old, int fd_new)
+void	ft_mod_fd(int fd_to, int fd_from)
 {
-	if (dup2(fd_old, fd_new) == -1)
+	if (dup2(fd_to, fd_from) == -1)
 		perror("Could not duplicate pipe end"); //need exit?
-	close(fd_old);
+	close(fd_to);
 }
 
 void	ft_make_pipe(int fds[2])
@@ -37,17 +37,18 @@ void	ft_fork(char *argv[], t_subprocess *p)
 		perror("Could not create fork"); //need exit?
 	if (pid == 0) //child process
 	{
-		close (0);
-		close (1);
-		close (2); //close parent pipes
-		close (child_in[1]); //close child stdin (write)
-		close (child_out[0]); //close child stdout (read)
-		close (child_err[0]); //close child stderr (read)
-		ft_mod_fd(child_in[0], 0); //child stdin (read) -> STDIN_FILENO
-		ft_mod_fd(child_out[1], 1); //child stdout (write) -> STDOUT_FILENO
-		ft_mod_fd(child_err[1], 2); //child stderr (write) -> STDERR_FILENO
+		// close (0);
+		// close (1);
+		// close (2); //close parent pipes
+		// close (child_in[1]); //close child stdin (write)
+		// close (child_out[0]); //close child stdout (read)
+		// close (child_err[0]); //close child stderr (read)
+		// ft_mod_fd(child_in[0], 0); //child stdin (read) -> STDIN_FILENO
+		// ft_mod_fd(child_out[1], 1); //child stdout (write) -> STDOUT_FILENO
+		// ft_mod_fd(child_err[1], 2); //child stderr (write) -> STDERR_FILENO
 		char *envp[] = {NULL};
-		execve(argv[0], argv, envp);
+		execve(argv[1], argv, envp);
+		printf("Didn't work\n");
 	}
 	else
 	{
@@ -59,5 +60,4 @@ void	ft_fork(char *argv[], t_subprocess *p)
 		p->stdout = child_out[0]; //parent read from subprocess child_out
 		p->stderr = child_err[0]; //parent read from subprocess child_err
 	}
-	
 }
