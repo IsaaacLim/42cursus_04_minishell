@@ -5,6 +5,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -19,7 +20,7 @@ typedef struct s_subprocess {
 void	ft_error(char *message);
 
 //fork.c
-void	ft_fork();
+void	ft_fork(char *argv[], t_subprocess *p);
 
 //lst_utils.c
 void	ft_lstdel(void *content);
