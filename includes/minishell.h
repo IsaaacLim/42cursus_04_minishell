@@ -8,8 +8,18 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+typedef struct s_subprocess {
+	pid_t	pid;
+	int		stdin;
+	int		stdout;
+	int		stderr;
+}	t_subprocess;
+
 //error.c
 void	ft_error(char *message);
+
+//fork.c
+void	ft_fork();
 
 //lst_utils.c
 void	ft_lstdel(void *content);
