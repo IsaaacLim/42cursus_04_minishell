@@ -13,7 +13,6 @@ typedef struct s_subprocess {
 	pid_t	pid;
 	int		stdin;
 	int		stdout;
-	// int		stderr;
 }	t_subprocess;
 
 //error.c
