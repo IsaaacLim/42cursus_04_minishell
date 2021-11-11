@@ -1,13 +1,14 @@
-#include <stdio.h>
+#include "environment.h"
 
-int main(int argc, char *argv[], char *envp[])
+void env_command(t_list *env)
 {
-    int x;
-    
-    x = 0;
-    while (envp[x])
-    {
-        printf("%s\n", envp[x]);
-        x++;
-    }
+	t_envar *envar;
+
+	while (env)
+	{
+		envar = (t_envar *)env->content;
+		if (envar->set)
+			printf("%s=%s\n", envar->name, envar->word);
+		env = env->next;
+	}
 }

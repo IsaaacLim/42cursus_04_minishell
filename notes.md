@@ -6,6 +6,7 @@
 2. expanding (reading environment variable?) & parsing, 
 	- Environment variables expansion
 	- Not interpret unclosed quotes or unspecified special characters like \ or ;
+		- no need new line
 		- handle undefined
 	- Single and double quote support
 	- $? should expand to the exit status of the most recently executed foreground pipeline.
