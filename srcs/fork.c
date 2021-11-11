@@ -31,7 +31,7 @@ void	ft_fork(char *argv[], t_subprocess *p)
 
 	ft_make_pipe(child_in);
 	ft_make_pipe(child_out);
-	ft_make_pipe(child_err);
+	// ft_make_pipe(child_err);
 	pid = fork();
 	if (pid == -1)	
 		perror("Could not create fork"); //need exit?
@@ -39,13 +39,13 @@ void	ft_fork(char *argv[], t_subprocess *p)
 	{
 		close (0);
 		close (1);
-		close (2); //close parent pipes
+		// close (2); //close parent pipes
 		close (child_in[1]); //close child stdin (write)
 		close (child_out[0]); //close child stdout (read)
 		close (child_err[0]); //close child stderr (read)
 		ft_mod_fd(child_in[0], 0); //child stdin (read) -> STDIN_FILENO
 		ft_mod_fd(child_out[1], 1); //child stdout (write) -> STDOUT_FILENO
-		ft_mod_fd(child_err[1], 2); //child stderr (write) -> STDERR_FILENO
+		// ft_mod_fd(child_err[1], 2); //child stderr (write) -> STDERR_FILENO
 		char *envp[] = {NULL};
 		execve(argv[1], argv, envp);
 		printf("Didn't work\n");
@@ -54,11 +54,11 @@ void	ft_fork(char *argv[], t_subprocess *p)
 	{
 		close (child_in[0]); //close child stdin (read)
 		close (child_out[1]); //close child stdin (write)
-		close (child_err[1]); //close child stderr (write)
+		// close (child_err[1]); //close child stderr (write)
 		p->pid = pid;
 		p->stdin = child_in[1]; //parent write to subprocess child_in
 		p->stdout = child_out[0]; //parent read from subprocess child_out
-		p->stderr = child_err[0]; //parent read from subprocess child_err
+		// p->stderr = child_err[0]; //parent read from subprocess child_err
 
 		char buf[44];
 		if (read(p->stdout, buf, 44) == -1)
