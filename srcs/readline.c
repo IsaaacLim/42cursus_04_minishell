@@ -20,6 +20,32 @@ static void	ft_createList(t_list **input_lst, char *cmd_input)
 	}
 }
 
+void	ft_expand(t_list **input_lst)
+{
+	t_list	*start;
+	t_list	*prev;
+	t_list	*after;
+
+	if (!(input_lst && *input_lst))
+		return ;
+	start = *input_lst;
+	after->next = NULL;
+	while (input_lst && *input_lst)
+	{
+		if (!(after->next))
+			prev = start;
+		else
+			prev = after;
+		after = (*input_lst)->next;
+		if ((char *)(*input_lst)->content == ">")
+		{
+			ft_lstdelone(&input_lst, &ft_lstdel);
+			prev->next = after->next;
+		}
+		*input_lst = after;
+	}
+}
+
 /*
 ** Run infinitely unless "exit" or force termninated
 ** Input are stored into a linked list to be parsed to other functions
@@ -46,6 +72,9 @@ void	ft_readline()
 		{
 			add_history(cmd_input);
 			ft_createList(&input_lst, cmd_input);
+			
+			ft_expand(&input_lst);
+
 			ft_putlst(input_lst); //temporary
 			ft_lstclear(&input_lst, &ft_lstdel); //temporary
 		}
