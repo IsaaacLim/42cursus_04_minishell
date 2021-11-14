@@ -71,7 +71,7 @@ void	ft_fork(char *argv[], t_subprocess *p)
 	{
 		ft_fd_table_child(child_in, child_out);
 		char *envp[] = {NULL};
-		execve(argv[1], argv, envp);
+		execve(argv[0], argv, envp);
 		printf("command not found: %s\n", argv[1]);
 	}
 	else
