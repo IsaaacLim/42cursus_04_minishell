@@ -23,8 +23,8 @@ typedef struct	s_input
 typedef struct	s_subprocess
 {
 	pid_t pid;
-	int stdin;
-	int stdout;
+	int fd_to_child;
+	int fd_from_child;
 } t_subprocess;
 
 //error.c
