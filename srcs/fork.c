@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "get_next_line.h"
 
 void	ft_mod_fd(int fd_to, int fd_from)
 {
@@ -43,8 +44,29 @@ void	ft_fd_table_parent(int *child_in, int *child_out, t_subprocess *p)
 {
 	close (child_in[0]);
 	close (child_out[1]);
-	p->stdin = child_in[1];
-	p->stdout = child_out[0];
+	p->fd_to_child = child_in[1];
+	p->fd_from_child = child_out[0];
+}
+
+void	ft_getnextline(t_subprocess *p)
+{
+	char	*line;
+	int		ret;
+	// char buf[30];
+	
+	ret = get_next_line(p->fd_from_child, &line);
+	while (ret > 0)
+	{
+		printf("Parent read: %s\n", line);
+		free(line);
+		ret = get_next_line(p->fd_from_child, &line);
+	}
+	free(line);
+	if (ret == -1)
+	{
+		printf("Fail to get_next_line\n");
+		exit(1);
+	}
 }
 
 /*
@@ -72,7 +94,7 @@ void	ft_fork(char *argv[], t_subprocess *p)
 		ft_fd_table_child(child_in, child_out);
 		char *envp[] = {NULL};
 		execve(argv[0], argv, envp);
-		printf("command not found: %s\n", argv[1]);
+		printf("command not found: %s\n", argv[0]);
 	}
 	else
 	{
@@ -83,13 +105,8 @@ void	ft_fork(char *argv[], t_subprocess *p)
 		waitpid(p->pid, &child_status, 0);
 		printf("%i\n", WEXITSTATUS(child_status)); //needs to be stored for the next child process
 	
-	
-		char buf[30];
-		if (read(p->stdout, buf, 30) == -1)
-		{
-			perror("Could not read");
-			exit (1);
-		}
-		printf("Parent read: %s\n", buf);
+		ft_getnextline(p); //for display functions
+
+		//create close fd functions
 	}
 }
