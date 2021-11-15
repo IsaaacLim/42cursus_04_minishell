@@ -1,5 +1,24 @@
 #include "minishell.h"
 
+void	ft_free_double_arr(char **arr)
+{
+	int i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		i++;
+	printf("free: %d\n", i);
+	while (--i >= 0)
+	{
+		ft_bzero(arr[i], ft_strlen(arr[i]));
+		free(arr[i]);
+	}
+	free(arr);
+	return ;
+}
+
 /*
 ** Run infinitely unless "exit" or force termninated
 ** Input are stored into a linked list to be parsed to other functions
@@ -10,22 +29,25 @@
 */
 void	ft_readline()
 {
-	char	*cmd_input;
-	t_list	*input_lst;
+	char	*input_arr;
+	char	**split_arr; //might want to put this in a struct
 
 	while (1)
 	{
-		cmd_input = readline("Enter text: ");
-		if (!ft_strncmp(cmd_input, "exit", 5))
+		input_arr = readline("Enter text: ");
+		if (!ft_strncmp(input_arr, "exit", 5))
 		{
-			free(cmd_input);
+			free(input_arr);
 			// rl_clear_history(); //implicit declaration of function
 			return;
 		}
-		else if (ft_strlen(cmd_input) > 0)
+		else if (ft_strlen(input_arr) > 0)
 		{
-			add_history(cmd_input);
+			add_history(input_arr);
+			split_arr = ft_split(input_arr, ' ');
+			//ft_parse(t_struct)
+			ft_free_double_arr(split_arr);
 		}
-		free(cmd_input);
+		free(input_arr);
 	}
 }
