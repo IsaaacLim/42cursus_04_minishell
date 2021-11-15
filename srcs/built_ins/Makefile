@@ -3,7 +3,8 @@ ENV		=	env
 ECHO	=	echo
 PWD		=	pwd
 
-ALL		=	$(CD) $(ECHO) $(ENV) $(PWD)
+ALL		=	$(CD) $(ECHO) $(PWD)
+# $(ENV)
 
 SRCS	=	$(addsuffix .c, $(ALL))
 
