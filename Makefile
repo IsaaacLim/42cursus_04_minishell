@@ -21,9 +21,10 @@ RL_LIB		=	-L/usr/include -lreadline
 CC			=	gcc
 CFLAGS		=	-g
 
-BUILT_INS	=	./SRCS/BUILT_INS/
+BUILT_INS	=	./srcs/built_ins/
 
-all: $(NAME) $(BUILT_INS)
+all: $(NAME) 
+# $(BUILT_INS)
 
 $(NAME) : $(OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
