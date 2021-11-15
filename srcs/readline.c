@@ -19,6 +19,29 @@ void	ft_free_double_arr(char **arr)
 	return ;
 }
 
+void	ft_init_struct(t_input *input)
+{
+	input->has_greater_than = false;
+	input->has_less_than = false;
+	input->has_append = false;
+}
+
+void	ft_reset(t_input *input)
+{
+	ft_free_double_arr(input->double_arr);
+	input->has_greater_than = false;
+	input->has_less_than = false;
+	input->has_append = false;
+}
+
+void	ft_parse(t_input *input)
+{
+	if (input->double_arr[0][0] == '>')
+		input->has_greater_than = true;
+	if (!(ft_strncmp(input->double_arr[0], "echo", 5)))
+		printf("Call echo\n");
+}
+
 /*
 ** Run infinitely unless "exit" or force termninated
 ** Input are stored into a linked list to be parsed to other functions
@@ -30,8 +53,9 @@ void	ft_free_double_arr(char **arr)
 void	ft_readline()
 {
 	char	*input_arr;
-	char	**split_arr; //might want to put this in a struct
+	t_input	input;
 
+	ft_init_struct(&input);
 	while (1)
 	{
 		input_arr = readline("Enter text: ");
@@ -44,10 +68,10 @@ void	ft_readline()
 		else if (ft_strlen(input_arr) > 0)
 		{
 			add_history(input_arr);
-			split_arr = ft_split(input_arr, ' ');
-			//ft_parse(t_struct)
-			ft_free_double_arr(split_arr);
+			input.double_arr = ft_split(input_arr, ' ');
+			ft_parse(&input); //mod with JR
+			ft_reset(&input);
+			free(input_arr);
 		}
-		free(input_arr);
 	}
 }
