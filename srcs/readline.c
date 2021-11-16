@@ -9,7 +9,6 @@ void	ft_free_double_arr(char **arr)
 	i = 0;
 	while (arr[i])
 		i++;
-	printf("free: %d\n", i);
 	while (--i >= 0)
 	{
 		ft_bzero(arr[i], ft_strlen(arr[i]));
@@ -50,7 +49,7 @@ void	ft_parse(t_input *input)
 *** Clear list before new inputs (& only after first input)
 *** Check for memory leaks upon "exit" 
 */
-void	ft_readline()
+void	ft_readline(t_subprocess *p)
 {
 	char	*input_arr;
 	t_input	input;
@@ -69,7 +68,8 @@ void	ft_readline()
 		{
 			add_history(input_arr);
 			input.double_arr = ft_split(input_arr, ' ');
-			ft_parse(&input); //mod with JR
+			// ft_parse(&input); //mod with JR
+			ft_fork(input.double_arr, p);
 			ft_reset(&input);
 			free(input_arr);
 		}
