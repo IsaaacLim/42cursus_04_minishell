@@ -69,6 +69,21 @@ void	ft_getnextline(t_subprocess *p)
 	}
 }
 
+
+void	ft_parent(char *argv[], t_subprocess *p)
+{
+	int	child_status;
+
+	waitpid(p->pid, & child_status, 0); //store this somewhere for next echo to access
+	printf("$?: %i\n", WEXITSTATUS(child_status));
+
+	if (!(ft_strncmp(argv[0], "srcs/built_ins/unset", 21)))
+		return ;
+	else if (!(ft_strncmp(argv[0], "srcs/built_ins/export", 22))) //no display is set key value pair
+		return ;
+	else
+		ft_getnextline(p); //for display functions
+}
 /*
 ** Start program at argv[1] with arguments argv.
 ** Set up new stdin, stdout, stderr
@@ -100,13 +115,7 @@ void	ft_fork(char *argv[], t_subprocess *p)
 	{
 		ft_fd_table_parent(child_in, child_out, p);
 		p->pid = pid;
-
-		int	child_status;
-		waitpid(p->pid, &child_status, 0);
-		printf("%i\n", WEXITSTATUS(child_status)); //needs to be stored for the next child process
-	
-		ft_getnextline(p); //for display functions
-
+		ft_parent(argv, p);
 		//create close fd functions
 	}
 }
