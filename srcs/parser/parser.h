@@ -9,22 +9,23 @@
 
 typedef struct s_comm
 {
-	char **str;
-	int pipe;
-}		t_comm;
+    char **str;
+    int pipe;
+} t_comm;
 
 // Struct for simple command
-typedef struct s_simple
+typedef struct s_cmd
 {
-	char **args;
-	int	len;
-}	t_simple;
+    char **args;
+    int len;
+} t_cmd;
 
-typedef struct s_command
+// NULL terminated s_commands
+typedef struct s_commands
 {
-	t_simple **commands;
-	int	len;
-	// in/out/>>/<<
-}		t_command;
+    t_cmd **commands;
+    int len;
+    // in/out/>>/<<
+} t_commands;
 
 #endif
