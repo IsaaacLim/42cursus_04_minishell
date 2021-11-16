@@ -1,22 +1,35 @@
 #include "parser.h"
 
+char *ft_strcpy(char *str)
+{
+	char *tmp;
+	int i;
+
+	i = 0;
+	tmp = malloc(sizeof(ft_strlen(str) + 1));
+	while (*str)
+	{
+		tmp[i++] = *str;
+		str++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
+}
+
 // Copied from Isaac's readline.c
 void ft_free_double_arr(char **arr)
 {
-	int i;
+	char **tmp;
 
 	if (!arr)
 		return;
-	i = 0;
-	while (arr[i])
-		i++;
-	printf("free: %d\n", i);
-	while (--i >= 0)
+	tmp = arr;
+	while (*arr)
 	{
-		ft_bzero(arr[i], ft_strlen(arr[i]));
-		free(arr[i]);
+		free(*arr);
+		arr++;
 	}
-	free(arr);
+	free(tmp);
 	return;
 }
 
@@ -27,7 +40,7 @@ int num_pipes(char **str_arr)
 	pipes = 0;
 	while (*str_arr)
 	{
-		if (ft_strncmp(*str_arr, "|", 1) == 0)
+		if (ft_strncmp(*str_arr, "|", INT_MAX) == 0)
 			pipes++;
 		str_arr++;
 	}
@@ -61,13 +74,13 @@ int is_redirection(char *str, t_cmd *cmd, char *next)
 	int redir;
 
 	redir = 0;
-	if (ft_strncmp(str, "<", 1) == 0)
+	if (ft_strncmp(str, "<", INT_MAX) == 0)
 		redir = in;
-	else if (ft_strncmp(str, "<<", 2) == 0)
+	else if (ft_strncmp(str, "<<", INT_MAX) == 0)
 		redir = in_heredoc;
-	else if (ft_strncmp(str, ">", 1) == 0)
+	else if (ft_strncmp(str, ">", INT_MAX) == 0)
 		redir = out;
-	else if (ft_strncmp(str, ">>", 2) == 0)
+	else if (ft_strncmp(str, ">>", INT_MAX) == 0)
 		redir = out_append;
 	if (cmd)
 	{
@@ -91,7 +104,7 @@ bool valid_redirection(char **str_arr)
 	{
 		if (is_redirection(*str_arr, NULL, NULL))
 		{
-			if (*(str_arr + 1) == NULL || ft_strncmp(*(str_arr + 1), "|", 1) == 0)
+			if (*(str_arr + 1) == NULL || ft_strncmp(*(str_arr + 1), "|", INT_MAX) == 0)
 				return (false);
 		}
 		str_arr++;
@@ -107,12 +120,12 @@ bool valid_pipe(char **str_arr)
 	while (str_arr[i])
 	{
 		// return false if pipe is first arg
-		if (i == 0 && ft_strncmp(str_arr[i], "|", 1) == 0)
+		if (i == 0 && ft_strncmp(str_arr[i], "|", INT_MAX) == 0)
 			return (false);
-		if (ft_strncmp(str_arr[i], "|", 1) == 0)
+		if (ft_strncmp(str_arr[i], "|", INT_MAX) == 0)
 		{
 			// checks if previous/next arg is pipe, and if next is NULL
-			if (str_arr[i + 1] == NULL || ft_strncmp(str_arr[i - 1], "|", 1) == 0 || ft_strncmp(str_arr[i + 1], "|", 1) == 0)
+			if (str_arr[i + 1] == NULL || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0 || ft_strncmp(str_arr[i + 1], "|", INT_MAX) == 0)
 				return (false);
 		}
 		i++;
@@ -145,15 +158,18 @@ void initialise_singlecmd(t_cmd *cmd)
 t_cmd parse_singlecmd(char **str_arr)
 {
 	int i;
+	int j;
 	int arg_len;
 	int redir;
 	t_cmd cmd;
 
 	i = 0;
+	j = 0;
 	arg_len = 0;
 	redir = 0;
+	initialise_singlecmd(&cmd);
 	// checks that str_arr is not null terminated
-	while (str_arr[i] && ft_strncmp(str_arr[i], "|", 1) != 0)
+	while (str_arr[i] && ft_strncmp(str_arr[i], "|", INT_MAX) != 0)
 	{
 		if (is_redirection(str_arr[i], &cmd, str_arr[i + 1]))
 			arg_len++;
@@ -165,14 +181,17 @@ t_cmd parse_singlecmd(char **str_arr)
 			is paired with a corresponding filename
 	*/
 	arg_len = i - (2 * arg_len);
-	cmd.args = malloc(sizeof(char *) * arg_len + 1);
+	cmd.args = malloc(sizeof(char *) * (arg_len + 1));
 	i = 0;
-	while (str_arr[i] && ft_strncmp(str_arr[i], "|", 1) != 0)
+	while (str_arr[i] && ft_strncmp(str_arr[i], "|", INT_MAX) != 0)
 	{
 		if (is_redirection(str_arr[i], NULL, NULL))
 			i += 2;
 		else
+		{
+			(cmd.args)[j++] = ft_strcpy(str_arr[i]);
 			i++;
+		}
 	}
 	(cmd.args)[arg_len] = NULL;
 	return (cmd);
@@ -192,14 +211,23 @@ t_cmd parse_singlecmd(char **str_arr)
 void free_commands(t_commands *commands)
 {
 	t_cmd *cmds;
+	int i;
 
+	if (!commands)
+		return;
+	i = 0;
 	cmds = commands->commands;
-	if (cmds->args)
-		ft_free_double_arr(cmds->args);
-	if (cmds->infile)
-		free(cmds->infile);
-	if (cmds->outfile)
-		free(cmds->outfile);
+	while (i < commands->len)
+	{
+		if (cmds[i].args)
+			ft_free_double_arr(cmds[i].args);
+		if (cmds[i].infile)
+			free(cmds[i].infile);
+		if (cmds[i].outfile)
+			free(cmds[i].outfile);
+		i++;
+	}
+
 	free(cmds);
 	free(commands);
 }
@@ -219,25 +247,77 @@ t_commands *parse_commands(char *str)
 	cmd_len = num_pipes(str_arr) + 1;
 	if (!valid_redirection(str_arr) || !valid_pipe(str_arr))
 	{
-		printf("Syntax error near unexpected token");
+		printf("Syntax error near unexpected token\n");
 		ft_free_double_arr(str_arr);
 		return (NULL);
 	}
 	commands = malloc(sizeof(t_commands));
-	commands->commands = malloc(sizeof(t_cmd) * cmd_len + 1);
+	commands->commands = malloc(sizeof(t_cmd) * (cmd_len + 1));
 	commands->len = cmd_len;
 	// Parse commands
 	while (str_arr[i])
 	{
-		if (i == 0 || ft_strncmp(str_arr[i - 1], "|", 1) == 0)
-			(commands->commands)[j] = parse_singlecmd(&str_arr[i]);
+		if (i == 0 || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0)
+			(commands->commands)[j++] = parse_singlecmd(&str_arr[i]);
 		i++;
 	}
 	ft_free_double_arr(str_arr);
 	return (commands);
 }
 
+void print_commands(t_commands *cmds)
+{
+	int i;
+
+	i = 0;
+	char **args;
+	while (i < cmds->len)
+	{
+		if (i != 0)
+			printf("<----------------->\n");
+		args = cmds->commands[i].args;
+		while (*args)
+		{
+			printf("%s ", *args);
+			args++;
+		}
+		printf("\n");
+		printf("input: %i - %s\n", cmds->commands[i].input, cmds->commands[i].infile);
+		printf("input: %i - %s\n", cmds->commands[i].output, cmds->commands[i].outfile);
+		i++;
+	}
+}
+
+void read_str(char *str)
+{
+	t_commands *commands;
+
+	commands = parse_commands(str);
+	if (!commands)
+		return;
+	print_commands(commands);
+	free_commands(commands);
+}
+
+void ft_readline()
+{
+	char *inpt;
+
+	while (1)
+	{
+		inpt = readline("Enter text: ");
+		if (strlen(inpt) > 0)
+		{
+			add_history(inpt);
+			read_str(inpt);
+		}
+		if (!strcmp(inpt, "exit"))
+			exit(0);
+		free(inpt);
+	}
+}
+
 int main(int argc, char *argv[])
 {
-	return (0);
+	ft_readline();
 }
