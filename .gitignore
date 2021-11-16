@@ -2,9 +2,10 @@ a.out
 *.o
 *.a
 minishell
-dup.txt
-dup2.txt
 
 srcs/built_ins/*
 !srcs/built_ins/*.c
 !srcs/built_ins/Makefile
+
+testing-isaac/*
+!testing-isaac/*.c

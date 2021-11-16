@@ -1,23 +1,45 @@
 #include "minishell.h"
 
-/*
-** Input are stored into a linked list to be parsed to other functions
-*/
-static void	ft_createList(t_list **input_lst, char *cmd_input)
+void	ft_free_double_arr(char **arr)
 {
-	t_list	*new;
-	char	**temp_arr;
-	int		i;
+	int i;
 
-	temp_arr = ft_split(cmd_input, ' ');
-	if (!temp_arr)
-		ft_error("readline.c ft_createList ft_split error\n");
-	i = -1;
-	while (temp_arr[++i])
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		i++;
+	printf("free: %d\n", i);
+	while (--i >= 0)
 	{
-		new = ft_lstnew(temp_arr[i]);
-		ft_lstadd_back(input_lst, new);
+		ft_bzero(arr[i], ft_strlen(arr[i]));
+		free(arr[i]);
 	}
+	free(arr);
+	return ;
+}
+
+void	ft_init_struct(t_input *input)
+{
+	input->has_greater_than = false;
+	input->has_less_than = false;
+	input->has_append = false;
+}
+
+void	ft_reset(t_input *input)
+{
+	ft_free_double_arr(input->double_arr);
+	input->has_greater_than = false;
+	input->has_less_than = false;
+	input->has_append = false;
+}
+
+void	ft_parse(t_input *input)
+{
+	if (input->double_arr[0][0] == '>')
+		input->has_greater_than = true;
+	if (!(ft_strncmp(input->double_arr[0], "echo", 5)))
+		printf("Call echo\n");
 }
 
 /*
@@ -30,21 +52,26 @@ static void	ft_createList(t_list **input_lst, char *cmd_input)
 */
 void	ft_readline()
 {
-	char	*cmd_input;
-	t_list	*input_lst;
+	char	*input_arr;
+	t_input	input;
 
+	ft_init_struct(&input);
 	while (1)
 	{
-		cmd_input = readline("Enter text: ");
-		if (!ft_strncmp(cmd_input, "exit", 5))
-			exit (0);
-		else if (ft_strlen(cmd_input) > 0)
+		input_arr = readline("Enter text: ");
+		if (!ft_strncmp(input_arr, "exit", 5))
 		{
-			add_history(cmd_input);
-			ft_createList(&input_lst, cmd_input);
+			free(input_arr);
+			// rl_clear_history(); //implicit declaration of function
+			return;
 		}
-		free(cmd_input);
-		ft_putlst(input_lst); //temporary
-		ft_lstclear(&input_lst, &ft_lstdel); //temporary
+		else if (ft_strlen(input_arr) > 0)
+		{
+			add_history(input_arr);
+			input.double_arr = ft_split(input_arr, ' ');
+			ft_parse(&input); //mod with JR
+			ft_reset(&input);
+			free(input_arr);
+		}
 	}
 }
