@@ -120,6 +120,15 @@ bool valid_pipe(char **str_arr)
 	return (true);
 }
 
+void initialise_singlecmd(t_cmd *cmd)
+{
+	cmd->args = NULL;
+	cmd->input = 0;
+	cmd->output = 0;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
+}
+
 /*
 	Edge cases for handling redirection
 	- no other commands (works)
@@ -180,13 +189,32 @@ t_cmd parse_singlecmd(char **str_arr)
 		a. will malloc t_cmd ** of 1 pipe + 2 (1 for a command and another for NULL)
 */
 
+void free_commands(t_commands *commands)
+{
+	t_cmd *cmds;
+
+	cmds = commands->commands;
+	if (cmds->args)
+		ft_free_double_arr(cmds->args);
+	if (cmds->infile)
+		free(cmds->infile);
+	if (cmds->outfile)
+		free(cmds->outfile);
+	free(cmds);
+	free(commands);
+}
+
 // Do i even need to return a pointer for this?
 t_commands *parse_commands(char *str)
 {
 	char **str_arr;
 	t_commands *commands;
 	int cmd_len;
+	int i;
+	int j;
 
+	i = 0;
+	j = 0;
 	str_arr = ft_split(str, ' ');
 	cmd_len = num_pipes(str_arr) + 1;
 	if (!valid_redirection(str_arr) || !valid_pipe(str_arr))
@@ -199,7 +227,14 @@ t_commands *parse_commands(char *str)
 	commands->commands = malloc(sizeof(t_cmd) * cmd_len + 1);
 	commands->len = cmd_len;
 	// Parse commands
+	while (str_arr[i])
+	{
+		if (i == 0 || ft_strncmp(str_arr[i - 1], "|", 1) == 0)
+			(commands->commands)[j] = parse_singlecmd(&str_arr[i]);
+		i++;
+	}
 	ft_free_double_arr(str_arr);
+	return (commands);
 }
 
 int main(int argc, char *argv[])
