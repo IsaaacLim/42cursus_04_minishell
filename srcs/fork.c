@@ -21,6 +21,7 @@ void	ft_make_pipe(int fds[2])
 }
 
 /*
+** Child function
 ** fd: 0 = Read; 1 = Write
 ** child_in is to be Read
 ** child_out is to be Written
@@ -37,6 +38,30 @@ void	ft_fd_table_child(int child_in[2], int child_out[2])
 }
 
 /*
+** Child function
+** Redirections
+*/
+void	ft_fd_table_mod(int child_in[2], int child_out[2], char *argv[])
+{
+	int	fd_new;
+
+	if (ft_strchr("<|>", argv[1][0]))
+	{
+		if (!(ft_strncmp(argv[1], ">", 2)))
+			fd_new = open(argv[2], O_WRONLY | O_CREAT, 0777);
+		else if (!(ft_strncmp(argv[1], ">>", 3)))
+			fd_new = open(argv[2], O_APPEND | O_CREAT, 0777);
+		if (fd_new < 0)
+		{
+			perror("failed to open");
+			exit(1);
+		}
+		ft_mod_fd(fd_new, child_out[1]);
+	}
+}
+
+/*
+** Parent function
 ** Parent may write to subprocess child_in
 ** Parent may read from subprocess child_out
 */
@@ -48,6 +73,10 @@ void	ft_fd_table_parent(int *child_in, int *child_out, t_subprocess *p)
 	p->fd_from_child = child_out[0];
 }
 
+/*
+** Parent function
+** Reads and prints from child_out
+*/
 void	ft_getnextline(t_subprocess *p)
 {
 	char	*line;
@@ -69,21 +98,18 @@ void	ft_getnextline(t_subprocess *p)
 	}
 }
 
-
+/*
+** Parent function cont'd
+*/
 void	ft_parent(char *argv[], t_subprocess *p)
 {
 	int	child_status;
 
 	waitpid(p->pid, & child_status, 0); //store this somewhere for next echo to access
 	printf("$?: %i\n", WEXITSTATUS(child_status));
-
-	if (!(ft_strncmp(argv[0], "srcs/built_ins/unset", 21)))
-		return ;
-	else if (!(ft_strncmp(argv[0], "srcs/built_ins/export", 22))) //no display is set key value pair
-		return ;
-	else
-		ft_getnextline(p); //for display functions
+	ft_getnextline(p); //for display functions
 }
+
 /*
 ** Start program at argv[1] with arguments argv.
 ** Set up new stdin, stdout, stderr
@@ -107,6 +133,7 @@ void	ft_fork(char *argv[], t_subprocess *p)
 	if (pid == 0) //child process
 	{
 		ft_fd_table_child(child_in, child_out);
+		ft_fd_table_mod(child_in, child_out, argv);
 		char *envp[] = {NULL};
 		execve(argv[0], argv, envp);
 		printf("command not found: %s\n", argv[0]);

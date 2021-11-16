@@ -7,6 +7,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
@@ -38,6 +39,6 @@ void	ft_lstdel(void *content);
 void	ft_putlst(t_list *lst);
 
 //readline.c
-void	ft_readline();
+void	ft_readline(t_subprocess *p);
 
 #endif
