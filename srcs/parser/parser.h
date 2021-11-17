@@ -6,25 +6,40 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 typedef struct s_comm
 {
-	char **str;
-	int pipe;
-}		t_comm;
+    char **str;
+    int pipe;
+} t_comm;
+
+typedef enum
+{
+    none,
+    in,
+    in_heredoc,
+    out,
+    out_append
+} e_redirection;
 
 // Struct for simple command
-typedef struct s_simple
+typedef struct s_cmd
 {
-	char **args;
-	int	len;
-}	t_simple;
+    char **args;
+    int input;
+    int output;
+    char *infile;
+    char *outfile;
+} t_cmd;
 
-typedef struct s_command
+// NULL terminated s_commands
+typedef struct s_commands
 {
-	t_simple **commands;
-	int	len;
-	// in/out/>>/<<
-}		t_command;
+    t_cmd *commands;
+    int len;
+    // in/out/>>/<<
+} t_commands;
 
 #endif
