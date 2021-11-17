@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-/*
-** Parsing structure follows print_commands()
-*/
 void	ft_execute(t_commands *cmds)
 {
 	int				i;
@@ -30,8 +27,8 @@ int	main(int argc, char *argv[])
 	char	*input_arr;
 	t_input	input;
 
-	// while (1)
-	// {
+	while (1)
+	{
 		input_arr = readline("Enter text: ");
 		if (!ft_strncmp(input_arr, "exit", 5))
 		{
@@ -47,6 +44,6 @@ int	main(int argc, char *argv[])
 			free_commands(commands);
 			free(input_arr);
 		}
-	// }
+	}
 	// system("leaks minishell");
 }

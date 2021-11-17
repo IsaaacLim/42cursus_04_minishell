@@ -42,8 +42,7 @@ void	ft_parse(t_input *input)
 }
 
 /*
-** ------ 
-COMBINED WITH INT MAIN ------
+** ------ COMBINED WITH INT MAIN ------
 ** Run infinitely unless "exit" or force termninated
 ** Input are stored into a linked list to be parsed to other functions
 *** TO DO:

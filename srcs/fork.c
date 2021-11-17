@@ -41,7 +41,7 @@ void	ft_fd_table_child(int child_in[2], int child_out[2])
 ** Child function
 ** Redirections
 */
-void	ft_fd_table_mod(int child_in[2], int child_out[2], t_cmd commands)
+void	ft_fd_table_mod(t_cmd commands)
 {
 	int	fd_new;
 
@@ -133,7 +133,7 @@ void	ft_fork(t_cmd commands, t_subprocess *p)
 	{
 		ft_fd_table_child(child_in, child_out);
 		if (commands.input || commands.output)
-			ft_fd_table_mod(child_in, child_out, commands);
+			ft_fd_table_mod(commands);
 		char *envp[] = {NULL};
 		execve(args[0], args, envp);
 		printf("command not found: %s\n", args[0]);
