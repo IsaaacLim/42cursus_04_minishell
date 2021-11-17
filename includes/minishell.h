@@ -2,6 +2,7 @@
 #define MINISHELL_H
 
 # include "libft.h"
+#include "../srcs/parser/parser.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,13 +33,15 @@ typedef struct	s_subprocess
 void	ft_error(char *message);
 
 //fork.c
-void	ft_fork(char *argv[], t_subprocess *p);
+void	ft_fork(t_cmd commands, t_subprocess *p);
 
-//lst_utils.c
-void	ft_lstdel(void *content);
-void	ft_putlst(t_list *lst);
+// parser.c
+void	read_str(char *str, t_commands **commands);
+void free_commands(t_commands *commands);
+void print_commands(t_commands *cmds); //temp
 
 //readline.c
 void	ft_readline(t_subprocess *p);
+void	ft_free_double_arr(char **arr); //relocate
 
 #endif

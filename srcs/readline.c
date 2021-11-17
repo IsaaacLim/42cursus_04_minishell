@@ -42,6 +42,8 @@ void	ft_parse(t_input *input)
 }
 
 /*
+** ------ 
+COMBINED WITH INT MAIN ------
 ** Run infinitely unless "exit" or force termninated
 ** Input are stored into a linked list to be parsed to other functions
 *** TO DO:
@@ -49,29 +51,30 @@ void	ft_parse(t_input *input)
 *** Clear list before new inputs (& only after first input)
 *** Check for memory leaks upon "exit" 
 */
-void	ft_readline(t_subprocess *p)
-{
-	char	*input_arr;
-	t_input	input;
+// void	ft_readline(t_subprocess *p)
+// {
+// 	char	*input_arr;
+// 	t_input	input;
 
-	ft_init_struct(&input);
-	while (1)
-	{
-		input_arr = readline("Enter text: ");
-		if (!ft_strncmp(input_arr, "exit", 5))
-		{
-			free(input_arr);
-			// rl_clear_history(); //implicit declaration of function
-			return;
-		}
-		else if (ft_strlen(input_arr) > 0)
-		{
-			add_history(input_arr);
-			input.double_arr = ft_split(input_arr, ' ');
-			// ft_parse(&input); //mod with JR
-			ft_fork(input.double_arr, p);
-			ft_reset(&input);
-			free(input_arr);
-		}
-	}
-}
+// 	// ft_init_struct(&input);
+// 	while (1)
+// 	{
+// 		input_arr = readline("Enter text: ");
+// 		if (!ft_strncmp(input_arr, "exit", 5))
+// 		{
+// 			free(input_arr);
+// 			// rl_clear_history(); //implicit declaration of function
+// 			return;
+// 		}
+// 		else if (ft_strlen(input_arr) > 0)
+// 		{
+// 			add_history(input_arr);
+// 			// input.double_arr = ft_split(input_arr, ' ');
+// 			// ft_parse(&input); //mod with JR
+// 			// ft_fork(input.double_arr, p);
+// 			// ft_reset(&input);
+// 			read_str(input_arr);
+// 			free(input_arr);
+// 		}
+// 	}
+// }
