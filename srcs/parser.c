@@ -1,14 +1,19 @@
-#include "parser.h"
+// #include "./parser/parser.h"
+#include "minishell.h"
 
-// Copied from Isaac's readline.c
-void ft_free_double_arr(char **arr)
+/*
+** Copy of parser/parser.c file
+** Without main, ft_readline, ft_free_double_arr
+** Additional minishell.h, parser.h located in minishell.h
+** read_str takes in pointer to t_commands variable, moved free to int_main
+*/
+
+char *ft_strcpy(char *str)
 {
+	char *tmp;
 	int i;
 
-	if (!arr)
-		return;
 	i = 0;
-
 	tmp = malloc(sizeof(ft_strlen(str) + 1));
 	while (*str)
 	{
@@ -20,21 +25,21 @@ void ft_free_double_arr(char **arr)
 }
 
 // Copied from Isaac's readline.c
-void ft_free_double_arr(char **arr)
-{
-	char **tmp;
+// void ft_free_double_arr(char **arr)
+// {
+// 	char **tmp;
 
-	if (!arr)
-		return;
-	tmp = arr;
-	while (*arr)
-	{
-		free(*arr);
-		arr++;
-	}
-	free(tmp);
-	return;
-}
+// 	if (!arr)
+// 		return;
+// 	tmp = arr;
+// 	while (*arr)
+// 	{
+// 		free(*arr);
+// 		arr++;
+// 	}
+// 	free(tmp);
+// 	return;
+// }
 
 int num_pipes(char **str_arr)
 {
@@ -291,36 +296,36 @@ void print_commands(t_commands *cmds)
 	}
 }
 
-void read_str(char *str)
+void read_str(char *str, t_commands **commands)
 {
-	t_commands *commands;
+	// t_commands *commands;
 
-	commands = parse_commands(str);
-	if (!commands)
+	*commands = parse_commands(str);
+	if (!*commands)
 		return;
-	print_commands(commands);
-	free_commands(commands);
+	// print_commands(commands);
+	// free_commands(commands);
 }
 
-void ft_readline()
-{
-	char *inpt;
+// void ft_readline()
+// {
+// 	char *inpt;
 
-	while (1)
-	{
-		inpt = readline("Enter text: ");
-		if (strlen(inpt) > 0)
-		{
-			add_history(inpt);
-			read_str(inpt);
-		}
-		if (!strcmp(inpt, "exit"))
-			exit(0);
-		free(inpt);
-	}
-}
+// 	while (1)
+// 	{
+// 		inpt = readline("Enter text: ");
+// 		if (strlen(inpt) > 0)
+// 		{
+// 			add_history(inpt);
+// 			read_str(inpt);
+// 		}
+// 		if (!strcmp(inpt, "exit"))
+// 			exit(0);
+// 		free(inpt);
+// 	}
+// }
 
-int main(int argc, char *argv[])
-{
-	ft_readline();
-}
+// int main(int argc, char *argv[])
+// {
+// 	ft_readline();
+// }

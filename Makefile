@@ -1,7 +1,7 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-SRCS_LST	=	error.c		fork.c		main.c		readline.c
+SRCS_LST	=	error.c		fork.c		main.c		parser.c	readline.c
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST))
 
 OBJS		=	$(SRCS:.c=.o)
