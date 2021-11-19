@@ -1,11 +1,14 @@
 #include "parser.h"
 
-char *ft_strcpy(char *str)
+// Copied from Isaac's readline.c
+void ft_free_double_arr(char **arr)
 {
-	char *tmp;
 	int i;
 
+	if (!arr)
+		return;
 	i = 0;
+
 	tmp = malloc(sizeof(ft_strlen(str) + 1));
 	while (*str)
 	{

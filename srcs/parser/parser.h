@@ -15,6 +15,7 @@ typedef struct s_comm
     int pipe;
 } t_comm;
 
+
 typedef enum
 {
     none,
