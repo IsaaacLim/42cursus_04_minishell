@@ -5,7 +5,8 @@ SRCS_LST	=	ft_bzero.c		ft_calloc.c		ft_lstadd_back.c	\
 				ft_lstclear.c	ft_lstdelone.c	ft_lstlast.c		\
 				ft_lstnew.c		ft_memcpy.c		ft_split.c			\
 				ft_strdup.c		ft_strjoin.c	ft_strlen.c			\
-				ft_strncmp.c	ft_strchr.c 	ft_substr.c
+				ft_strncmp.c	ft_strchr.c 	ft_substr.c			\
+				ft_strcpy.c
 GNL_LST		=	get_next_line.c
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(GNL_LST))
 

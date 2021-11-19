@@ -1,142 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkhong <jkhong@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/19 12:16:40 by jkhong            #+#    #+#             */
+/*   Updated: 2021/11/19 17:52:46 by jkhong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 #include "parser.h"
 
-// Copied from Isaac's readline.c
-void ft_free_double_arr(char **arr)
-{
-	int i;
-
-	if (!arr)
-		return;
-	i = 0;
-
-	tmp = malloc(sizeof(ft_strlen(str) + 1));
-	while (*str)
-	{
-		tmp[i++] = *str;
-		str++;
-	}
-	tmp[i] = '\0';
-	return (tmp);
-}
-
-// Copied from Isaac's readline.c
-void ft_free_double_arr(char **arr)
-{
-	char **tmp;
-
-	if (!arr)
-		return;
-	tmp = arr;
-	while (*arr)
-	{
-		free(*arr);
-		arr++;
-	}
-	free(tmp);
-	return;
-}
-
-int num_pipes(char **str_arr)
-{
-	int pipes;
-
-	pipes = 0;
-	while (*str_arr)
-	{
-		if (ft_strncmp(*str_arr, "|", INT_MAX) == 0)
-			pipes++;
-		str_arr++;
-	}
-	return (pipes);
-}
-
-// TODO - free commands
-// TODO - process error
-
 /*
-	This somehow works
-	- cat -n < what
-	- cat < what -n
-
+** Copy of parser/parser.c file
+** Without main, ft_readline, ft_free_double_arr
+** Additional minishell.h, parser.h located in minishell.h
+** read_str takes in pointer to t_commands variable, moved free to int_main
 */
 
-/*
-	4 Scenarios
-	- << & char *
-	- < & char *
-	- > & char *
-	- >> & char *
-
-	Check against str_arr + 1 incase its null terminated
-
-	returns redirection enum,
-	0 would mean a redirection is not found
-*/
-int is_redirection(char *str, t_cmd *cmd, char *next)
-{
-	int redir;
-
-	redir = 0;
-	if (ft_strncmp(str, "<", INT_MAX) == 0)
-		redir = in;
-	else if (ft_strncmp(str, "<<", INT_MAX) == 0)
-		redir = in_heredoc;
-	else if (ft_strncmp(str, ">", INT_MAX) == 0)
-		redir = out;
-	else if (ft_strncmp(str, ">>", INT_MAX) == 0)
-		redir = out_append;
-	if (cmd)
-	{
-		if (redir == in || redir == in_heredoc)
-		{
-			cmd->input = redir;
-			cmd->infile = ft_strcpy(next);
-		}
-		else if (redir == out || redir == out_append)
-		{
-			cmd->output = redir;
-			cmd->outfile = ft_strcpy(next);
-		}
-	}
-	return (redir);
-}
-
-bool valid_redirection(char **str_arr)
-{
-	while (*str_arr)
-	{
-		if (is_redirection(*str_arr, NULL, NULL))
-		{
-			if (*(str_arr + 1) == NULL || ft_strncmp(*(str_arr + 1), "|", INT_MAX) == 0)
-				return (false);
-		}
-		str_arr++;
-	}
-	return (true);
-}
-
-bool valid_pipe(char **str_arr)
-{
-	int i;
-
-	i = 0;
-	while (str_arr[i])
-	{
-		// return false if pipe is first arg
-		if (i == 0 && ft_strncmp(str_arr[i], "|", INT_MAX) == 0)
-			return (false);
-		if (ft_strncmp(str_arr[i], "|", INT_MAX) == 0)
-		{
-			// checks if previous/next arg is pipe, and if next is NULL
-			if (str_arr[i + 1] == NULL || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0 || ft_strncmp(str_arr[i + 1], "|", INT_MAX) == 0)
-				return (false);
-		}
-		i++;
-	}
-	return (true);
-}
-
-void initialise_singlecmd(t_cmd *cmd)
+void	initialise_singlecmd(t_cmd *cmd)
 {
 	cmd->args = NULL;
 	cmd->input = 0;
@@ -158,13 +42,13 @@ void initialise_singlecmd(t_cmd *cmd)
 	
 	Return NULL if syntax error found
 */
-t_cmd parse_singlecmd(char **str_arr)
+t_cmd	parse_singlecmd(char **str_arr)
 {
-	int i;
-	int j;
-	int arg_len;
-	int redir;
-	t_cmd cmd;
+	int		i;
+	int		j;
+	int		arg_len;
+	int		redir;
+	t_cmd	cmd;
 
 	i = 0;
 	j = 0;
@@ -211,13 +95,13 @@ t_cmd parse_singlecmd(char **str_arr)
 		a. will malloc t_cmd ** of 1 pipe + 2 (1 for a command and another for NULL)
 */
 
-void free_commands(t_commands *commands)
+void	free_commands(t_commands *commands)
 {
-	t_cmd *cmds;
-	int i;
+	t_cmd	*cmds;
+	int		i;
 
 	if (!commands)
-		return;
+		return ;
 	i = 0;
 	cmds = commands->commands;
 	while (i < commands->len)
@@ -230,19 +114,18 @@ void free_commands(t_commands *commands)
 			free(cmds[i].outfile);
 		i++;
 	}
-
 	free(cmds);
 	free(commands);
 }
 
 // Do i even need to return a pointer for this?
-t_commands *parse_commands(char *str)
+t_commands	*parse_commands(char *str)
 {
-	char **str_arr;
-	t_commands *commands;
-	int cmd_len;
-	int i;
-	int j;
+	char		**str_arr;
+	t_commands	*commands;
+	int			cmd_len;
+	int			i;
+	int			j;
 
 	i = 0;
 	j = 0;
@@ -270,10 +153,10 @@ t_commands *parse_commands(char *str)
 
 void print_commands(t_commands *cmds)
 {
-	int i;
+	int		i;
+	char **args;
 
 	i = 0;
-	char **args;
 	while (i < cmds->len)
 	{
 		if (i != 0)
@@ -291,36 +174,12 @@ void print_commands(t_commands *cmds)
 	}
 }
 
-void read_str(char *str)
+void	read_str(char *str, t_commands **commands)
 {
-	t_commands *commands;
-
-	commands = parse_commands(str);
-	if (!commands)
+	// t_commands *commands;
+	*commands = parse_commands(str);
+	if (!*commands)
 		return;
-	print_commands(commands);
-	free_commands(commands);
-}
-
-void ft_readline()
-{
-	char *inpt;
-
-	while (1)
-	{
-		inpt = readline("Enter text: ");
-		if (strlen(inpt) > 0)
-		{
-			add_history(inpt);
-			read_str(inpt);
-		}
-		if (!strcmp(inpt, "exit"))
-			exit(0);
-		free(inpt);
-	}
-}
-
-int main(int argc, char *argv[])
-{
-	ft_readline();
+	// print_commands(commands);
+	// free_commands(commands);
 }

@@ -2,7 +2,7 @@
 #define MINISHELL_H
 
 # include "libft.h"
-#include "../srcs/parser/parser.h"
+#include "parser.h"
 
 # include <stdio.h>
 # include <stdlib.h>
