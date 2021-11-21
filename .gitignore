@@ -7,5 +7,7 @@ srcs/built_ins/*
 !srcs/built_ins/*.c
 !srcs/built_ins/Makefile
 
+# Temp
 testing-isaac/*
 !testing-isaac/*.c
+echo
