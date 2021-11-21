@@ -12,3 +12,5 @@ testing-isaac/*
 !testing-isaac/*.c
 echo
 cat
+grep
+*.txt
