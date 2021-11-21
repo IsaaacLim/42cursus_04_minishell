@@ -244,3 +244,79 @@ void	ft_fork(t_cmd commands, t_subprocess *p, bool is_first_cmd, bool is_last_cm
 		//create close fd functions
 	}
 }
+
+void	ft_execute3(t_commands *cmds)
+{
+	int	tmpin = dup(0);
+	int	tmpout = dup(1);
+
+	int child_in[2];
+	int child_out[2];
+
+	child_in[0] = dup(tmpin);
+
+	int fdpipe[2];
+	pipe(fdpipe);
+
+	int	ret;
+	for (int i = 0; i < cmds->len; i++)
+	{
+		if (cmds->commands[i].input == in)
+		{
+			child_in[0] = open(cmds->commands[i].infile, O_RDONLY | O_CLOEXEC, 0777);
+			if (child_in[0] < 0)
+				perror("child_in[0] open");
+		}
+		dup2(child_in[0], 0);
+		close(child_in[0]);
+		if (i == cmds->len - 1)
+		{
+			if (cmds->commands[i].output)
+			{
+				child_out[1] = open(cmds->commands[i].outfile, O_WRONLY | O_TRUNC | O_CREAT | O_CLOEXEC, 0777);
+				if (child_out[1] < 0)
+					perror("child_in[1] open");
+			}
+			else
+				child_out[1] = dup(tmpout);
+			// dup2(child_out[1],1);
+			// close(child_out[1]);
+		}
+		else
+		{
+			child_out[1] = fdpipe[1];
+			child_in[0] = fdpipe[0];
+		}
+		dup2(child_out[1],1);
+		close(child_out[1]);
+
+		ret = fork();
+		if (ret == 0)
+		{	
+			//doesn't work like this
+			// if (i != cmds->len - 1)
+			// {
+			// 	child_out[1] = fdpipe[1];
+			// 	child_in[0] = fdpipe[0];
+			// 	dup2(child_out[1],1);
+			// 	close(child_out[1]);
+			// }
+
+			// close (1);
+			char *envp[] = {NULL};
+			execve(cmds->commands[i].args[0], cmds->commands[i].args, envp);
+			printf("command not found: %s\n", cmds->commands[i].args[0]);
+			exit (1);
+		}
+	}
+
+	// t_subprocess *p;
+
+	// p->fd_from_child = child_out[1];
+	// ft_getnextline(p);
+	dup2(tmpin, 0);
+	dup2(tmpout, 1);
+	close(tmpin);
+	close(tmpout);
+	waitpid(ret, NULL, 0);
+}

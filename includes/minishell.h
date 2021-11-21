@@ -34,6 +34,7 @@ void	ft_error(char *message);
 
 //fork.c
 void	ft_fork(t_cmd commands, t_subprocess *p, bool first_command, bool last_command);
+void	ft_execute3(t_commands *cmds); //temporary
 
 // parser.c
 void	read_str(char *str, t_commands **commands);

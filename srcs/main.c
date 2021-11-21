@@ -75,6 +75,7 @@ void	ft_execute2(t_commands *cmds)
 			char *envp[] = {NULL};
 			execve(cmds->commands[i].args[0], cmds->commands[i].args, envp);
 			printf("command not found: %s\n", cmds->commands[i].args[0]);
+			exit (1);
 		}
 	}
 	dup2(tmpin, 0);
@@ -109,7 +110,8 @@ int	main(int argc, char *argv[])
 			add_history(input_arr);
 			read_str(input_arr, &commands);
 			// ft_execute(commands);
-			ft_execute2(commands);
+			// ft_execute2(commands);
+			ft_execute3(commands);
 			free_commands(commands);
 			free(input_arr);
 		}
