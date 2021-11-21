@@ -11,3 +11,4 @@ srcs/built_ins/*
 testing-isaac/*
 !testing-isaac/*.c
 echo
+cat

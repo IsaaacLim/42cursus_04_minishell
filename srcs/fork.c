@@ -45,16 +45,29 @@ void	ft_fd_table_mod(t_cmd commands)
 {
 	int	fd_new;
 
-	if (commands.output == out)
-		fd_new = open(commands.outfile, O_WRONLY | O_TRUNC | O_CREAT | O_CLOEXEC, 0777);
-	else if (commands.output == out_append)
-		fd_new = open(commands.outfile, O_WRONLY | O_APPEND | O_CREAT | O_CLOEXEC, 0777);
-	if (fd_new < 0)
+	if (commands.input == in)
 	{
-		perror("failed to open");
-		exit(1);
+		fd_new = open(commands.infile, O_RDONLY | O_CLOEXEC, 0777);
+		if (fd_new < 0)
+		{
+			perror("failed to open");
+			exit(1);
+		}
+		ft_mod_fd(fd_new, 0);
 	}
-	ft_mod_fd(fd_new, 1);
+	if (commands.output)
+	{
+		if (commands.output == out)
+			fd_new = open(commands.outfile, O_WRONLY | O_TRUNC | O_CREAT | O_CLOEXEC, 0777);
+		else if (commands.output == out_append)
+			fd_new = open(commands.outfile, O_WRONLY | O_APPEND | O_CREAT | O_CLOEXEC, 0777);
+		if (fd_new < 0)
+		{
+			perror("failed to open");
+			exit(1);
+		}
+		ft_mod_fd(fd_new, 1);
+	}
 }
 
 /*
