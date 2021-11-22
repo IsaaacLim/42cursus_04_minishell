@@ -86,32 +86,75 @@ void	ft_execute2(t_commands *cmds)
 }
 
 /*
+** Array of available processes
+*/
+char	**arr_process()
+{
+	char	**process;
+	int		i;
+
+	i = 3;
+	process = (char **)malloc(sizeof(char *) * i);
+	process[0] = ft_strdup("exit");
+	process[1] = ft_strdup("cd");
+	process[i - 1] = NULL;
+	return (process);
+}
+
+void	ft_exit(char *input_arr, char **process)
+{
+	free(input_arr);
+	ft_free_double_arr(process);
+	// rl_clear_history(); //implicit declaration of function
+	exit (0);
+}
+
+void	ft_process(char *input_arr, char **process)
+{
+	if (!ft_strncmp(input_arr, "exit", 5))
+		ft_exit(input_arr, process);
+	else if (!ft_strncmp(input_arr, "cd", 3))
+		printf("cd\n");
+}
+
+bool	ft_is_process(char *input_arr, char **process)
+{
+	int	i;
+
+	i = -1;
+	while (process[++i])
+	{
+		if (!ft_strncmp(input_arr, process[i], 10))
+			return (true);
+	}
+	return (false);
+}
+
+/*
 ** Contains previous ft_readline codes
 */
 int	main(int argc, char *argv[])
 {
 	t_commands		*commands;
 	t_subprocess	p;
-
 	char	*input_arr;
 	t_input	input;
+	char			**process;
+	int				i;
 
+	process = arr_process();
 	while (1)
 	{
 		input_arr = readline("Enter text: ");
-		if (!ft_strncmp(input_arr, "exit", 5))
-		{
-			free(input_arr);
-			// rl_clear_history(); //implicit declaration of function
-			return (0);
-		}
+		if (ft_is_process)
+			ft_process(input_arr, process);
 		else if (ft_strlen(input_arr) > 0)
 		{
 			add_history(input_arr);
 			read_str(input_arr, &commands);
 			// ft_execute(commands);
-			// ft_execute2(commands);
-			ft_execute3(commands);
+			ft_execute2(commands);
+			// ft_execute3(commands);
 			free_commands(commands);
 			free(input_arr);
 		}
