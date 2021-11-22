@@ -109,25 +109,46 @@ void	ft_exit(char *input_arr, char **process)
 	exit (0);
 }
 
+void	ft_chdir(char *input_arr)
+{
+	char **split;
+
+	split = ft_split(input_arr, ' ');
+	chdir(split[1]);
+	ft_free_double_arr(split);
+}
+
 void	ft_process(char *input_arr, char **process)
 {
+	char **split;
+
+	split = ft_split(input_arr, ' ');
 	if (!ft_strncmp(input_arr, "exit", 5))
+	{
+		ft_free_double_arr(split);
 		ft_exit(input_arr, process);
-	else if (!ft_strncmp(input_arr, "cd", 3))
-		printf("cd\n");
+	}
+	else if (!ft_strncmp(split[0], "cd", 18))
+		ft_chdir(input_arr);
+	ft_free_double_arr(split);
 }
 
 bool	ft_is_process(char *input_arr, char **process)
 {
-	int	i;
+	int		i;
+	char 	**split;
+	bool	is_process;
 
+	is_process = false;
+	split = ft_split(input_arr, ' ');
 	i = -1;
 	while (process[++i])
 	{
-		if (!ft_strncmp(input_arr, process[i], 10))
-			return (true);
+		if (!ft_strncmp(split[0], process[i], 20)) //just change to strnstr
+			is_process = true;
 	}
-	return (false);
+	ft_free_double_arr(split);
+	return (is_process);
 }
 
 /*
@@ -146,7 +167,7 @@ int	main(int argc, char *argv[])
 	while (1)
 	{
 		input_arr = readline("Enter text: ");
-		if (ft_is_process)
+		if (ft_is_process(input_arr, process))
 			ft_process(input_arr, process);
 		else if (ft_strlen(input_arr) > 0)
 		{
