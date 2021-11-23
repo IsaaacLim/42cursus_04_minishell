@@ -50,9 +50,8 @@ void	read_str(char *str, t_commands **commands);
 void free_commands(t_commands *commands);
 void print_commands(t_commands *cmds); //temp
 
-//readline.c
-void	ft_readline(t_subprocess *p);
-void	ft_free_double_arr(char **arr); //relocate
+//utils.c
+void	ft_free_double_arr(char **arr);
 
 // process functions
 int		ft_cd(char **argv);
