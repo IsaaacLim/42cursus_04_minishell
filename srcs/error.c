@@ -6,7 +6,7 @@
 */
 void	ft_error(char *message)
 {
-	printf("%s", message);
+	printf("%s\n", message);
 	exit (0);
 }
 
