@@ -2,7 +2,8 @@ NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
 PARSER_LST	=	parser/parser.c	parser/parser_utils.c
-SRCS_LST	=	error.c		fork.c		${PARSER_LST}	main.c		utils.c	
+SRCS_LST	=	error.c		fork.c		${PARSER_LST}	main.c		\
+				process_init.c	utils.c	
 
 PROCS_DIR	=	process/
 PROCS_LST	=	env_validate.c		env.c			environment_utils.c		\

@@ -50,6 +50,11 @@ void	read_str(char *str, t_commands **commands);
 void free_commands(t_commands *commands);
 void print_commands(t_commands *cmds); //temp
 
+// process_init.c
+char	**arr_process(void);
+void	ft_process(t_process init);
+bool	ft_is_process(char *input, char **processes);
+
 //utils.c
 void	ft_free_double_arr(char **arr);
 
