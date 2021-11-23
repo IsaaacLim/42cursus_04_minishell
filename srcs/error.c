@@ -9,3 +9,13 @@ void	ft_error(char *message)
 	printf("%s", message);
 	exit (0);
 }
+
+/*
+** Used as error handling for library functions
+** Prints error message then exit program
+*/
+void	ft_perror(char *message)
+{
+	perror(message);
+	exit (1);
+}
