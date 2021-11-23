@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "environment.h"
 
 /*
 ** Forks for child process to run execve for each commands
@@ -91,13 +92,14 @@ void	ft_execute2(t_commands *cmds)
 char	**arr_process()
 {
 	char	**process;
-	int		i;
 
-	i = 3;
-	process = (char **)malloc(sizeof(char *) * i);
-	process[0] = ft_strdup("exit");
-	process[1] = ft_strdup("cd");
-	process[i - 1] = NULL;
+	process = (char **)malloc(sizeof(char *) * 5);
+	process[0] = ft_strdup("cd");
+	process[1] = ft_strdup("env");
+	process[2] = ft_strdup("export");
+	process[3] = ft_strdup("unset");
+	process[4] = ft_strdup("exit");
+	process[5] = NULL;
 	return (process);
 }
 
@@ -120,16 +122,21 @@ void	ft_chdir(char *input_arr)
 
 void	ft_process(char *input_arr, char **process)
 {
-	char **split;
+	char	**split;
+	char	*arg;
 
 	split = ft_split(input_arr, ' ');
-	if (!ft_strncmp(input_arr, "exit", 5))
+	arg = split[0];
+	if (!ft_strncmp(arg, "cd", 3))
+		ft_chdir(input_arr);
+	else if((!ft_strncmp(arg, "env", 4)) ||
+		(!ft_strncmp(arg, "export", 7)) || (!ft_strncmp(arg, "unset", 6)))
+		ft_environment(split);
+	else if (!ft_strncmp(input_arr, "exit", 5))
 	{
 		ft_free_double_arr(split);
 		ft_exit(input_arr, process);
 	}
-	else if (!ft_strncmp(split[0], "cd", 18))
-		ft_chdir(input_arr);
 	ft_free_double_arr(split);
 }
 

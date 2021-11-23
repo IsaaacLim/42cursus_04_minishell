@@ -1,7 +1,7 @@
 # ifndef ENVIRONMENT_H
 # define ENVIRONMENT_H
 
-#include "../../libft/includes/libft.h"
+#include "libft.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -26,5 +26,8 @@ void env_command(t_list *env);
 void unset(t_list **env, char *env_str);
 void export_command(t_list *env);
 void export_add(t_list **env, char *env_str);
+
+// main function call
+int ft_environment(char *argv[]);
 
 #endif

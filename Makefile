@@ -1,16 +1,19 @@
 NAME		=	minishell
 
-
-
 SRCS_DIR	=	./srcs/
 PARSER_LST	=	parser/parser.c	parser/parser_utils.c
 SRCS_LST	=	error.c		fork.c		${PARSER_LST}	main.c		readline.c	
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST))
 
+PROCS_DIR	=	process/
+PROCS_LST	=	env_validate.c		env.c			environment_utils.c		\
+				ft_environment.c	export.c		unset.c
+PROCS		=	$(addprefix $(PROCS_DIR), $(PROCS_LST))
+
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(PROCS))
 OBJS		=	$(SRCS:.c=.o)
 
 HDRS_DIR	=	./includes/
-HDRS_LST	=	minishell.h
+HDRS_LST	=	minishell.h parser.h environment.h
 HDRS		=	$(addprefix $(HDRS_DIR), $(HDRS_LST))
 
 LIBFT_DIR	=	./libft/
