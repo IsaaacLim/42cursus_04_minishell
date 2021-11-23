@@ -3,19 +3,21 @@
 /*
 ** Copy of JR's main.c
 ** Edited to be used with minishell
-**	- removed argc
-**	- str compare argv
+**	- removed argc from func arg
+**	- filled t_list *env from main function, then passed over as an arg
+**	- str compare argv to execute correct function
+**	- ft_lstclear upon "exit"
+**
+** GOT ISSUE WHEN EXECUTING THIS FUNCTION > ONCE
 */
-int	ft_environment(char *argv[])
+int	ft_environment(char *argv[], t_list *env)
 {
-	t_list *env;
 	char	**envp;
 	int		argc;
 
 	argc = 0;
 	while (argv[argc])
 		argc++;
-	env = initialise_env(envp);
 	if (argc == 1)
 	{
 		if (!ft_strncmp(argv[0], "env", 4))
@@ -30,8 +32,5 @@ int	ft_environment(char *argv[])
 		else if(!ft_strncmp(argv[0], "unset", 6))
 			unset(&env, argv[1]);
 	}
-
-	// to free -> include towards end of main
-	ft_lstclear(&env, free_envar);
 	return (0);
 }

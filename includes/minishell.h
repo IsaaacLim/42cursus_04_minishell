@@ -14,6 +14,13 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 
+typedef struct	s_process
+{
+	char	*input;
+	char	**processes;
+	t_list	*env;
+}	t_process;
+
 typedef struct	s_input
 {
 	char	**double_arr;
@@ -31,6 +38,8 @@ typedef struct	s_subprocess
 
 //error.c
 void	ft_error(char *message);
+void	ft_perror(char *message);
+
 
 //fork.c
 void	ft_fork(t_cmd commands, t_subprocess *p, bool first_command, bool last_command);

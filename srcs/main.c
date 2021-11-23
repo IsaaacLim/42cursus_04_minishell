@@ -93,7 +93,9 @@ char	**arr_process()
 {
 	char	**process;
 
-	process = (char **)malloc(sizeof(char *) * 5);
+	process = (char **)malloc(sizeof(char *) * 6);
+	if (!process)
+		ft_perror("arr_process()");
 	process[0] = ft_strdup("cd");
 	process[1] = ft_strdup("env");
 	process[2] = ft_strdup("export");
@@ -103,10 +105,11 @@ char	**arr_process()
 	return (process);
 }
 
-void	ft_exit(char *input_arr, char **process)
+void	ft_exit(t_process *init)
 {
-	free(input_arr);
-	ft_free_double_arr(process);
+	free(init->input);
+	ft_free_double_arr(init->processes);
+	ft_lstclear(&init->env, free_envar);
 	// rl_clear_history(); //implicit declaration of function
 	exit (0);
 }
@@ -120,38 +123,38 @@ void	ft_chdir(char *input_arr)
 	ft_free_double_arr(split);
 }
 
-void	ft_process(char *input_arr, char **process)
+void	ft_process(t_process init)
 {
 	char	**split;
 	char	*arg;
 
-	split = ft_split(input_arr, ' ');
+	split = ft_split(init.input, ' ');
 	arg = split[0];
 	if (!ft_strncmp(arg, "cd", 3))
-		ft_chdir(input_arr);
+		ft_chdir(init.input);
 	else if((!ft_strncmp(arg, "env", 4)) ||
 		(!ft_strncmp(arg, "export", 7)) || (!ft_strncmp(arg, "unset", 6)))
-		ft_environment(split);
-	else if (!ft_strncmp(input_arr, "exit", 5))
+		ft_environment(split, init.env);
+	else if (!ft_strncmp(init.input, "exit", 5))
 	{
 		ft_free_double_arr(split);
-		ft_exit(input_arr, process);
+		ft_exit(&init);
 	}
 	ft_free_double_arr(split);
 }
 
-bool	ft_is_process(char *input_arr, char **process)
+bool	ft_is_process(char *input, char **processes)
 {
 	int		i;
 	char 	**split;
 	bool	is_process;
 
 	is_process = false;
-	split = ft_split(input_arr, ' ');
+	split = ft_split(input, ' ');
 	i = -1;
-	while (process[++i])
+	while (processes[++i])
 	{
-		if (!ft_strncmp(split[0], process[i], 20)) //just change to strnstr
+		if (!ft_strncmp(split[0], processes[i], 20)) //just change to strnstr
 			is_process = true;
 	}
 	ft_free_double_arr(split);
@@ -161,30 +164,27 @@ bool	ft_is_process(char *input_arr, char **process)
 /*
 ** Contains previous ft_readline codes
 */
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char *envp[])
 {
-	t_commands		*commands;
-	t_subprocess	p;
-	char	*input_arr;
-	t_input	input;
-	char			**process;
-	int				i;
+	t_commands	*commands;
+	t_process	init;
 
-	process = arr_process();
+	init.env = initialise_env(envp);
+	init.processes = arr_process();
 	while (1)
 	{
-		input_arr = readline("Enter text: ");
-		if (ft_is_process(input_arr, process))
-			ft_process(input_arr, process);
-		else if (ft_strlen(input_arr) > 0)
+		init.input = readline("Enter text: ");
+		if (ft_is_process(init.input, init.processes))
+			ft_process(init);
+		else if (ft_strlen(init.input) > 0)
 		{
-			add_history(input_arr);
-			read_str(input_arr, &commands);
+			add_history(init.input);
+			read_str(init.input, &commands);
 			// ft_execute(commands);
 			ft_execute2(commands);
 			// ft_execute3(commands);
 			free_commands(commands);
-			free(input_arr);
+			free(init.input);
 		}
 	}
 	// system("leaks minishell");
