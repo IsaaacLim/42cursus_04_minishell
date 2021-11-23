@@ -7,7 +7,7 @@
 void	ft_error(char *message)
 {
 	printf("%s\n", message);
-	exit (0);
+	exit (1);
 }
 
 /*
@@ -17,5 +17,5 @@ void	ft_error(char *message)
 void	ft_perror(char *message)
 {
 	perror(message);
-	exit (1);
+	exit (2);
 }
