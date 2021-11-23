@@ -114,33 +114,24 @@ void	ft_exit(t_process *init)
 	exit (0);
 }
 
-void	ft_chdir(char *input_arr)
-{
-	char **split;
-
-	split = ft_split(input_arr, ' ');
-	chdir(split[1]);
-	ft_free_double_arr(split);
-}
-
 void	ft_process(t_process init)
 {
-	char	**split;
+	char	**argv;
 	char	*arg;
 
-	split = ft_split(init.input, ' ');
-	arg = split[0];
+	argv = ft_split(init.input, ' ');
+	arg = argv[0];
 	if (!ft_strncmp(arg, "cd", 3))
-		ft_chdir(init.input);
+		ft_cd(argv);
 	else if((!ft_strncmp(arg, "env", 4)) ||
 		(!ft_strncmp(arg, "export", 7)) || (!ft_strncmp(arg, "unset", 6)))
-		ft_environment(split, init.env);
+		ft_environment(argv, init.env);
 	else if (!ft_strncmp(init.input, "exit", 5))
 	{
-		ft_free_double_arr(split);
+		ft_free_double_arr(argv);
 		ft_exit(&init);
 	}
-	ft_free_double_arr(split);
+	ft_free_double_arr(argv);
 }
 
 bool	ft_is_process(char *input, char **processes)

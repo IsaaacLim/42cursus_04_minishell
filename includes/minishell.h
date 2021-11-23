@@ -54,4 +54,8 @@ void print_commands(t_commands *cmds); //temp
 void	ft_readline(t_subprocess *p);
 void	ft_free_double_arr(char **arr); //relocate
 
+// process functions
+int		ft_cd(char **argv);
+void	ft_exit(t_process *init);
+
 #endif

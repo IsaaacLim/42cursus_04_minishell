@@ -6,7 +6,8 @@ SRCS_LST	=	error.c		fork.c		${PARSER_LST}	main.c		readline.c
 
 PROCS_DIR	=	process/
 PROCS_LST	=	env_validate.c		env.c			environment_utils.c		\
-				ft_environment.c	export.c		unset.c
+				ft_environment.c	export.c		unset.c					\
+				ft_cd.c
 PROCS		=	$(addprefix $(PROCS_DIR), $(PROCS_LST))
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(PROCS))
