@@ -12,6 +12,7 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 
 #include <fcntl.h>
 
@@ -234,6 +235,14 @@ void	ft_dir()
 	closedir(pDir);
 }
 
+void	ft_getenv(void)
+{
+	char *env;
+
+	env = getenv("NAME");
+	printf("env: %s\n", env);
+}
+
 int	main()
 {
 	signal(SIGINT, ft_sigint);	//ctrl - C
@@ -248,6 +257,7 @@ int	main()
 	// ft_unlink();
 	// ft_execve();
 	// ft_dup();
-	ft_pipe(); //got issues with 2 way communication
+	// ft_pipe(); //got issues with 2 way communication
 	// ft_dir();
+	ft_getenv();
 }
