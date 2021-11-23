@@ -1,5 +1,8 @@
 #include "environment.h"
 
+/*
+** Currently not in use
+*/
 int main(int argc, char *argv[], char *envp[])
 {
 	t_list *env;
