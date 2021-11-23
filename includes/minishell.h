@@ -21,14 +21,6 @@ typedef struct	s_process
 	t_list	*env;
 }	t_process;
 
-typedef struct	s_input
-{
-	char	**double_arr;
-	bool	has_greater_than;
-	bool	has_less_than;
-	bool	has_append;
-} t_input;
-
 typedef struct	s_subprocess
 {
 	pid_t pid;
