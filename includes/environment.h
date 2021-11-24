@@ -12,6 +12,7 @@ typedef struct s_envar
 	char *name;
 	bool set;
 	char *word;
+	int word_len;
 }           t_envar;
 
 // Environment utilities (e.g. intiialisation)
@@ -19,7 +20,7 @@ t_envar	*parse_env_var(char *env_str);
 t_list *initialise_env(char **envp);
 void free_envar(void *content);
 void print_env(t_list *env);
-t_list *found_env(t_list **env, t_list **prev, char *env_str);
+t_list *found_env(t_list **env, t_list **prev, char *env_str, int search_len);
 
 // Commands
 void env_command(t_list *env);

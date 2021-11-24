@@ -84,7 +84,7 @@ void export_add(t_list **env, char *env_str)
 		free_envar((void *)parse_env);
 		return;
 	}
-	found = found_env(env, NULL, parse_env->name);
+	found = found_env(env, NULL, parse_env->name, INT_MAX);
 	if (!found)
 		ft_lstadd_back(env, ft_lstnew((void *)parse_env));
 	else

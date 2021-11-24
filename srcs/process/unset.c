@@ -15,7 +15,7 @@ void unset(t_list **env, char *env_str)
 		;
 	else
 	{
-		found = found_env(env, &prev, parse_env->name);
+		found = found_env(env, &prev, parse_env->name, INT_MAX);
 		if (found)
 		{
 			prev->next = found->next;
