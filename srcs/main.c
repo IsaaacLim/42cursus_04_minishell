@@ -214,18 +214,21 @@ int	main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		init.input = readline("Enter text: ");
+		if (ft_strlen(init.input) == 0)
+			continue ;
+		add_history(init.input);
 		if (ft_is_process(init.input, init.processes))
 			ft_process(init);
 		else if (ft_strlen(init.input) > 0)
 		{
-			add_history(init.input);
 			read_str(init.input, &commands);
 			// ft_execute(commands);
 			ft_execute2(commands);
 			// ft_execute3(commands);
+			// ft_execute4(commands);
 			free_commands(commands);
-			free(init.input);
 		}
+		free(init.input);
 	}
 	// system("leaks minishell");
 }
