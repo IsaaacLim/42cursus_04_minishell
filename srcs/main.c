@@ -5,27 +5,27 @@
 /*
 ** Forks for child process to run execve for each commands
 */
-void	ft_execute(t_commands *cmds)
-{
-	int				i;
-	t_subprocess	p;
-	bool			first_command;
-	bool			last_command;
+// void	ft_execute(t_commands *cmds)
+// {
+// 	int				i;
+// 	t_subprocess	p;
+// 	bool			first_command;
+// 	bool			last_command;
 
-	// print_commands(cmds); //test
-	first_command = true;
-	last_command = false;
-	i = 0;
-	while (i < cmds->len)
-	{
-		if (i != 0)
-			first_command = false;
-		if (i == cmds->len - 1)
-			last_command = true;
-		ft_fork(cmds->commands[i], &p, first_command, last_command);
-		i++;
-	}
-}
+// 	// print_commands(cmds); //test
+// 	first_command = true;
+// 	last_command = false;
+// 	i = 0;
+// 	while (i < cmds->len)
+// 	{
+// 		if (i != 0)
+// 			first_command = false;
+// 		if (i == cmds->len - 1)
+// 			last_command = true;
+// 		ft_fork(cmds->commands[i], &p, first_command, last_command);
+// 		i++;
+// 	}
+// }
 
 /*
 ** Sample from purdue.edu pdf on pipes
@@ -48,7 +48,7 @@ void	ft_execute2(t_commands *cmds)
 	int tmpout=dup(1);
 
 	int fdpipe[2];
-	// pipe(fdpipe);
+	// pipe(fdpipe); //cannot handle multiple pipes
 
 	int	fdin;
 	fdin = dup(tmpin);
@@ -103,7 +103,7 @@ void	ft_execute2(t_commands *cmds)
 		else
 		{
 			// int fdpipe[2];
-			pipe(fdpipe);
+			pipe(fdpipe); 
 			fdout = fdpipe[1];
 			fdin = fdpipe[0]; // can be set to diff value later
 		}
