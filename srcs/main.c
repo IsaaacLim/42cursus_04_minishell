@@ -148,9 +148,9 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			read_str(init.input, &commands);
 			// ft_execute(commands);
-			ft_execute2(commands);
+			// ft_execute2(commands);
 			// ft_execute3(commands);
-			// ft_execute4(commands);
+			ft_execute4(commands);
 			free_commands(commands);
 		}
 		free(init.input);
