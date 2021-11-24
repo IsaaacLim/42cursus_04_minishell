@@ -95,7 +95,7 @@ int	check_env(char *str, t_list **env)
 			if (found)
 			{
 				envar = (t_envar *)(found->content);
-				if (envar->word[envar->word_len] == '\0')
+				if (envar->name[env_len] == '\0')
 					tot_len += envar->word_len;
 			}
 			str += env_len;
@@ -139,7 +139,7 @@ char *update_env(char *str, t_list **env, int tot_len)
 			if (found)
 			{
 				envar = (t_envar *)(found->content);
-				if (envar->word[envar->word_len] == '\0')
+				if (envar->name[env_len] == '\0')
 				{
 					ft_memcpy(&tmp[i], envar->word, envar->word_len);
 					i += envar->word_len;
@@ -177,7 +177,7 @@ int main(int argc, char *argv[], char *envp[])
 	t_list *env = initialise_env(envp);
 	// print_env(env);
 	// printf("\n\n");
-	char str[] = "HI $HELLO$PATH";
+	char str[] = "HI $HELLO";
 
 	printf("%i\n", check_env(str, &env));
 	printf("%s\n", update_env(str, &env, check_env(str, &env)));
