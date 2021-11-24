@@ -79,6 +79,7 @@ int	check_env(char *str, t_list **env)
 	char *ptr;
 	t_list *found;
 	t_envar *envar;
+	char c;
 
 	tot_len = 0;
 	while (*str)
@@ -91,13 +92,16 @@ int	check_env(char *str, t_list **env)
 			// check to make sure that side by side $ works as well...
 			while (ptr[env_len] && ptr[env_len] != ' ' && ptr[env_len] != '$')
 				env_len++;
-			found = found_env(env, NULL, ptr, env_len);
+			c = ptr[env_len];
+			ptr[env_len] = '\0';
+			found = found_env(env, NULL, ptr, INT_MAX);
 			if (found)
 			{
 				envar = (t_envar *)(found->content);
 				if (envar->name[env_len] == '\0')
 					tot_len += envar->word_len;
 			}
+			ptr[env_len] = c;
 			str += env_len;
 		}
 		else
@@ -124,6 +128,7 @@ char *update_env(char *str, t_list **env, int tot_len)
 	char *ptr;
 	t_list *found;
 	t_envar *envar;
+	char c;
 
 	tmp = malloc(sizeof(char) * (tot_len + 1));
 	i = 0;
@@ -135,7 +140,9 @@ char *update_env(char *str, t_list **env, int tot_len)
 			env_len = 0;
 			while (ptr[env_len] && ptr[env_len] != ' ' && ptr[env_len] != '$')
 				env_len++;
-			found = found_env(env, NULL, ptr, env_len);
+			c = ptr[env_len];
+			ptr[env_len] = '\0';
+			found = found_env(env, NULL, ptr, INT_MAX);
 			if (found)
 			{
 				envar = (t_envar *)(found->content);
@@ -145,13 +152,13 @@ char *update_env(char *str, t_list **env, int tot_len)
 					i += envar->word_len;
 				}
 			}
+			ptr[env_len] = c;
 			str += env_len;
 		}
 		else
 			tmp[i++] = *str;
 		str++;
 	}
-
 	tmp[tot_len] = '\0';
 	return (tmp);
 }
@@ -177,7 +184,7 @@ int main(int argc, char *argv[], char *envp[])
 	t_list *env = initialise_env(envp);
 	// print_env(env);
 	// printf("\n\n");
-	char str[] = "HI $HELLO";
+	char str[] = "HI $HELLO $PATH";
 
 	printf("%i\n", check_env(str, &env));
 	printf("%s\n", update_env(str, &env, check_env(str, &env)));
