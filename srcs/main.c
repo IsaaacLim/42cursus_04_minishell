@@ -1,5 +1,6 @@
 #include "minishell.h"
 #include "environment.h"
+#include "get_next_line.h"
 
 /*
 ** Forks for child process to run execve for each commands
@@ -28,17 +29,34 @@ void	ft_execute(t_commands *cmds)
 
 /*
 ** Sample from purdue.edu pdf on pipes
+**
+** Set before forking child
+**
+** fdin = 0 from outside
+** for loop
+**	set < fdin //or can set only once from outside too
+**	dup2(fdin, 0)
+**	later fdin = pipe in if not last
+**
+**	fdout = 1
+**	fdout = file or pipe out
+	dup2(fdout, 1)
 */
 void	ft_execute2(t_commands *cmds)
 {
 	int tmpin=dup(0);
 	int tmpout=dup(1);
-	
+
+	int fdpipe[2];
+	// pipe(fdpipe);
+
 	int	fdin;
 	fdin = dup(tmpin);
 
 	int	ret;
 	int	fdout;
+	// fdout = dup(tmpout); //can't be set here
+
 	for (int i = 0; i < cmds->len; i++)
 	{
 		if (cmds->commands[i].input == in)
@@ -47,27 +65,49 @@ void	ft_execute2(t_commands *cmds)
 			if (fdin < 0)
 				perror("fdin open");
 		}
+		else if (cmds->commands[i].input == in_heredoc)
+		{
+			char *line;
+			int	ret;
+			int fdtemp[2];
+			pipe(fdtemp);
+			write(1, "heredoc> ", 9);
+			ret = get_next_line(0, &line);
+			while (ret > 0)
+			{
+				if (!ft_strncmp(line, cmds->commands[i].infile, ft_strlen(cmds->commands[i].infile) + 1))
+					break;
+				write(1, "heredoc> ", 9);
+				write(fdtemp[1], line, ft_strlen(line));
+				write(fdtemp[1], "\n", 1);
+				free (line);
+				ret = get_next_line(0, &line);
+			}
+			free(line);
+			fdin=fdtemp[0];
+			close(fdtemp[1]);
+		}
 		dup2(fdin, 0);
 		close(fdin);
+
+		fdout = dup(tmpout); //can be placed here too
 		if (i == cmds->len - 1)
 		{
 			if (cmds->commands[i].output)
 			{
 				fdout = open(cmds->commands[i].outfile, O_WRONLY | O_TRUNC | O_CREAT | O_CLOEXEC, 0777);
-				if (fdin < 0)
-					perror("fdin open");
+				if (fdout < 0)
+					perror("fdout open");
 			}
-			else
-				fdout = dup(tmpout);
 		}
 		else
 		{
-			int fdpipe[2];
+			// int fdpipe[2];
 			pipe(fdpipe);
 			fdout = fdpipe[1];
-			fdin = fdpipe[0];
+			fdin = fdpipe[0]; // can be set to diff value later
 		}
-		dup2(fdout,1);
+		dup2(fdout,1); //need this here
 		close(fdout);
 
 		ret = fork();
