@@ -22,5 +22,4 @@ void unset(t_list **env, char *env_str)
 			ft_lstdelone(found, free_envar);
 		}
 	}
-	free_envar(parse_env);
 }
