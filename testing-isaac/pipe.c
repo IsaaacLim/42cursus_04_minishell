@@ -64,7 +64,6 @@ void	ft_execute()
 	read(0, &y, sizeof(int));
 	y += 5;
 	write(1, &y, sizeof(int));
-
 }
 
 void	ft_fd_table_parent(int *child_in, int *child_out)
@@ -90,36 +89,68 @@ void	ft_pipe_in(int n, int **pipefd)
 
 }
 
+void	ft_pipe_close(int len, int n, int **pipefd)
+{
+	int i;
+
+	i = 0;
+	while (i < len - 1) //len == 4
+	{
+		if (n == 0)
+		{
+			if (i + 1 < len - 1)
+			{
+				close(pipefd[i + 1][0]);
+				close(pipefd[i + 1][1]);
+			}
+		}
+		else if (n > 0 && n < len - 1)
+		{
+			if (i + 1 < n || i > n)
+			{
+				close(pipefd[i][0]);
+				close(pipefd[i][1]);
+			}
+		}
+		else if (n == len - 1)
+		{
+			if (i < n - 1)
+			{
+				close(pipefd[i][0]);
+				close(pipefd[i][1]);
+			}
+		}
+
+
+		i++;
+	}
+}
 void	ft_pipe(int len, int n, int **pipefd)
 {
-	//len = 3;
-
-	if (n == 0)
+	if (n == 0 && len > 1)
 	{
 		ft_pipe_out(n, pipefd);
-		close(pipefd[1][0]);
-		close(pipefd[1][1]);
+		ft_pipe_close(len, n , pipefd);
 	}
 
-	if (n > 0 && n < len - 1)
+	else if (n > 0 && n < len - 1)
 	{
+		ft_pipe_out(n, pipefd);
 		ft_pipe_in(n, pipefd);
-		ft_pipe_out(n, pipefd);
+		ft_pipe_close(len, n, pipefd);
 	}
 
-	if (n == len - 1)
+	else if (n == len - 1 && len > 1)
 	{
-		close(pipefd[0][0]);
-		close(pipefd[0][1]);
-
+		ft_pipe_close(len, n, pipefd);
 		ft_pipe_in(n, pipefd);
 	}
 }
 
 void	ft_mine(void)
 {
-	int child_in[2]; //pipefd[0]
-	int child_out[2]; //pipefd[1]
+	int child_in[2];
+	int child_out[2];
 	int	i;
 	int y;
 
@@ -127,9 +158,10 @@ void	ft_mine(void)
 	pipe(child_in);
 	pipe(child_out);
 
-	int len = 4;
+	int len = 1;
 	int	**pipefd;
-	pipefd = (int **)malloc(sizeof(int *) * len - 1);
+	if (len > 1)
+		pipefd = (int **)malloc(sizeof(int *) * len - 1);
 	i = 0;
 	while (i < len - 1)
 	{
@@ -170,7 +202,8 @@ void	ft_mine(void)
 		free(pipefd[i]);
 		i++;
 	}
-	free(pipefd);
+	if (len > 1)
+		free(pipefd);
 }
 
 int	main(void)
