@@ -13,4 +13,5 @@ testing-isaac/*
 echo
 cat
 grep
+wc
 *.txt
