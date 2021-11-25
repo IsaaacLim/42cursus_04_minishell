@@ -20,11 +20,12 @@ t_envar	*parse_env_var(char *env_str)
 	(envar->name)[len] = '\0';
 	if (!envar->set)
 		return (envar);
-	// update word, + 1 to include null pointer
+	// move position to after equals, =
 	env_str = env_str + len + 1;
-	len = ft_strlen(env_str) + 1;
-	envar->word = malloc(sizeof(char) * len);
-	ft_memcpy(envar->word, env_str, sizeof(char) * len);
+	len = ft_strlen(env_str);
+	envar->word = malloc(sizeof(char) * (len + 1));
+	ft_memcpy(envar->word, env_str, sizeof(char) * (len + 1));
+	envar->word_len = len;
 	return (envar);
 }
 
@@ -72,7 +73,8 @@ void print_env(t_list *env)
 	}
 }
 
-t_list *found_env(t_list **env, t_list **prev, char *env_str)
+// Accepts NULL as *prev in case we don't need our prev t_list
+t_list *found_env(t_list **env, t_list **prev, char *env_str, int search_len)
 {
 	t_list *tmp_lst;
 	t_envar *tmp_env;
@@ -82,7 +84,7 @@ t_list *found_env(t_list **env, t_list **prev, char *env_str)
 	{
 		// need to typecast that's why pretty confusing
 		tmp_env = (t_envar *)tmp_lst->content;
-		if (ft_strncmp(tmp_env->name, env_str, __INT_MAX__) == 0)
+		if (ft_strncmp(tmp_env->name, env_str, search_len) == 0)
 			return (tmp_lst);
 		if (prev)
 			*prev = tmp_lst;
