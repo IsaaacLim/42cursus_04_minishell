@@ -39,12 +39,12 @@ void	ft_make_pipe(int fds[2])
 */
 void	ft_fd_table_child(int child_in[2], int child_out[2])
 {
-	// close (0); //how did I write to child??
-	// close (1);
+	close (0); //how did I write to child??
+	close (1);
 	close (child_in[1]);
 	close (child_out[0]);
-	// ft_mod_fd(child_in[0], 0); //used own 0
-	// ft_mod_fd(child_out[1], 1);
+	ft_mod_fd(child_in[0], 0); //used own 0
+	ft_mod_fd(child_out[1], 1);
 }
 
 /*
@@ -81,11 +81,11 @@ void	ft_fd_table_redir(t_cmd commands)
 	}
 }
 
-void	ft_fd_table_redir_in(t_cmd commands, int fd_pipe_in, bool is_first_cmd, int child_in[2])
+void	ft_fd_table_redir_in(t_cmd commands, bool in_pipe, int fd_pipe[2])
 {
 	int fd_new;
 
-	fd_new = dup(0);
+	fd_new = 0;
 	if (commands.input == in)
 	{
 		fd_new = open(commands.infile, O_RDONLY | O_CLOEXEC, 0777);
@@ -95,25 +95,17 @@ void	ft_fd_table_redir_in(t_cmd commands, int fd_pipe_in, bool is_first_cmd, int
 			exit(1);
 		}
 	}
-	// if (fd_new)
+	if (in_pipe)
+		fd_new = fd_pipe[0];
+	if (fd_new)
 		ft_mod_fd(fd_new, 0);
-	if (!is_first_cmd)
-	{
-		// fd_new = fd_pipe_in;
-		child_in[0] = fd_pipe_in;
-		// printf("pipe in fd: %d\n", fd_new);
-	}
-	// if (fd_new)
-		// child_in[0] = fd_new;
-		// ft_mod_fd(fd_new, 0);
 }
 
-void	ft_fd_table_redir_out(t_cmd commands, int fd_pipe_out, bool is_last_cmd, int child_out[2])
+void	ft_fd_table_redir_out(t_cmd commands, bool out_pipe, int fd_pipe[2])
 {
 	int	fd_new;
 
-	printf("pipe out fd: %d\n", fd_pipe_out);
-	fd_new = child_out[1];
+	fd_new = 0;
 	if (commands.output)
 	{
 		if (commands.output == out)
@@ -126,23 +118,80 @@ void	ft_fd_table_redir_out(t_cmd commands, int fd_pipe_out, bool is_last_cmd, in
 			exit(1);
 		}
 	}
-	if (!is_last_cmd)
-	{
-		fd_new = fd_pipe_out;
-		// printf("pipe out fd: %d\n", fd_new);
-	}
-	// if (fd_new)
-		// ft_mod_fd(fd_new, 1);
-	// ft_mod_fd(child_out[1], 1);	
-	ft_mod_fd(fd_new, 1);	
+	if (out_pipe)
+		fd_new = fd_pipe[1];
+	if (fd_new)
+		ft_mod_fd(fd_new, 1);
 }
-/*
-** Redirects IN/OUT if pipe is present (not last command)
-*/
-void	ft_fd_table_pipe(int *fd_pipe, bool first_command, bool last_command)
+
+void	ft_pipe_out(int n, int **pipefd)
 {
-	ft_mod_fd(fd_pipe[0], 0);
-	ft_mod_fd(fd_pipe[1], 1);
+	close(pipefd[n][0]);
+	dup2(pipefd[n][1], 1);
+		close(pipefd[n][1]);
+}
+
+void	ft_pipe_in(int n, int **pipefd)
+{
+	close(pipefd[n - 1][1]);
+	dup2(pipefd[n - 1][0], 0);
+		close(pipefd[n - 1][0]);
+
+}
+
+void	ft_pipe_close(int len, int n, int **pipefd)
+{
+	int i;
+
+	i = 0;
+	while (i < len - 1)
+	{
+		if (n == 0)
+		{
+			if (i + 1 < len - 1)
+			{
+				close(pipefd[i + 1][0]);
+				close(pipefd[i + 1][1]);
+			}
+		}
+		else if (n > 0 && n < len - 1)
+		{
+			if (i + 1 < n || i > n)
+			{
+				close(pipefd[i][0]);
+				close(pipefd[i][1]);
+			}
+		}
+		else if (n == len - 1)
+		{
+			if (i < n - 1)
+			{
+				close(pipefd[i][0]);
+				close(pipefd[i][1]);
+			}
+		}
+		i++;
+	}
+}
+
+void	ft_fd_table_pipe(int len, int n, int **pipefd)
+{
+	if (n == 0 && len > 1) //pull this condition out
+	{
+		ft_pipe_out(n, pipefd);
+		ft_pipe_close(len, n , pipefd); //put them all out
+	}
+	else if (n > 0 && n < len - 1)
+	{
+		ft_pipe_out(n, pipefd);
+		ft_pipe_in(n, pipefd);
+		ft_pipe_close(len, n, pipefd);
+	}
+	else if (n == len - 1 && len > 1)
+	{
+		ft_pipe_close(len, n, pipefd);
+		ft_pipe_in(n, pipefd);
+	}
 }
 
 /*
@@ -150,14 +199,13 @@ void	ft_fd_table_pipe(int *fd_pipe, bool first_command, bool last_command)
 ** Parent may write to subprocess child_in
 ** Parent may read from subprocess child_out
 */
-void	ft_fd_table_parent(int *child_in, int *child_out, t_subprocess *p)
+void	ft_fd_table_parent(int *child_in, int *child_out)
 {
 	close (child_in[0]);
 	close (child_out[1]);
-	p->fd_to_child = child_in[1];
-	p->fd_from_child = child_out[0];
-	// printf("parent - to child: %d\n", child_in[1]); //temp
-	// printf("parent - from child: %d\n", child_in[0]); //temp
+	// p->fd_to_child = child_in[1];
+	// p->fd_from_child = child_out[0];
+	ft_mod_fd(child_out[0], 0);
 }
 
 /*
@@ -196,83 +244,115 @@ void	ft_parent(char *argv[], t_subprocess *p)
 	ft_getnextline(p); //for display functions
 }
 
+void	ft_execute_sample()
+{
+	int y;
+	read(0, &y, sizeof(int));
+	y += 5;
+	write(1, &y, sizeof(int));
+}
+
 void	ft_execute4(t_commands *cmds)
 {
-	int	i;
-	bool is_first_cmd;
-	bool is_last_cmd;
-	t_cmd	commands;
-
-	t_subprocess p;
-	char	**args;
-	// int		std_fd[2];
 	int		child_in[2];
 	int		child_out[2];
-	int		fd_pipe[2];
+	int		**pipefd;
+	int		i;
 	pid_t	pid;
 
-	// ft_store_fd(std_fd[0], 0);
-	// ft_store_fd(std_fd[1], 1); //haven't used it
+	t_cmd	commands;
+	t_subprocess p;
+	char	**args;
+	
 	ft_make_pipe(child_in);
 	ft_make_pipe(child_out);
-	// ft_make_pipe(fd_pipe);
-	//set redirections here
-
-	is_first_cmd = true;
-	is_last_cmd = false;
+	if (cmds->len > 1)
+	{
+		pipefd = (int **)malloc(sizeof(int *) * (cmds->len - 1));
+		if (!pipefd)
+		{
+			perror("pipefd ** fail");
+			exit(1);
+		}
+		i = 0;
+		while (i < cmds->len - 1)
+		{
+			pipefd[i] = (int *)malloc(sizeof(int));
+			if (!pipefd[i])
+			{
+				perror("pipefd * fail");
+				exit (1);
+			}
+			ft_make_pipe(pipefd[i]);
+			i++;
+		}
+	}
 	i = 0;
 	while(i < cmds->len)
 	{
-
-		if (i != 0)
-			is_first_cmd = false;
-		if (i == cmds->len - 1)
-			is_last_cmd = true;
 		commands = cmds->commands[i];
 		args = commands.args;
-
-		// ft_make_pipe(child_in);
-		// ft_make_pipe(child_out);
-		// ft_make_pipe(fd_pipe);
-
 		pid = fork();
 		if (pid == -1)	
 		{
 			perror("Could not create fork");
 			exit (1);
 		}
-		if (!is_last_cmd)
-			ft_make_pipe(fd_pipe);
-		if (pid == 0) //child process
+		if (pid == 0)
 		{
 			ft_fd_table_child(child_in, child_out);
-			ft_fd_table_redir_in(commands, fd_pipe[0], is_last_cmd, child_in); //changed is_last_cmd
-			ft_fd_table_redir_out(commands, fd_pipe[1], is_last_cmd, child_out);
-		// 	// if (commands.input || commands.output) //this is fine
-		// 		// ft_fd_table_redir(commands);
-		// 	// ft_fd_table_pipe(fd_pipe, first_command, last_command); //doesn't work
-		// 	// if (is_last_cmd)
-		// 		// printf("last out fd: %d\n", child_out[1]);
+			// ft_fd_table_redir_in(commands, fd_pipe[i - 1]);
+			// ft_fd_table_redir_out(commands, fd_pipe[i]);
+			ft_fd_table_pipe(cmds->len, i, pipefd);
 			char *envp[] = {NULL};
+			// close (0);
 			execve(args[0], args, envp);
+			// ft_execute_sample();
 			printf("command not found: %s\n", args[0]);
+			return ; 
 		}
-		else
-		{
-			ft_fd_table_parent(child_in, child_out, &p);
-			p.pid = pid;
-			ft_parent(args, &p);
-		// 	//create close fd functions
-		}
-
-
 		i++;
 	}
+	int tmpin = dup(0);
+	ft_fd_table_parent(child_in, child_out);
 
+	// int y = 10;
+	// write(child_in[1], &y, sizeof(int));
+	// read(0, &y, sizeof(int));
+	// close(0);
+	// printf("final x: %d\n", y);
 
-
-
-
+	char	*line;
+	int		ret;
+	
+	ret = get_next_line(0, &line);
+	while (ret > 0)
+	{
+		printf("Parent read: %s\n", line);
+		free(line);
+		ret = get_next_line(0, &line);
+	}
+	free(line);
+	if (ret == -1)
+	{
+		printf("Fail to get_next_line\n");
+		exit(1);
+	}
+	ft_mod_fd(tmpin, 0);
+	waitpid(pid, NULL, 0);
+	i = 0;
+	while (i < cmds->len - 1)
+	{
+		close(pipefd[i][0]);
+		close(pipefd[i][1]);
+		free(pipefd[i]);
+		i++;
+	}
+	if (cmds->len > 1)
+		free(pipefd);
+	close (child_in[1]);
+	// p.pid = pid;
+	// ft_parent(args, &p);
 }
 
 /*

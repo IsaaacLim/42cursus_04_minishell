@@ -59,6 +59,7 @@ void	ft_execute2(t_commands *cmds)
 
 	for (int i = 0; i < cmds->len; i++)
 	{
+
 		if (cmds->commands[i].input == in)
 		{
 			fdin = open(cmds->commands[i].infile, O_RDONLY | O_CLOEXEC, 0777);
