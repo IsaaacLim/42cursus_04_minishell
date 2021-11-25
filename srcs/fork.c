@@ -256,7 +256,7 @@ void	ft_execute3(t_commands *cmds)
 	child_in[0] = dup(tmpin);
 
 	int fdpipe[2];
-	pipe(fdpipe);
+	// pipe(fdpipe);
 
 	int	ret;
 	for (int i = 0; i < cmds->len; i++)
@@ -284,6 +284,8 @@ void	ft_execute3(t_commands *cmds)
 		}
 		else
 		{
+			pipe(fdpipe);
+			printf("child %d pipe in: %d out %d\n", i, fdpipe[0], fdpipe[1]);
 			child_out[1] = fdpipe[1];
 			child_in[0] = fdpipe[0];
 		}
