@@ -35,8 +35,27 @@ void	ft_perror(char *message);
 
 //fork.c
 void	ft_fork(t_cmd commands, t_subprocess *p, bool first_command, bool last_command);
-void	ft_execute3(t_commands *cmds); //temporary
-void	ft_execute4(t_commands *cmds); //temporary
+
+/* --- execute --- */
+//execute_utils.c
+void	ft_dup2(int oldfd, int newfd);
+void	ft_create_pipe(int fd[2]);
+int	**ft_pipefd(int cmds_len);
+
+//ft_execute.c
+void	ft_execute(t_commands cmds);
+
+//redir_utils.c
+void	ft_pipe_out(int n, int **pipefd);
+void	ft_pipe_in(int n, int **pipefd);
+void	ft_pipe_close(int len, int n, int **pipefd);
+
+//redir.c
+void	ft_redir_in(t_cmd commands);
+void	ft_redir_out(t_cmd commands);
+void	ft_redir_pipe(int len, int n, int **pipefd);
+
+
 
 // parser.c
 void	read_str(char *str, t_commands **commands);

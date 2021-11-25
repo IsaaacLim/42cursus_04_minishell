@@ -3,31 +3,6 @@
 #include "get_next_line.h"
 
 /*
-** Forks for child process to run execve for each commands
-*/
-// void	ft_execute(t_commands *cmds)
-// {
-// 	int				i;
-// 	t_subprocess	p;
-// 	bool			first_command;
-// 	bool			last_command;
-
-// 	// print_commands(cmds); //test
-// 	first_command = true;
-// 	last_command = false;
-// 	i = 0;
-// 	while (i < cmds->len)
-// 	{
-// 		if (i != 0)
-// 			first_command = false;
-// 		if (i == cmds->len - 1)
-// 			last_command = true;
-// 		ft_fork(cmds->commands[i], &p, first_command, last_command);
-// 		i++;
-// 	}
-// }
-
-/*
 ** Sample from purdue.edu pdf on pipes
 **
 ** Set before forking child
@@ -148,10 +123,8 @@ int	main(int argc, char *argv[], char *envp[])
 		else if (ft_strlen(init.input) > 0)
 		{
 			read_str(init.input, &commands);
-			// ft_execute(commands);
 			// ft_execute2(commands);
-			// ft_execute3(commands);
-			ft_execute4(commands);
+			ft_execute(*commands);
 			free_commands(commands);
 		}
 		free(init.input);
