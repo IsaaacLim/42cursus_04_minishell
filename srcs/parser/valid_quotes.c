@@ -8,6 +8,24 @@
 #include "environment.h"
 #include "libft.h"
 
+void ft_free_double_arr(char **arr)
+{
+	int i;
+
+	if (!arr)
+		return;
+	i = 0;
+	while (arr[i])
+		i++;
+	while (--i >= 0)
+	{
+		ft_bzero(arr[i], ft_strlen(arr[i]));
+		free(arr[i]);
+	}
+	free(arr);
+	return;
+}
+
 /*
 	TO DO
 	0 replace strlen and calloc with libft functions
@@ -44,7 +62,7 @@ void replace_quotes(char *str, char rep_to)
 	while (*str)
 	{
 		if (*str == '\'' || *str == '\"')
-			*str = ' ';
+			*str = rep_to;
 		str++;
 	}
 }
@@ -53,7 +71,7 @@ void replace_quotes(char *str, char rep_to)
 	Performs 2 things
 	1. Replaces char with
 */
-void replace_char(char *str, char *track, char rep_to)
+void replace_char(char **str_arr, char *str, char *track, char rep_to)
 {
 	int i;
 
@@ -62,6 +80,37 @@ void replace_char(char *str, char *track, char rep_to)
 	{
 		if (track[i])
 			str[i] = rep_to;
+		i++;
+	}
+}
+
+/*
+	Assumes that ft_split will mainly use ' ' spaces for delimiting and splitting
+
+*/
+void replace_char2(char **str_arr, char *str, char *track, char rep_to)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		// printf("%i %c\n", str[i], str[i]);
+		if (str[i] != ' ')
+		{
+			printf("%i %i\n", (*str_arr)[j], str[i]);
+			if (track[i] == 1)
+				(*str_arr)[j] = rep_to;
+			// need to increment whenever a != ' ' is found
+			j++;
+			if ((*str_arr)[j] == '\0')
+			{
+				str_arr++;
+				j = 0;
+			}
+		}
 		i++;
 	}
 }
@@ -172,15 +221,16 @@ char *update_env(char *str, t_list **env, int tot_len)
 	return (tmp);
 }
 
-int main2(int argc, char *argv[])
+int main2(void)
 {
-	char str[] = "\"echo\"\'";
+	char str[] = "\"echo\"";
 	// need to calloc
 	char *track = calloc(strlen(str), sizeof(char));
 
 	if (valid_quotes(str, track, ' ', -1))
 	{
-		replace_char(str, track, ' ');
+		replace_char(NULL, str, track, ' ');
+		replace_quotes(str, ' ');
 		printf("%s\n", str);
 	}
 	// remember to free
@@ -188,7 +238,38 @@ int main2(int argc, char *argv[])
 	return (0);
 }
 
-int main(int argc, char *argv[], char *envp[])
+int main3()
+{
+	char str[] = "Hi \"  world\"";
+	char **str_arr;
+	// need to calloc
+	char *track = calloc(strlen(str), sizeof(char));
+
+	if (valid_quotes(str, track, ' ', -1))
+	{
+		replace_quotes(str, ' ');
+
+		int i = 0;
+		// while (str[i])
+		// {
+		// 	printf("%i\n", str[i++]);
+		// }
+		// ft_split
+		str_arr = ft_split(str, ' ');
+
+		replace_char2(str_arr, str, track, ' ');
+
+		char **tmp = str_arr;
+		while (*tmp)
+			printf("%s\n", *tmp++);
+		ft_free_double_arr(str_arr);
+	}
+	// remember to free
+	free(track);
+	return (0);
+}
+
+int main4(int argc, char *argv[], char *envp[])
 {
 	t_list *env = initialise_env(envp);
 	// print_env(env);
@@ -210,4 +291,9 @@ int main(int argc, char *argv[], char *envp[])
 		printf("%s\n", str);
 	ft_lstclear(&env, free_envar);
 	return (0);
+}
+
+int main(int argc, char *argv[], char *envp[])
+{
+	main3();
 }
