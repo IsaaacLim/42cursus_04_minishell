@@ -6,6 +6,7 @@
 
 #include "minishell.h"
 #include "environment.h"
+#include "libft.h"
 
 /*
 	TO DO
@@ -71,20 +72,24 @@ void replace_char(char *str, char *track, char rep_to)
 	- checked for replacement 
 
 	Add condition to confirm that no environment variables noted
+
+	Returns -1 if no changes are required to be made
 */
-int	check_env(char *str, t_list **env)
+int check_env(char *str, t_list **env)
 {
 	int tot_len;
 	int env_len;
 	char *ptr;
 	t_list *found;
+	bool to_update;
 	t_envar *envar;
 	char c;
 
 	tot_len = 0;
+	to_update = false;
 	while (*str)
 	{
-		if (*str == '$' && *(str + 1) != ' ' && *(str + 1))
+		if (*str == '$' && *(str + 1) != ' ' && *(str + 1) != '$' && *(str + 1))
 		{
 			// printf("Why not working here %c\n", str[i]);
 			ptr = str + 1;
@@ -94,6 +99,8 @@ int	check_env(char *str, t_list **env)
 				env_len++;
 			c = ptr[env_len];
 			ptr[env_len] = '\0';
+			// need this to return whether to malloc a new string or not
+			to_update = true;
 			found = found_env(env, NULL, ptr, INT_MAX);
 			if (found)
 			{
@@ -111,6 +118,8 @@ int	check_env(char *str, t_list **env)
 		}
 		str++;
 	}
+	if (!to_update)
+		return (-1);
 	return (tot_len);
 }
 
@@ -134,7 +143,7 @@ char *update_env(char *str, t_list **env, int tot_len)
 	i = 0;
 	while (*str)
 	{
-		if (*str == '$' && *(str + 1) != ' ' && *(str + 1))
+		if (*str == '$' && *(str + 1) != ' ' && *(str + 1) != '$' && *(str + 1))
 		{
 			ptr = str + 1;
 			env_len = 0;
@@ -184,9 +193,21 @@ int main(int argc, char *argv[], char *envp[])
 	t_list *env = initialise_env(envp);
 	// print_env(env);
 	// printf("\n\n");
-	char str[] = "HI $HELLO $PATH";
+	char str[] = "HI $w$w OLDPWD";
+	char *tmp;
+	int len = check_env(str, &env);
 
-	printf("%i\n", check_env(str, &env));
-	printf("%s\n", update_env(str, &env, check_env(str, &env)));
+	// Make sure clearing is done properly here
+	if (len != -1)
+		tmp = update_env(str, &env, check_env(str, &env));
+	printf("%i\n", len);
+	if (len != -1)
+	{
+		printf("%s\n", tmp);
+		free(tmp);
+	}
+	else
+		printf("%s\n", str);
+	ft_lstclear(&env, free_envar);
 	return (0);
 }
