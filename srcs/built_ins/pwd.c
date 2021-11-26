@@ -9,5 +9,9 @@ int	main(int argc, char *argv[])
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
+	{
 		perror("pwd error");
+		return (1);
+	}
+	return (0);
 }
