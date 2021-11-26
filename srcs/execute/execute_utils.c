@@ -33,7 +33,7 @@ int	**ft_pipefd(int cmds_len)
 	i = 0;
 	while (i < cmds_len - 1)
 	{
-		pipefd[i] = (int *)malloc(sizeof(int));
+		pipefd[i] = (int *)malloc(sizeof(int) * 2);
 		if (!pipefd[i])
 		{
 			perror("pipefd * fail");
@@ -42,4 +42,5 @@ int	**ft_pipefd(int cmds_len)
 		ft_create_pipe(pipefd[i]);
 		i++;
 	}
+	return (pipefd);
 }
