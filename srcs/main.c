@@ -123,8 +123,8 @@ int	main(int argc, char *argv[], char *envp[])
 		else if (ft_strlen(init.input) > 0)
 		{
 			read_str(init.input, &commands);
-			// ft_execute2(commands);
-			ft_execute(*commands);
+			ft_execute2(commands);
+			// ft_execute(*commands);
 			free_commands(commands);
 		}
 		free(init.input);

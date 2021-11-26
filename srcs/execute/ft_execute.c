@@ -75,6 +75,11 @@ void	ft_parent(pid_t pid)
 	}
 }
 
+/*
+** Has issues:
+**	- commands that requires input when pipe
+**	- invalid command
+*/
 void	ft_execute(t_commands cmds)
 {
 	int		child_in[2];
@@ -84,8 +89,11 @@ void	ft_execute(t_commands cmds)
 	pid_t	pid;
 
 	t_cmd	commands;
-	t_subprocess p;
 	char	**args;
+
+	int		stdfd[2];
+	stdfd[0] = dup(0);
+	stdfd[1] = dup(1);
 	
 	ft_create_pipe(child_in);
 	ft_create_pipe(child_out);
@@ -105,8 +113,8 @@ void	ft_execute(t_commands cmds)
 		if (pid == 0)
 		{
 			ft_fd_table_child(child_in, child_out);
-			// ft_redir_in(commands);
-			// ft_redir_out(commands);
+			ft_redir_in(commands, stdfd);
+			ft_redir_out(commands);
 			ft_redir_pipe(cmds.len, i, pipefd);
 			char *envp[] = {NULL};
 			// close (0);
@@ -117,11 +125,10 @@ void	ft_execute(t_commands cmds)
 		}
 		i++;
 	}
-	int tmpin = dup(0);
 	ft_fd_table_parent(child_in, child_out);
 	ft_parent(pid);
 	// ft_execute_sample_parent(child_in);
-	ft_dup2(tmpin, 0);
+	ft_dup2(stdfd[0], 0);
 	i = 0;
 	while (i < cmds.len - 1)
 	{

@@ -21,7 +21,7 @@ typedef struct	s_process
 	t_list	*env;
 }	t_process;
 
-typedef struct	s_subprocess
+typedef struct	s_subprocess //remove
 {
 	pid_t pid;
 	int fd_to_child;
@@ -46,12 +46,14 @@ int	**ft_pipefd(int cmds_len);
 void	ft_execute(t_commands cmds);
 
 //redir_utils.c
+int		ft_heredoc(char *infile, int stdfd[2]);
 void	ft_pipe_out(int n, int **pipefd);
 void	ft_pipe_in(int n, int **pipefd);
 void	ft_pipe_close(int len, int n, int **pipefd);
 
+
 //redir.c
-void	ft_redir_in(t_cmd commands);
+void	ft_redir_in(t_cmd commands, int stdfd[2]);
 void	ft_redir_out(t_cmd commands);
 void	ft_redir_pipe(int len, int n, int **pipefd);
 
