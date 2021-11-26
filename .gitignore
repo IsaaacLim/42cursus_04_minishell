@@ -10,6 +10,7 @@ srcs/built_ins/*
 # Temp
 testing-isaac/*
 !testing-isaac/*.c
+!testing-isaac/execute
 echo
 cat
 grep
