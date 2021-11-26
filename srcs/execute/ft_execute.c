@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "environment.h"
 
 /*
 ** Child process execute commands
@@ -17,16 +18,19 @@ static void	ft_child_process(char **args, char **envp)
 ** Wait for child process (only last) to complete
 ** Stores the exit status of the last command
 */
-static void	ft_parent_process(int fdstd[2], int pid, char **envp)
+static void	ft_parent_process(int fdstd[2], int pid, char **envp, t_list *env)
 {
 	int child_status;
-	int	exit_status;
+	char exit_status;
 
 	ft_dup2(fdstd[0], 0);
 	ft_dup2(fdstd[1], 1);
 	waitpid(pid, &child_status, 0);
-	exit_status = WEXITSTATUS(child_status); //store to init env
-	printf("$?: %d\n", exit_status);
+	exit_status = WEXITSTATUS(child_status);
+	if (exit_status == 0)
+		export_add(&env, "EXIT=0");
+	else
+		export_add(&env, "EXIT=1");
 	ft_free_double_arr(envp);
 }
 
@@ -59,5 +63,5 @@ void	ft_execute(t_commands cmds, t_list *env)
 		if (pid == 0)
 			ft_child_process(cmds.commands[i].args, envp);
 	}
-	ft_parent_process(fdstd, pid, envp);
+	ft_parent_process(fdstd, pid, envp, env);
 }
