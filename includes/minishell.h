@@ -21,44 +21,21 @@ typedef struct	s_process
 	t_list	*env;
 }	t_process;
 
-typedef struct	s_subprocess //remove
-{
-	pid_t pid;
-	int fd_to_child;
-	int fd_from_child;
-} t_subprocess;
-
 //error.c
 void	ft_error(char *message);
 void	ft_perror(char *message);
 
-
-//fork.c
-void	ft_fork(t_cmd commands, t_subprocess *p, bool first_command, bool last_command);
-
-/* --- execute --- */
 // execute_utils.c
 char	**ft_get_envp(t_list *env);
 void	ft_dup2(int oldfd, int newfd);
-// void	ft_create_pipe(int fd[2]);
-// int	**ft_pipefd(int cmds_len);
 
 //ft_execute.c
 void	ft_execute(t_commands cmds, t_list *env);
 
-//redir_utils.c
-// int		ft_heredoc(char *infile, int stdfd[2]);
-// void	ft_pipe_out(int n, int **pipefd);
-// void	ft_pipe_in(int n, int **pipefd);
-// void	ft_pipe_close(int len, int n, int **pipefd);
-
-
-//redir.c
-// void	ft_redir_in(t_cmd commands, int stdfd[2]);
-// void	ft_redir_out(t_cmd commands);
-// void	ft_redir_pipe(int len, int n, int **pipefd);
-
-
+//redirection.c
+void	ft_redir_in(t_cmd commands, int *fdin);
+void	ft_redir_out(t_cmd commands, int *fdout, int stdout);
+void	ft_redir_pipe(int fdnew[2], int fdpipe[2]);
 
 // parser.c
 void	read_str(char *str, t_commands **commands);

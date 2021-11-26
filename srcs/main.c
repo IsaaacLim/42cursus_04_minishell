@@ -1,6 +1,5 @@
 #include "minishell.h"
 #include "environment.h"
-#include "get_next_line.h"
 
 /*
 ** Readline
