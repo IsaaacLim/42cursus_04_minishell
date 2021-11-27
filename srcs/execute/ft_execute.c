@@ -1,12 +1,19 @@
 #include "minishell.h"
 #include "environment.h"
 
+void	ft_sigint_child()
+{
+	printf("I'm a child\n");
+}
+
 /*
 ** Child process execute commands
 ** If invalid command, return 1 to parent
 */
 static void	ft_child_process(char **args, char **envp)
 {
+	// while (1)
+		// signal(SIGINT, ft_sigint_child);
 	execve(args[0], args, envp);
 	printf("command not found: %s\n", args[0]);
 	exit (1);
@@ -25,6 +32,8 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp, t_list *env)
 
 	ft_dup2(fdstd[0], 0);
 	ft_dup2(fdstd[1], 1);
+	sleep(1);
+	// kill(pid, SIGKILL);
 	waitpid(pid, &child_status, 0);
 	exit_status = WEXITSTATUS(child_status);
 	if (exit_status == 0)

@@ -3,7 +3,8 @@
 
 void	ft_exit(t_process *init)
 {
-	free(init->input);
+	if (init->input != NULL)
+		free(init->input);
 	ft_free_double_arr(init->processes);
 	ft_lstclear(&init->env, free_envar);
 	//rl_clear_history(); implicit declaration of function
