@@ -1,10 +1,30 @@
 #include "minishell.h"
 #include "get_next_line.h"
 
-void	ft_ignore()
+#include <termios.h>
+
+/*
+** display value of EOF character with term1.c_cc[VEOF]
+*/
+static void	ft_sig_ignore_EOF(bool ignore)
 {
-	return ;
+	struct termios term1;
+
+	if (tcgetattr(STDIN_FILENO, &term1) != 0)
+		perror("tcgetattr error");
+	else
+	{
+		if (ignore)
+			term1.c_cc[VEOF] = 0;
+		else
+			term1.c_cc[VEOF] = 04;
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
+			perror("tcsetattr() error");
+		if (tcgetattr(STDIN_FILENO, &term1) != 0)
+			perror("tcgetattr() error");
+	}
 }
+
 /*
 ** HEREDOC
 ** Read input (get_next_line) from STDIN
@@ -17,8 +37,8 @@ static void	ft_heredoc(char *infile, int *fdin)
 	int		ret;
 	int		fdtemp[2];
 
-	signal(SIGQUIT, SIG_IGN);
-	// signal(SIGQUIT, ft_ignore);
+	ft_sig_ignore_EOF(true);
+	signal(SIGINT, SIG_IGN);
 	pipe(fdtemp);
 	write(1, "heredoc> ", 9);
 	ret = get_next_line(0, &line);
@@ -35,6 +55,8 @@ static void	ft_heredoc(char *infile, int *fdin)
 	free(line);
 	*fdin = fdtemp[0];
 	close(fdtemp[1]);
+	ft_sig_ignore_EOF(false);
+	signal(SIGINT, ft_sig_handler);
 }
 
 void	ft_redir_in(t_cmd commands, int *fdin)
