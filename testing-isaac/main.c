@@ -52,17 +52,17 @@ void	ft_readline()
 {
 	char	*inpt;
 
-	while (1)
-	{
-		inpt = readline("Enter text: ");
-		if(strlen(inpt) > 0)
-			add_history(inpt);
-		if (!strcmp(inpt, "exit"))
-			exit(0);
-		else if(!strcmp(inpt, "ls"))
-			system("ls");
-		free(inpt);
-	}
+	// while (1)
+	// {
+	// 	inpt = readline("Enter text: ");
+	// 	if(strlen(inpt) > 0)
+	// 		add_history(inpt);
+	// 	if (!strcmp(inpt, "exit"))
+	// 		exit(0);
+	// 	else if(!strcmp(inpt, "ls"))
+	// 		system("ls");
+	// 	free(inpt);
+	// }
 }
 
 void	ft_getpath()
@@ -243,6 +243,41 @@ void	ft_getenv(void)
 	printf("env: %s\n", env);
 }
 
+// #define _POSIX_C_SOURCE
+#include <termios.h>
+void	ft_tcgetattr(void)
+{
+	struct termios term1;
+
+	if (tcgetattr(STDIN_FILENO, &term1) != 0)
+		perror("tcgetattr error");
+	else{
+		printf("the original end-of-file character is x '%02x'\n", term1.c_cc[VEOF]);
+		term1.c_cc[VEOF] = 04;
+		term1.c_cc[VEOF] = 'd';
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
+			perror("tcsetattr() error");
+		if (tcgetattr(STDIN_FILENO, &term1) != 0)
+			perror("tcgetattr() error");
+		else
+			printf("the new end-of-file character is x '%02x'\n", term1.c_cc[VEOF]);
+	}
+}
+
+void	ft_tty_for_stdin_check(void)
+{
+	int v;
+
+	if (!isatty(STDIN_FILENO))
+		scanf("%d", &v);
+	else
+	{
+		printf("no file forwarded\n");
+		return ;
+	}
+	printf("got %d\n", v);
+}
+
 int	main()
 {
 	signal(SIGINT, ft_sigint);	//ctrl - C
@@ -259,5 +294,7 @@ int	main()
 	// ft_dup();
 	// ft_pipe(); //got issues with 2 way communication
 	// ft_dir();
-	ft_getenv();
+	// ft_getenv();
+	// ft_tcgetattr();
+	ft_tty_for_stdin_check();
 }
