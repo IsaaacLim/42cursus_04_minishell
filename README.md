@@ -35,3 +35,8 @@
 
 - (unused) https://jameshfisher.com/2017/02/17/how-do-i-call-a-program-in-c-with-pipes/
 - (used) https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+
+2. Signals:
+
+- (ctrl-D / EOF) https://unix.stackexchange.com/questions/110240/why-does-ctrl-d-eof-exit-the-shell
+- handling EOF https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-tcsetattr-set-attributes-terminal#:~:text=FeedbackProduct%20list-,tcsetattr()%20%E2%80%94%20Set%20the%20attributes%20for%20a%20terminal,-Standards
