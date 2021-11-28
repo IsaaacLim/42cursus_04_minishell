@@ -12,8 +12,7 @@ void	ft_sigint_child()
 */
 static void	ft_child_process(char **args, char **envp)
 {
-	// while (1)
-		// signal(SIGINT, ft_sigint_child);
+	signal(SIGQUIT, SIG_DFL);
 	execve(args[0], args, envp);
 	printf("command not found: %s\n", args[0]);
 	exit (1);
@@ -32,8 +31,6 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp, t_list *env)
 
 	ft_dup2(fdstd[0], 0);
 	ft_dup2(fdstd[1], 1);
-	sleep(1);
-	// kill(pid, SIGKILL);
 	waitpid(pid, &child_status, 0);
 	exit_status = WEXITSTATUS(child_status);
 	if (exit_status == 0)
@@ -62,6 +59,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 	fdnew[0] = dup(fdstd[0]);
 	for (int i = 0; i < cmds.len; i++)
 	{
+		// signal(SIGINT, ft_sigint_child);
 		ft_redir_in(cmds.commands[i], &fdnew[0]);
 		if (i == cmds.len - 1)
 			ft_redir_out(cmds.commands[i], &fdnew[1], fdstd[1]);

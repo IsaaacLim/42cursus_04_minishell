@@ -1,6 +1,10 @@
 #include "minishell.h"
 #include "get_next_line.h"
 
+void	ft_ignore()
+{
+	return ;
+}
 /*
 ** HEREDOC
 ** Read input (get_next_line) from STDIN
@@ -13,6 +17,8 @@ static void	ft_heredoc(char *infile, int *fdin)
 	int		ret;
 	int		fdtemp[2];
 
+	signal(SIGQUIT, SIG_IGN);
+	// signal(SIGQUIT, ft_ignore);
 	pipe(fdtemp);
 	write(1, "heredoc> ", 9);
 	ret = get_next_line(0, &line);
