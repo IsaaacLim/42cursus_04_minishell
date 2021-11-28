@@ -5,13 +5,10 @@ t_process	g_init;
 
 void	ft_signint()
 {
-	printf("Sigint with C parent\n");
-	ft_exit (&g_init);
-}
-
-void	ft_sigquit()
-{
-	// printf("Sigquit with \\\n");
+	rl_replace_line("", 0);
+	printf("\n");
+	rl_on_new_line();
+	rl_redisplay();
 	return ;
 }
 
@@ -29,7 +26,12 @@ int	main(int argc, char *argv[], char *envp[])
 	g_init.processes = arr_process();
 	while (1)
 	{
-		g_init.input = readline("Enter text: ");
+		g_init.input = readline("minishell> ");
+		if (g_init.input == NULL)
+		{
+			printf("exit\n");
+			ft_exit(&g_init);
+		}
 		if (ft_strlen(g_init.input) == 0)
 			continue ;
 		add_history(g_init.input);
