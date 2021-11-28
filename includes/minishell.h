@@ -54,4 +54,7 @@ void	ft_free_double_arr(char **arr);
 int		ft_cd(char **argv);
 void	ft_exit(t_process *init);
 
+//signals
+void ft_sig_handler();
+
 #endif
