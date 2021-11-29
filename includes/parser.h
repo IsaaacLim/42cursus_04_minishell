@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 12:16:31 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/29 18:18:55 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/11/29 23:21:55 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_cmd
     int output;
     char *infile;
     char *outfile;
+    char *quote_type;
 } t_cmd;
 
 // Struct to store array of simple commands
@@ -44,6 +45,7 @@ typedef struct s_commands
 {
     t_cmd *commands;
     int len;
+    char *quote_type;
 } t_commands;
 
 // Utility functions to be used in parser
@@ -56,6 +58,6 @@ bool valid_pipe(char **str_arr);
 char *check_update_env(char *str, t_list **env);
 
 // Enhanced ft_split to consider validity of quotes and splitting according to quotes
-char **ft_split_enhanced(char *str, char c);
+char **ft_split_enhanced(char *str, char c, char **quote_type);
 
 #endif

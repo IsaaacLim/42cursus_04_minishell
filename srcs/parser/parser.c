@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 12:16:40 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/29 18:25:29 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/11/30 01:01:08 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void initialise_singlecmd(t_cmd *cmd)
 	
 	Return NULL if syntax error found
 */
-t_cmd parse_singlecmd(char **str_arr, t_list **env)
+t_cmd parse_singlecmd(char **str_arr, t_list **env, char *quote_type)
 {
 	int i;
 	int j;
@@ -76,8 +76,10 @@ t_cmd parse_singlecmd(char **str_arr, t_list **env)
 			i += 2;
 		else
 		{
-			// (cmd.args)[j++] = ft_strcpy(str_arr[i]);
-			(cmd.args)[j++] = check_update_env(str_arr[i], env);
+			if (quote_type[j] == '\'')
+				(cmd.args)[j++] = ft_strcpy(str_arr[i]);
+			else
+				(cmd.args)[j++] = check_update_env(str_arr[i], env);
 			i++;
 		}
 	}
@@ -115,6 +117,8 @@ void free_commands(t_commands *commands)
 		i++;
 	}
 	free(cmds);
+	// if (commands->quote_type)
+	// 	free(commands->quote_type);
 	free(commands);
 }
 
@@ -123,16 +127,19 @@ t_commands *parse_commands(char *str, t_list **env)
 {
 	char **str_arr;
 	t_commands *commands;
+	char *quote_type;
 	int cmd_len;
 	int i;
 	int j;
 
 	i = 0;
 	j = 0;
-	str_arr = ft_split_enhanced(str, ' ');
+	quote_type = NULL;
+	str_arr = ft_split_enhanced(str, ' ', &quote_type);
 	if (!str_arr || !valid_redirection(str_arr) || !valid_pipe(str_arr))
 	{
 		printf("Syntax error near unexpected token\n");
+		free(quote_type);
 		ft_free_double_arr(str_arr);
 		return (NULL);
 	}
@@ -144,10 +151,11 @@ t_commands *parse_commands(char *str, t_list **env)
 	while (str_arr[i])
 	{
 		if (i == 0 || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0)
-			(commands->commands)[j++] = parse_singlecmd(&str_arr[i], env);
+			(commands->commands)[j++] = parse_singlecmd(&str_arr[i], env, &(quote_type[i]));
 		i++;
 	}
 	ft_free_double_arr(str_arr);
+	free(quote_type);
 	return (commands);
 }
 
