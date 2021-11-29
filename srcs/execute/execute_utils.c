@@ -24,7 +24,7 @@ char	**ft_get_envp(t_list *env)
 	int		i;
 
 	lstsize = ft_lstsize(env);
-	arr = (char **)malloc(sizeof(char *) * lstsize + 1);
+	arr = (char **)malloc(sizeof(char *) * (lstsize + 1));
 	i = 0;
 	while(i < lstsize && env)
 	{

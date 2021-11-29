@@ -86,3 +86,11 @@ Signals
 
 - input `cat` then ctrl+\ or + C returns child_status of 0 ==> EXIT=0
 - heredoc ignores all signals, but character is displayed on screen. Registers as one new line
+
+Exit status
+
+- update every status
+
+Env
+
+- error handling for `env more-commands`

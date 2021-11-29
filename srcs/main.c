@@ -1,8 +1,6 @@
 #include "minishell.h"
 #include "environment.h"
 
-t_process	g_init;
-
 /*
 ** signal(SIGQUIT, SIG_IGN); ignores display but can't update EXIT
 */
@@ -10,7 +8,7 @@ void	ft_sig_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		export_add(&g_init.env, "EXIT=130");
+		g_exit_status = 130;
 		rl_replace_line("", 0);
 		printf("\n");
 		rl_on_new_line();
@@ -18,7 +16,7 @@ void	ft_sig_handler(int signo)
 	}
 	else if (signo == SIGQUIT)
 	{
-		export_add(&g_init.env, "EXIT=131");
+		g_exit_status = 131;
 		printf("%c%c", 8, 8);
 	}
 	return ;
@@ -34,33 +32,33 @@ void	ft_sig_handler(int signo)
 */
 int	main(int argc, char *argv[], char *envp[])
 {
+	t_process	init;
 	t_commands	*commands;
 
 	signal(SIGQUIT, ft_sig_handler);
-	g_init.env = initialise_env(envp);
-	g_init.processes = arr_process();
+	init.env = initialise_env(envp);
 	while (1)
 	{
 		signal(SIGINT, ft_sig_handler);
-		g_init.input = readline("minishell> ");
-		if (g_init.input == NULL)
+		init.input = readline("minishell> ");
+		if (init.input == NULL)
 		{
 			printf("exit\n");
-			ft_exit(&g_init);
+			ft_exit(&init);
 		}
-		if (ft_strlen(g_init.input) == 0)
+		if (ft_strlen(init.input) == 0)
 			continue ;
-		add_history(g_init.input);
-		if (ft_is_process(g_init.input, g_init.processes))
-			ft_process(g_init);
-		else if (ft_strlen(g_init.input) > 0)
+		add_history(init.input);
+		if (ft_is_process(init.input))
+			ft_process(init);
+		else if (ft_strlen(init.input) > 0)
 		{
-			read_str(g_init.input, &commands);
-			ft_execute(*commands, g_init.env);
+			read_str(init.input, &commands);
+			ft_execute(*commands, init.env);
 			free_commands(commands);
 		}
-		g_init.input = NULL;
-		free(g_init.input);
+		init.input = NULL;
+		free(init.input);
 	}
 	// system("leaks minishell");
 }

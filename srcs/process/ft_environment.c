@@ -10,27 +10,27 @@
 **
 ** GOT ISSUE WHEN EXECUTING THIS FUNCTION > ONCE
 */
-int	ft_environment(char *argv[], t_list *env)
+void	ft_environment(char *argv[], t_list *env)
 {
 	char	**envp;
 	int		argc;
+	int		i;
 
 	argc = 0;
 	while (argv[argc])
 		argc++;
-	if (argc == 1)
+	if (argc < 2)
 	{
-		if (!ft_strncmp(argv[0], "env", 4))
-			env_command(env);
-		else if (!ft_strncmp(argv[0], "export", 7))
-			export_command(env);
+		printf("ft_environment: too little arg. Not supposed to reach here\n");
+		return ;
 	}
-	else if (argc == 2)
+	i = 1;
+	while (argc > 1 && argv[i])
 	{
 		if(!ft_strncmp(argv[0], "export", 7))
-			export_add(&env, argv[1]);
+			export_add(&env, argv[i]);
 		else if(!ft_strncmp(argv[0], "unset", 6))
-			unset(&env, argv[1]);
+			unset(&env, argv[i]);
+		i++;
 	}
-	return (0);
 }
