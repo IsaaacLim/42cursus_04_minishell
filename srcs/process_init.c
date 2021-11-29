@@ -60,7 +60,7 @@ bool	ft_is_process(char *input)
 	{
 		if (!ft_strncmp(argv[0], "export", 7) && !argv[1])
 			break;
-		else if (!ft_strncmp(argv[0], process[i], 20))
+		else if (!ft_strncmp(argv[0], process[i], 7))
 			is_process = true;
 	}
 	ft_free_double_arr(argv);

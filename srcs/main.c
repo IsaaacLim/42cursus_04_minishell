@@ -39,7 +39,6 @@ int	main(int argc, char *argv[], char *envp[])
 
 	signal(SIGQUIT, ft_sig_handler);
 	init.env = initialise_env(envp);
-	// init.processes = arr_process();
 	while (1)
 	{
 		signal(SIGINT, ft_sig_handler);
