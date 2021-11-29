@@ -18,7 +18,7 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 		export_command(env);
 	else
 	{
-		execve(args[0], args, envp);
+		ft_execve(args[0], args, envp, env);
 		printf("command not found: %s\n", args[0]);
 		exit (127);
 	}
