@@ -9,14 +9,14 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 {
 	signal(SIGQUIT, SIG_DFL);
 	if (!ft_strncmp(args[0], "env", 4))
-		env_command(env);
+		g_exit_status = ft_display_env(env, args);
 	else if (!ft_strncmp(args[0], "export", 7))
 		export_command(env);
 	else
 	{
 		execve(args[0], args, envp);
 		printf("command not found: %s\n", args[0]);
-		export_add(&env, "EXIT=127"); //not workind for child unless use signal
+		g_exit_status = 127; //not workind for child unless use signal
 	}
 	exit (0);
 }
@@ -37,6 +37,9 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp, t_list *env)
 	ft_dup2(fdstd[1], 1);
 	waitpid(pid, &child_status, 0);
 	exit_status = WEXITSTATUS(child_status);
+	g_exit_status = WIFEXITED(child_status);
+	printf("wife exited: %i\n", g_exit_status);
+	printf("we exited: %d\n", exit_status);
 	if (exit_status == 0)
 		export_add(&env, "EXIT=0");
 	else

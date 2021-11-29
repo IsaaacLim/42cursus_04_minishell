@@ -23,7 +23,8 @@ void print_env(t_list *env);
 t_list *found_env(t_list **env, t_list **prev, char *env_str, int search_len);
 
 // Commands
-void env_command(t_list *env);
+// void env_command(t_list *env); //use ft_display_env
+int	ft_display_env(t_list *env, char **args);
 void unset(t_list **env, char *env_str);
 void export_command(t_list *env);
 void export_add(t_list **env, char *env_str);
