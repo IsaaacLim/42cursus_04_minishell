@@ -10,13 +10,14 @@ void	ft_exit(t_process *init)
 	exit (0);
 }
 
-void	ft_eval_exit(t_process init, char **argv)
+void	ft_eval_exit(t_process init, t_commands *cmds)
 {
-	int	argc;
+	char	**last_argv;
+	int		argc;
 
+	last_argv = cmds->commands[cmds->len - 1].args;
 	argc = 1;
-	// printf("%s\n", argv[argc]);
-	while (argv[argc])
+	while (last_argv[argc])
 		argc++;
 	if (argc > 2)
 	{
@@ -25,9 +26,9 @@ void	ft_eval_exit(t_process init, char **argv)
 		return ;
 	}
 	else if(argc == 2)
-		g_exit_status = ft_atoi(argv[1]);
+		g_exit_status = ft_atoi(last_argv[1]);
 	else
 		g_exit_status = 0;
-	ft_free_double_arr(argv);
+	free_commands(cmds);
 	ft_exit(&init);
 }

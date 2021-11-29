@@ -46,9 +46,8 @@ void free_commands(t_commands *commands);
 void print_commands(t_commands *cmds); //temp
 
 // process_init.c
-// char	**arr_process(void);
-void	ft_process(t_process init);
-bool	ft_is_process(char *input);
+void	ft_process(t_commands *cmds, t_process init);
+bool	ft_is_process(t_commands cmds);
 
 //utils.c
 void	ft_free_double_arr(char **arr);
@@ -56,7 +55,7 @@ void	ft_free_double_arr(char **arr);
 // process functions
 int		ft_cd(char **argv);
 void	ft_exit(t_process *init);
-void	ft_eval_exit(t_process init, char **argv);
+void	ft_eval_exit(t_process init, t_commands *cmds);
 
 
 //signals

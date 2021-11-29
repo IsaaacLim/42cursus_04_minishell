@@ -44,14 +44,12 @@ int	main(int argc, char *argv[], char *envp[])
 		if (ft_strlen(init.input) == 0)
 			continue ;
 		add_history(init.input);
-		if (ft_is_process(init.input))
-			ft_process(init);
+		read_str(init.input, &commands);
+		if (ft_is_process(*commands))
+			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)
-		{
-			read_str(init.input, &commands);
 			ft_execute(*commands, init.env);
-			free_commands(commands);
-		}
+		free_commands(commands);
 		init.input = NULL;
 		free(init.input);
 	}
