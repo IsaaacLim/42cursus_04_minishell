@@ -40,15 +40,14 @@ static void	ft_heredoc(char *infile, int *fdin)
 	ft_sig_ignore_EOF(true);
 	signal(SIGINT, SIG_IGN);
 	pipe(fdtemp);
-	write(1, "heredoc> ", 9);
+	ft_putstr_fd("heredoc> ", 1);
 	ret = get_next_line(0, &line);
 	while (ret > 0)
 	{
 		if (!ft_strncmp(line, infile, ft_strlen(infile) + 1))
 			break ;
-		write(1, "heredoc> ", 9);
-		write(fdtemp[1], line, ft_strlen(line));
-		write(fdtemp[1], "\n", 1);
+		ft_putstr_fd("heredoc> ", 1);
+		ft_putendl_fd(line, fdtemp[1]);
 		free(line);
 		ret = get_next_line(0, &line);
 	}

@@ -14,11 +14,6 @@ void	ft_sig_handler(int signo)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (signo == SIGQUIT)
-	{
-		g_exit_status = 131;
-		printf("%c%c", 8, 8);
-	}
 	return ;
 }
 
@@ -49,16 +44,15 @@ int	main(int argc, char *argv[], char *envp[])
 		if (ft_strlen(init.input) == 0)
 			continue ;
 		add_history(init.input);
-		if (ft_is_process(init.input))
-			ft_process(init);
+		read_str(init.input, &commands, &init.env);
+		if (ft_is_process(*commands))
+			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)
-		{
-			read_str(init.input, &commands, &init.env);
 			ft_execute(*commands, init.env);
-			free_commands(commands);
-		}
+		free_commands(commands);
 		init.input = NULL;
 		free(init.input);
+		printf("$?: %d\n", g_exit_status);
 	}
 	// system("leaks minishell");
 }
