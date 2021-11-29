@@ -41,7 +41,7 @@ void	ft_redir_out(t_cmd commands, int *fdout, int stdout);
 void	ft_redir_pipe(int fdnew[2], int fdpipe[2]);
 
 // parser.c
-void	read_str(char *str, t_commands **commands);
+void	read_str(char *str, t_commands **commands, t_list **env);
 void free_commands(t_commands *commands);
 void print_commands(t_commands *cmds); //temp
 

@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 12:16:31 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/29 15:43:49 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/11/29 18:18:55 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,6 @@ bool valid_pipe(char **str_arr);
 char *check_update_env(char *str, t_list **env);
 
 // Enhanced ft_split to consider validity of quotes and splitting according to quotes
-char **ft_split_enhanced(char *str);
+char **ft_split_enhanced(char *str, char c);
 
 #endif
