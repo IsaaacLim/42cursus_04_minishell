@@ -6,7 +6,7 @@ SRCS_LST	=	error.c			${PARSER_LST}	main.c		\
 				process_init.c	utils.c
 
 EXEC_DIR	=	execute/
-EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
+EXEC_LST	=	ft_execute.c	execute_utils.c		ft_execute_paths.c	redirection.c
 EXEC		=	$(addprefix $(EXEC_DIR), $(EXEC_LST))
 
 PROCS_DIR	=	process/

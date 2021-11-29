@@ -12,24 +12,24 @@
 
 int main(int argc, char *argv[])
 {
-	int		i;
-	bool	nl;
+    int i;
+    bool nl;
 
-	i = 1;
-	nl = true;
-	if (argc >= 2 && argv[1][0] == '-' && argv[1][1] == 'n')
-	{
-		i = 2;
-		nl = false;
-	}
-	while (i < argc)
-	{
-		if (nl && i > 1 || !nl && i > 2)
-			printf(" ");
-		printf("%s", argv[i]);
-		i++;
-	}
-	if (nl)
-		printf("\n");
-	return (0);
+    i = 1;
+    nl = true;
+    if (argc >= 2 && argv[1][0] == '-' && argv[1][1] == 'n')
+    {
+        i = 2;
+        nl = false;
+    }
+    while (i < argc)
+    {
+        if (nl && i > 1 || !nl && i > 2)
+            printf(" ");
+        printf("%s", argv[i]);
+        i++;
+    }
+    if (nl)
+        printf("\n");
+    return (0);
 }

@@ -34,6 +34,8 @@ void	ft_dup2(int oldfd, int newfd);
 
 //ft_execute.c
 void	ft_execute(t_commands cmds, t_list *env);
+// ft_execute_paths.c
+bool	ft_execve(char *cmd, char **argv, char **envp, t_list *env);
 
 //redirection.c
 void	ft_redir_in(t_cmd commands, int *fdin);
