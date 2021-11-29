@@ -12,7 +12,6 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 	exit_status = 0;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	sleep(1);
 	if (!ft_strncmp(args[0], "env", 4))
 		exit_status = ft_display_env(env, args);
 	else if (!ft_strncmp(args[0], "export", 7))

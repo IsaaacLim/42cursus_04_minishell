@@ -33,10 +33,11 @@ void	ft_process(t_process init)
 		ft_cd(argv);
 	else if((!ft_strncmp(arg, "export", 7)) || (!ft_strncmp(arg, "unset", 6)))
 				ft_environment(argv, init.env);
-	else if (!ft_strncmp(init.input, "exit", 5))
+	else if (!ft_strncmp(arg, "exit", 5))
 	{
 		ft_free_double_arr(argv);
 		ft_exit(&init);
+		// ft_eval_exit(init, argv);
 	}
 	ft_free_double_arr(argv);
 }
