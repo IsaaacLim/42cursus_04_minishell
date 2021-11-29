@@ -68,27 +68,10 @@ void replace_quotes(char *str, char rep_to)
 }
 
 /*
-	Performs 2 things
-	1. Replaces char with
-*/
-void replace_char(char **str_arr, char *str, char *track, char rep_to)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (track[i])
-			str[i] = rep_to;
-		i++;
-	}
-}
-
-/*
 	Assumes that ft_split will mainly use ' ' spaces for delimiting and splitting
 
 */
-void replace_char2(char **str_arr, char *str, char *track, char rep_to)
+void replace_char_quotes(char **str_arr, char *str, char *track, char rep_to)
 {
 	int i;
 	int j;
@@ -97,7 +80,6 @@ void replace_char2(char **str_arr, char *str, char *track, char rep_to)
 	j = 0;
 	while (str[i])
 	{
-		// printf("%i %c\n", str[i], str[i]);
 		if (str[i] != ' ')
 		{
 			printf("%i %i\n", (*str_arr)[j], str[i]);
@@ -116,6 +98,27 @@ void replace_char2(char **str_arr, char *str, char *track, char rep_to)
 }
 
 /*
+	returns NULL if failed, i.e.
+	- invalid quotes
+*/
+char **ft_split_enhanced(char *str)
+{
+	char **str_arr;
+	char *track;
+
+	track = ft_calloc(ft_strlen(str), sizeof(char));
+	str_arr = NULL;
+	if (valid_quotes(str, track, ' ', -1))
+	{
+		replace_quotes(str, ' ');
+		str_arr = ft_split(str, ' ');
+		replace_char_quotes(str_arr, str, track, ' ');
+	}
+	free(track);
+	return (str_arr);
+}
+
+/*
 	Empty $ returns nothing
 	Edge cases
 	- checked for replacement 
@@ -130,8 +133,8 @@ int check_env(char *str, t_list **env)
 	int env_len;
 	char *ptr;
 	t_list *found;
-	bool to_update;
 	t_envar *envar;
+	bool to_update;
 	char c;
 
 	tot_len = 0;
@@ -140,7 +143,6 @@ int check_env(char *str, t_list **env)
 	{
 		if (*str == '$' && *(str + 1) != ' ' && *(str + 1) != '$' && *(str + 1))
 		{
-			// printf("Why not working here %c\n", str[i]);
 			ptr = str + 1;
 			env_len = 0;
 			// check to make sure that side by side $ works as well...
@@ -161,10 +163,7 @@ int check_env(char *str, t_list **env)
 			str += env_len;
 		}
 		else
-		{
-			// printf("Hi %c\n", str[i]);
 			tot_len++;
-		}
 		str++;
 	}
 	if (!to_update)
@@ -221,11 +220,28 @@ char *update_env(char *str, t_list **env, int tot_len)
 	return (tmp);
 }
 
+/*
+	Performs 2 things
+	1. Replaces char with
+*/
+void replace_char(char **str_arr, char *str, char *track, char rep_to)
+{
+	int i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (track[i])
+			str[i] = rep_to;
+		i++;
+	}
+}
+
 int main2(void)
 {
 	char str[] = "\"echo\"";
 	// need to calloc
-	char *track = calloc(strlen(str), sizeof(char));
+	char *track = ft_calloc(ft_strlen(str), sizeof(char));
 
 	if (valid_quotes(str, track, ' ', -1))
 	{
@@ -240,32 +256,16 @@ int main2(void)
 
 int main3()
 {
-	char str[] = "Hi \"  world\"";
-	char **str_arr;
-	// need to calloc
-	char *track = calloc(strlen(str), sizeof(char));
+	char str[] = "'hey' Hi \"  world\" ' asdf asdf   sadf sad f sda f sad f'";
+	char **str_arr = ft_split_enhanced(str);
 
-	if (valid_quotes(str, track, ' ', -1))
+	if (str_arr)
 	{
-		replace_quotes(str, ' ');
-
-		int i = 0;
-		// while (str[i])
-		// {
-		// 	printf("%i\n", str[i++]);
-		// }
-		// ft_split
-		str_arr = ft_split(str, ' ');
-
-		replace_char2(str_arr, str, track, ' ');
-
 		char **tmp = str_arr;
 		while (*tmp)
 			printf("%s\n", *tmp++);
 		ft_free_double_arr(str_arr);
 	}
-	// remember to free
-	free(track);
 	return (0);
 }
 
