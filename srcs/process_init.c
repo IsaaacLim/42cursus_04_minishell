@@ -35,9 +35,9 @@ void	ft_process(t_process init)
 				ft_environment(argv, init.env);
 	else if (!ft_strncmp(arg, "exit", 5))
 	{
-		ft_free_double_arr(argv);
-		ft_exit(&init);
-		// ft_eval_exit(init, argv);
+		// ft_free_double_arr(argv);
+		// ft_exit(&init);
+		ft_eval_exit(init, argv);
 	}
 	ft_free_double_arr(argv);
 }
