@@ -13,6 +13,8 @@
 # include <readline/history.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/signal.h>
+
 
 typedef struct	s_process
 {

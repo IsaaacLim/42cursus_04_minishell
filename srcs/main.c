@@ -14,11 +14,6 @@ void	ft_sig_handler(int signo)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (signo == SIGQUIT)
-	{
-		g_exit_status = 131;
-		printf("%c%c", 8, 8);
-	}
 	return ;
 }
 
@@ -35,7 +30,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_process	init;
 	t_commands	*commands;
 
-	signal(SIGQUIT, ft_sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	init.env = initialise_env(envp);
 	while (1)
 	{

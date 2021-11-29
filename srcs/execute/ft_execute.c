@@ -7,43 +7,58 @@
 */
 static void	ft_child_process(char **args, char **envp, t_list *env)
 {
+	int	exit_status;
+
+	exit_status = 0;
 	signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	sleep(1);
 	if (!ft_strncmp(args[0], "env", 4))
-		g_exit_status = ft_display_env(env, args);
+		exit_status = ft_display_env(env, args);
 	else if (!ft_strncmp(args[0], "export", 7))
 		export_command(env);
 	else
 	{
 		execve(args[0], args, envp);
 		printf("command not found: %s\n", args[0]);
-		g_exit_status = 127; //not workind for child unless use signal
+		exit (127);
 	}
-	exit (0);
+	exit (exit_status);
 }
 
 /*
-** STORE CHILD STATUS
 ** Restore STDIN/OUT fd
 ** Wait for child process (only last) to complete
 ** Stores the exit status of the last command
 */
-static void	ft_parent_process(int fdstd[2], int pid, char **envp, t_list *env)
+static void	ft_parent_process(int fdstd[2], int pid, char **envp)
 {
 	int child_status;
-	char exit_status;
+	int	wifexited;
+	int	wifsignaled;
+	int	wtermsig;
+	int wexitstatus;
 
 	signal(SIGINT, SIG_IGN);
 	ft_dup2(fdstd[0], 0);
 	ft_dup2(fdstd[1], 1);
 	waitpid(pid, &child_status, 0);
-	exit_status = WEXITSTATUS(child_status);
-	g_exit_status = WIFEXITED(child_status);
-	printf("wife exited: %i\n", g_exit_status);
-	printf("we exited: %d\n", exit_status);
-	if (exit_status == 0)
-		export_add(&env, "EXIT=0");
+	wifexited = WIFEXITED(child_status);
+	wifsignaled = WIFSIGNALED(child_status);
+	wtermsig = WTERMSIG(child_status);
+	wexitstatus = WEXITSTATUS(child_status);
+	if (wifexited)
+		g_exit_status = wexitstatus;
+	else if (wifsignaled)
+	{
+		if (wtermsig == 2)
+			printf("\n");
+		else if(wtermsig == 3)
+			printf("msh: quit\n");
+		g_exit_status = wtermsig + 128;
+	}
 	else
-		export_add(&env, "EXIT=1"); //affected by env
+		g_exit_status = -1;
 	ft_free_double_arr(envp);
 }
 
@@ -79,5 +94,5 @@ void	ft_execute(t_commands cmds, t_list *env)
 			ft_child_process(cmds.commands[i].args, envp, env);
 		i++;
 	}
-	ft_parent_process(fdstd, pid, envp, env);
+	ft_parent_process(fdstd, pid, envp);
 }
