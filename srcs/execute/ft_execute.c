@@ -56,12 +56,14 @@ void	ft_execute(t_commands cmds, t_list *env)
 	int	fdnew[2];
 	pid_t	pid;
 	char	**envp;
+	int	i;
 
 	envp = ft_get_envp(env);
 	fdstd[0] = dup(0);
 	fdstd[1] = dup(1);
 	fdnew[0] = dup(fdstd[0]);
-	for (int i = 0; i < cmds.len; i++) //change for loop
+	i = 0;
+	while (i < cmds.len)
 	{
 		ft_redir_in(cmds.commands[i], &fdnew[0]);
 		if (i == cmds.len - 1)
@@ -72,6 +74,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 		pid = fork();
 		if (pid == 0)
 			ft_child_process(cmds.commands[i].args, envp, env);
+		i++;
 	}
 	ft_parent_process(fdstd, pid, envp, env);
 }
