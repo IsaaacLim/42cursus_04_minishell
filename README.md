@@ -40,3 +40,13 @@
 
 - (ctrl-D / EOF) https://unix.stackexchange.com/questions/110240/why-does-ctrl-d-eof-exit-the-shell
 - handling EOF https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-tcsetattr-set-attributes-terminal#:~:text=FeedbackProduct%20list-,tcsetattr()%20%E2%80%94%20Set%20the%20attributes%20for%20a%20terminal,-Standards
+
+3. Process exit status
+
+1. If child process wasn't interupted, WIFEXITED = TRUE and WEXITSTATUS macro returns the exit code specified by the child.
+1. If child process was interupted, WIFEXITED = FALSE and WEXITSTATUS macro has no meaning; If the cause of exit is raised by a signal, WIFSIGNALED = TRUE and WTERMSIG macro is used to determine which signal was raised.
+
+- WIFEXITED https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally
+- WEXITSTATUS https://www.ibm.com/docs/en/ztpf/2020?topic=apis-wexitstatusobtain-exit-status-child-process
+- WIFSIGNALED https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifsignaledquery-status-see-if-child-process-ended-abnormally
+- WTERMSIG https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wtermsig-determine-which-signal-caused-child-process-exit
