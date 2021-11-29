@@ -2,7 +2,7 @@ NAME		=	libft.a
 
 SRCS_DIR	=	./srcs/
 SRCS_LST	=	ft_atoi.c			ft_bzero.c			ft_calloc.c			\
-				ft_isdigit.c			ft_lstadd_back.c	ft_lstclear.c		\
+				ft_lstadd_back.c	ft_lstclear.c		\
 				ft_lstdelone.c		ft_lstlast.c		ft_lstnew.c			\
 				ft_lstsize.c		ft_memcpy.c			ft_putendl_fd.c		\
 				ft_putstr_fd.c		ft_split.c			ft_strdup.c			\
