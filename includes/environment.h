@@ -29,6 +29,6 @@ void export_command(t_list *env);
 void export_add(t_list **env, char *env_str);
 
 // main function call
-int ft_environment(char *argv[], t_list *env);
+void	ft_environment(char *argv[], t_list *env);
 
 #endif

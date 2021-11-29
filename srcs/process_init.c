@@ -24,7 +24,7 @@ char	**arr_process(void)
 */
 void	ft_process(t_process init)
 {
-	char	**argv; //rename this
+	char	**argv;
 	char	*arg;
 
 	argv = ft_split(init.input, ' ');
@@ -45,22 +45,25 @@ void	ft_process(t_process init)
 ** Check whether input command is a process (not built-ins)
 ** ft_sdtrncmp with 20 characters is a random number
 */
-bool	ft_is_process(char *input, char **processes)
+bool	ft_is_process(char *input)
 {
 	int		i;
-	char 	**split; //rename this
+	char 	**argv;
+	char	**process;
 	bool	is_process;
 
 	is_process = false;
-	split = ft_split(input, ' ');
+	argv = ft_split(input, ' ');
+	process = arr_process();
 	i = -1;
-	while (processes[++i])
+	while (process[++i])
 	{
-		if (!ft_strncmp(split[0], "export", 7) && !split[1])
+		if (!ft_strncmp(argv[0], "export", 7) && !argv[1])
 			break;
-		else if (!ft_strncmp(split[0], processes[i], 20))
+		else if (!ft_strncmp(argv[0], process[i], 20))
 			is_process = true;
 	}
-	ft_free_double_arr(split);
+	ft_free_double_arr(argv);
+	ft_free_double_arr(process);
 	return (is_process);
 }
