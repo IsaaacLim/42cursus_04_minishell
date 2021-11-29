@@ -14,14 +14,11 @@ void	ft_sig_handler(int signo)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-<<<<<<< HEAD
-=======
 	else if (signo == SIGQUIT)
 	{
 		g_exit_status = 131;
 		printf("%c%c", 8, 8);
 	}
->>>>>>> 5c106a654f94c3c581156c4efc8846912c918d08
 	return ;
 }
 
@@ -56,7 +53,7 @@ int	main(int argc, char *argv[], char *envp[])
 			ft_process(init);
 		else if (ft_strlen(init.input) > 0)
 		{
-			read_str(init.input, &commands);
+			read_str(init.input, &commands, &init.env);
 			ft_execute(*commands, init.env);
 			free_commands(commands);
 		}
