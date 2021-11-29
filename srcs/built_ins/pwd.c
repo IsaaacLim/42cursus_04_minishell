@@ -6,12 +6,19 @@ int	main(int argc, char *argv[])
 {
 	char cwd[PATH_MAX];
 
-	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("%s\n", cwd);
-	else
+	if (argc != 1)
 	{
-		perror("pwd error");
+		printf("pwd: too many arguments\n");
 		return (1);
 	}
-	return (0);
+	else if (getcwd(cwd, sizeof(cwd)) != NULL)
+	{
+		printf("%s\n", cwd);
+		return (0);
+	}
+	else
+	{
+		perror("pwd lib function failed to execute");
+		return (2);
+	}
 }
