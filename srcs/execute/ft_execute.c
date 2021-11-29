@@ -5,12 +5,20 @@
 ** Child process execute commands
 ** If invalid command, return 1 to parent
 */
-static void	ft_child_process(char **args, char **envp)
+static void	ft_child_process(char **args, char **envp, t_list *env)
 {
 	signal(SIGQUIT, SIG_DFL);
-	execve(args[0], args, envp);
-	printf("command not found: %s\n", args[0]);
-	exit (1);
+	if (!ft_strncmp(args[0], "env", 4))
+		env_command(env);
+	else if (!ft_strncmp(args[0], "export", 7))
+		export_command(env);
+	else
+	{
+		execve(args[0], args, envp);
+		printf("command not found: %s\n", args[0]);
+		export_add(&env, "EXIT=127"); //not workind for child unless use signal
+	}
+	exit (0);
 }
 
 /*
@@ -32,7 +40,7 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp, t_list *env)
 	if (exit_status == 0)
 		export_add(&env, "EXIT=0");
 	else
-		export_add(&env, "EXIT=1");
+		export_add(&env, "EXIT=1"); //affected by env
 	ft_free_double_arr(envp);
 }
 
@@ -53,7 +61,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 	fdstd[0] = dup(0);
 	fdstd[1] = dup(1);
 	fdnew[0] = dup(fdstd[0]);
-	for (int i = 0; i < cmds.len; i++)
+	for (int i = 0; i < cmds.len; i++) //change for loop
 	{
 		ft_redir_in(cmds.commands[i], &fdnew[0]);
 		if (i == cmds.len - 1)
@@ -63,7 +71,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 		ft_dup2(fdnew[1], 1);
 		pid = fork();
 		if (pid == 0)
-			ft_child_process(cmds.commands[i].args, envp);
+			ft_child_process(cmds.commands[i].args, envp, env);
 	}
 	ft_parent_process(fdstd, pid, envp, env);
 }

@@ -8,15 +8,14 @@ char	**arr_process(void)
 {
 	char	**process;
 
-	process = (char **)malloc(sizeof(char *) * 6);
+	process = (char **)malloc(sizeof(char *) * 5);
 	if (!process)
 		ft_perror("arr_process()");
 	process[0] = ft_strdup("cd");
-	process[1] = ft_strdup("env");
-	process[2] = ft_strdup("export");
-	process[3] = ft_strdup("unset");
-	process[4] = ft_strdup("exit");
-	process[5] = NULL;
+	process[1] = ft_strdup("export");
+	process[2] = ft_strdup("unset");
+	process[3] = ft_strdup("exit");
+	process[4] = NULL;
 	return (process);
 }
 
@@ -25,16 +24,15 @@ char	**arr_process(void)
 */
 void	ft_process(t_process init)
 {
-	char	**argv;
+	char	**argv; //rename this
 	char	*arg;
 
 	argv = ft_split(init.input, ' ');
 	arg = argv[0];
 	if (!ft_strncmp(arg, "cd", 3))
 		ft_cd(argv);
-	else if((!ft_strncmp(arg, "env", 4)) ||
-		(!ft_strncmp(arg, "export", 7)) || (!ft_strncmp(arg, "unset", 6)))
-		ft_environment(argv, init.env);
+	else if((!ft_strncmp(arg, "export", 7)) || (!ft_strncmp(arg, "unset", 6)))
+				ft_environment(argv, init.env);
 	else if (!ft_strncmp(init.input, "exit", 5))
 	{
 		ft_free_double_arr(argv);
@@ -50,7 +48,7 @@ void	ft_process(t_process init)
 bool	ft_is_process(char *input, char **processes)
 {
 	int		i;
-	char 	**split;
+	char 	**split; //rename this
 	bool	is_process;
 
 	is_process = false;
@@ -58,7 +56,9 @@ bool	ft_is_process(char *input, char **processes)
 	i = -1;
 	while (processes[++i])
 	{
-		if (!ft_strncmp(split[0], processes[i], 20))
+		if (!ft_strncmp(split[0], "export", 7) && !split[1])
+			break;
+		else if (!ft_strncmp(split[0], processes[i], 20))
 			is_process = true;
 	}
 	ft_free_double_arr(split);
