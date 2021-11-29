@@ -1,8 +1,6 @@
 #include "minishell.h"
 #include "environment.h"
 
-// t_process	g_init;
-
 /*
 ** signal(SIGQUIT, SIG_IGN); ignores display but can't update EXIT
 */
@@ -10,7 +8,7 @@ void	ft_sig_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		// export_add(&g_init.env, "EXIT=130");
+		g_exit_status = 130;
 		rl_replace_line("", 0);
 		printf("\n");
 		rl_on_new_line();
@@ -18,7 +16,7 @@ void	ft_sig_handler(int signo)
 	}
 	else if (signo == SIGQUIT)
 	{
-		// export_add(&g_init.env, "EXIT=131");
+		g_exit_status = 131;
 		printf("%c%c", 8, 8);
 	}
 	return ;
