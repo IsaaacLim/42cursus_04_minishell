@@ -1,20 +1,37 @@
 #include "minishell.h"
+#include "environment.h"
 
-/*
-** need "cd" or "cd ~"?
-*/
-int	ft_cd(char **argv)
+static void	ft_chdir(char *dir)
 {
-	int	argc;
-	argc = 0;
-	while (argv[argc])
-		argc++;
-	// if (argc == 1)
-	// 	chdir($HOME);
-	if (argc == 2)
+	if (chdir(dir) != 0)
+		printf("cd: No such file or directory: %s\n", dir);
+	else
+		g_exit_status = 0;
+}
+
+int	ft_cd(char **argv, t_list *env)
+{
+	t_list	*found;
+	char	*home;
+	char	*join_home;
+
+	g_exit_status = 1;
+	found = found_env(&env, NULL, "HOME", INT_MAX);
+	home = ((t_envar *)(found->content))->word;
+	if (!argv[1])
+		ft_chdir(home);
+	else if (!argv[2])
 	{
-		if (chdir(argv[1]) != 0)
-			printf("cd: %s: No such file or directory\n", argv[1]);
+		if (!ft_strncmp(argv[1], "~", 2) || !ft_strncmp(argv[1], "~/", 3))
+			ft_chdir(home);
+		else if(!ft_strncmp(argv[1], "~/", 2))
+		{
+			join_home = ft_strjoin(home, &argv[1][1]);
+			ft_chdir(join_home);
+			free(join_home);
+		}
+		else
+			ft_chdir(argv[1]);
 	}
 	else
 		printf("cd: too many argumnets\n");
