@@ -6,7 +6,7 @@
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 12:16:40 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/29 17:36:17 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/11/29 18:25:29 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void initialise_singlecmd(t_cmd *cmd)
 	
 	Return NULL if syntax error found
 */
-t_cmd parse_singlecmd(char **str_arr)
+t_cmd parse_singlecmd(char **str_arr, t_list **env)
 {
 	int i;
 	int j;
@@ -76,7 +76,8 @@ t_cmd parse_singlecmd(char **str_arr)
 			i += 2;
 		else
 		{
-			(cmd.args)[j++] = ft_strcpy(str_arr[i]);
+			// (cmd.args)[j++] = ft_strcpy(str_arr[i]);
+			(cmd.args)[j++] = check_update_env(str_arr[i], env);
 			i++;
 		}
 	}
@@ -118,7 +119,7 @@ void free_commands(t_commands *commands)
 }
 
 // Do i even need to return a pointer for this?
-t_commands *parse_commands(char *str)
+t_commands *parse_commands(char *str, t_list **env)
 {
 	char **str_arr;
 	t_commands *commands;
@@ -128,9 +129,8 @@ t_commands *parse_commands(char *str)
 
 	i = 0;
 	j = 0;
-	str_arr = ft_split(str, ' ');
-
-	if (!valid_redirection(str_arr) || !valid_pipe(str_arr))
+	str_arr = ft_split_enhanced(str, ' ');
+	if (!str_arr || !valid_redirection(str_arr) || !valid_pipe(str_arr))
 	{
 		printf("Syntax error near unexpected token\n");
 		ft_free_double_arr(str_arr);
@@ -144,7 +144,7 @@ t_commands *parse_commands(char *str)
 	while (str_arr[i])
 	{
 		if (i == 0 || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0)
-			(commands->commands)[j++] = parse_singlecmd(&str_arr[i]);
+			(commands->commands)[j++] = parse_singlecmd(&str_arr[i], env);
 		i++;
 	}
 	ft_free_double_arr(str_arr);
@@ -174,10 +174,10 @@ void print_commands(t_commands *cmds)
 	}
 }
 
-void read_str(char *str, t_commands **commands)
+void read_str(char *str, t_commands **commands, t_list **env)
 {
 	// t_commands *commands;
-	*commands = parse_commands(str);
+	*commands = parse_commands(str, env);
 	if (!*commands)
 		return;
 	// print_commands(commands);

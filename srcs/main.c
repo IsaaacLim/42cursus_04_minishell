@@ -44,7 +44,8 @@ int	main(int argc, char *argv[], char *envp[])
 		if (ft_strlen(init.input) == 0)
 			continue ;
 		add_history(init.input);
-		read_str(init.input, &commands);
+		// read_str(init.input, &commands);
+		read_str(init.input, &commands, &init.env);
 		if (ft_is_process(*commands))
 			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)
