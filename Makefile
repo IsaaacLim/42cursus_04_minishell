@@ -1,7 +1,7 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-PARSER_LST	=	parser/parser.c	parser/parser_utils.c
+PARSER_LST	=	parser/parser.c	parser/parser_utils.c parser/valid_quotes.c
 SRCS_LST	=	error.c			${PARSER_LST}	main.c		\
 				process_init.c	utils.c
 

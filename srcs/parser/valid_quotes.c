@@ -8,23 +8,23 @@
 #include "environment.h"
 #include "libft.h"
 
-void ft_free_double_arr(char **arr)
-{
-	int i;
+// void ft_free_double_arr(char **arr)
+// {
+// 	int i;
 
-	if (!arr)
-		return;
-	i = 0;
-	while (arr[i])
-		i++;
-	while (--i >= 0)
-	{
-		ft_bzero(arr[i], ft_strlen(arr[i]));
-		free(arr[i]);
-	}
-	free(arr);
-	return;
-}
+// 	if (!arr)
+// 		return;
+// 	i = 0;
+// 	while (arr[i])
+// 		i++;
+// 	while (--i >= 0)
+// 	{
+// 		ft_bzero(arr[i], ft_strlen(arr[i]));
+// 		free(arr[i]);
+// 	}
+// 	free(arr);
+// 	return;
+// }
 
 /*
 	TO DO
@@ -82,7 +82,6 @@ void replace_char_quotes(char **str_arr, char *str, char *track, char rep_to)
 	{
 		if (str[i] != ' ')
 		{
-			printf("%i %i\n", (*str_arr)[j], str[i]);
 			if (track[i] == 1)
 				(*str_arr)[j] = rep_to;
 			// need to increment whenever a != ' ' is found
@@ -118,6 +117,22 @@ char **ft_split_enhanced(char *str)
 	return (str_arr);
 }
 
+t_envar *found_null_term_env(t_list **env, char *ptr, int env_len)
+{
+	t_list *found;
+	t_envar *envar;
+	char c;
+
+	// replaces ptr[env_len] temporarily to null terminate
+	c = ptr[env_len];
+	ptr[env_len] = '\0';
+	found = found_env(env, NULL, ptr, INT_MAX);
+	ptr[env_len] = c;
+	if (found)
+		return ((t_envar *)(found->content));
+	return (NULL);
+}
+
 /*
 	Empty $ returns nothing
 	Edge cases
@@ -127,15 +142,13 @@ char **ft_split_enhanced(char *str)
 
 	Returns -1 if no changes are required to be made
 */
-int check_env(char *str, t_list **env)
+int return_env_len(char *str, t_list **env)
 {
 	int tot_len;
 	int env_len;
 	char *ptr;
-	t_list *found;
 	t_envar *envar;
 	bool to_update;
-	char c;
 
 	tot_len = 0;
 	to_update = false;
@@ -143,23 +156,16 @@ int check_env(char *str, t_list **env)
 	{
 		if (*str == '$' && *(str + 1) != ' ' && *(str + 1) != '$' && *(str + 1))
 		{
+			// need this to return whether to malloc a new string or not
+			to_update = true;
 			ptr = str + 1;
 			env_len = 0;
 			// check to make sure that side by side $ works as well...
 			while (ptr[env_len] && ptr[env_len] != ' ' && ptr[env_len] != '$')
 				env_len++;
-			c = ptr[env_len];
-			ptr[env_len] = '\0';
-			// need this to return whether to malloc a new string or not
-			to_update = true;
-			found = found_env(env, NULL, ptr, INT_MAX);
-			if (found)
-			{
-				envar = (t_envar *)(found->content);
-				if (envar->name[env_len] == '\0')
-					tot_len += envar->word_len;
-			}
-			ptr[env_len] = c;
+			envar = found_null_term_env(env, ptr, env_len);
+			if (envar)
+				tot_len += envar->word_len;
 			str += env_len;
 		}
 		else
@@ -176,16 +182,13 @@ int check_env(char *str, t_list **env)
 	-> pass in t_cmd
 	-> splits out t_cmd with updated string
 */
-
-char *update_env(char *str, t_list **env, int tot_len)
+char *update_with_env(char *str, t_list **env, int tot_len)
 {
 	char *tmp;
 	int i;
 	int env_len;
 	char *ptr;
-	t_list *found;
 	t_envar *envar;
-	char c;
 
 	tmp = malloc(sizeof(char) * (tot_len + 1));
 	i = 0;
@@ -197,19 +200,12 @@ char *update_env(char *str, t_list **env, int tot_len)
 			env_len = 0;
 			while (ptr[env_len] && ptr[env_len] != ' ' && ptr[env_len] != '$')
 				env_len++;
-			c = ptr[env_len];
-			ptr[env_len] = '\0';
-			found = found_env(env, NULL, ptr, INT_MAX);
-			if (found)
+			envar = found_null_term_env(env, ptr, env_len);
+			if (envar)
 			{
-				envar = (t_envar *)(found->content);
-				if (envar->name[env_len] == '\0')
-				{
-					ft_memcpy(&tmp[i], envar->word, envar->word_len);
-					i += envar->word_len;
-				}
+				ft_memcpy(&tmp[i], envar->word, envar->word_len);
+				i += envar->word_len;
 			}
-			ptr[env_len] = c;
 			str += env_len;
 		}
 		else
@@ -218,6 +214,16 @@ char *update_env(char *str, t_list **env, int tot_len)
 	}
 	tmp[tot_len] = '\0';
 	return (tmp);
+}
+
+char *check_update_env(char *str, t_list **env)
+{
+	int len;
+
+	len = return_env_len(str, env);
+	if (len != -1)
+		return (update_with_env(str, env, len));
+	return (ft_strcpy(str));
 }
 
 /*
@@ -256,15 +262,26 @@ int main2(void)
 
 int main3()
 {
-	char str[] = "'hey' Hi \"  world\" ' asdf asdf   sadf sad f sda f sad f'";
+	// char str[] = "'hey' Hi \"  world\" ' asdf asdf   sadf sad f sda f sad f'";
+	char str[] = "\"export\"";
+	char str2[] = "export";
 	char **str_arr = ft_split_enhanced(str);
+	char **str_arr2 = ft_split(str, ' ');
 
-	if (str_arr)
+	printf("%i\n", ft_strncmp(str_arr[0], str_arr2[0], INT_MAX));
+	// int i = 0;
+	// while (str_arr[0][i] && str_arr2[0][i])
+	// {
+	// 	printf("%i %i %c %c\n", str_arr[0][i], str_arr[0][i], str_arr2[0][i], str_arr2[0][i]);
+	// 	i++;
+	// }
+	// printf("%i %i %c %c\n", str_arr[0][i], str_arr[0][i], str_arr2[0][i], str_arr2[0][i]);
+	if (str_arr2)
 	{
-		char **tmp = str_arr;
+		char **tmp = str_arr2;
 		while (*tmp)
 			printf("%s\n", *tmp++);
-		ft_free_double_arr(str_arr);
+		ft_free_double_arr(str_arr2);
 	}
 	return (0);
 }
@@ -274,26 +291,17 @@ int main4(int argc, char *argv[], char *envp[])
 	t_list *env = initialise_env(envp);
 	// print_env(env);
 	// printf("\n\n");
-	char str[] = "HI $w$w OLDPWD";
+	char str[] = "";
 	char *tmp;
-	int len = check_env(str, &env);
 
-	// Make sure clearing is done properly here
-	if (len != -1)
-		tmp = update_env(str, &env, check_env(str, &env));
-	printf("%i\n", len);
-	if (len != -1)
-	{
-		printf("%s\n", tmp);
-		free(tmp);
-	}
-	else
-		printf("%s\n", str);
+	tmp = check_update_env(str, &env);
+	printf("%s\n", tmp);
+	free(tmp);
 	ft_lstclear(&env, free_envar);
 	return (0);
 }
 
-int main(int argc, char *argv[], char *envp[])
-{
-	main3();
-}
+// int main(int argc, char *argv[], char *envp[])
+// {
+// 	main3(argc, argv, envp);
+// }
