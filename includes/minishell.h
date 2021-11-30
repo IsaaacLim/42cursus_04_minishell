@@ -55,7 +55,7 @@ bool	ft_is_process(t_commands cmds);
 void	ft_free_double_arr(char **arr);
 
 // process functions
-int		ft_cd(char **argv, t_list *env);
+void	ft_cd(char **argv, t_list *env);
 void	ft_exit(t_process *init);
 void	ft_eval_exit(t_process init, t_commands *cmds);
 
