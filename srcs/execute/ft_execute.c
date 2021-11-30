@@ -1,6 +1,34 @@
 #include "minishell.h"
 #include "environment.h"
 
+static void	ft_execve(char **args, char **envp, t_list *env)
+{
+	char **path_arr;
+	int i;
+	char *new_path;
+
+	execve(args[0], args, envp);
+	new_path = ft_strjoin_bonus("srcs/built_ins", args[0], '/');
+	if (!new_path)
+		ft_libft_error("ft_strjoin_bonus failed in ft_execve");
+	execve(new_path, args, envp);
+	free(new_path); //can't free like this
+	path_arr = split_path(env);
+	if (!path_arr)
+		ft_libft_error("split_path failed in ft_execve");
+	i = 0;
+	while (path_arr[i])
+	{
+		new_path = ft_strjoin_bonus(path_arr[i], args[0], '/');
+		if (!new_path)
+			ft_libft_error("ft_strjoin_bonus failed in ft_execve");
+		execve(new_path, args, envp);
+		free(new_path);
+		i++;
+	}
+	ft_free_double_arr(path_arr);
+}
+
 /*
 ** Child process execute commands
 ** If invalid command, return 1 to parent
@@ -12,13 +40,15 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 	exit_status = 0;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	if (!ft_strncmp(args[0], "env", 4))
-		exit_status = ft_display_env(env, args);
-	else if (!ft_strncmp(args[0], "export", 7))
+	// if (!ft_strncmp(args[0], "env", 4))
+		// exit_status = ft_display_env(env, args);
+		// execve("srcs/built_ins/env", args, envp);
+	// else if (!ft_strncmp(args[0], "export", 7))
+	if (!ft_strncmp(args[0], "export", 7))
 		export_command(env);
 	else
 	{
-		ft_execve(args[0], args, envp, env);
+		ft_execve(args, envp, env);
 		printf("command not found: %s\n", args[0]);
 		exit (127);
 	}
@@ -73,6 +103,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 	int	fdnew[2];
 	pid_t	pid;
 	char	**envp;
+	// char	**path_arr;
 	int	i;
 
 	envp = ft_get_envp(env);
