@@ -30,10 +30,10 @@ t_envar	*parse_env_var(char *env_str)
 	// update name
 	ft_memcpy(envar->name, env_str, len);
 	(envar->name)[len] = '\0';
-	if (!envar->set)
-		return (envar);
 	// move position to after equals, =
-	env_str = env_str + len + 1;
+	env_str += len;
+    if (envar->set)
+        env_str++;
 	len = ft_strlen(env_str);
 	envar->word = malloc(sizeof(char) * (len + 1));
 	ft_memcpy(envar->word, env_str, sizeof(char) * (len + 1));
