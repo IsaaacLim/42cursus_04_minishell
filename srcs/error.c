@@ -4,10 +4,10 @@
 ** Used as error handling for libft functions
 ** perror / strerror will be used for built-in library functions
 */
-void	ft_error(char *message)
+void	ft_libft_error(char *strerror)
 {
-	printf("%s\n", message);
-	exit (1);
+	printf("libft error: %s\n", strerror);
+	exit (42);
 }
 
 /*
