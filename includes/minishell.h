@@ -60,7 +60,8 @@ void	ft_exit(t_process *init);
 void	ft_eval_exit(t_process init, t_commands *cmds);
 
 
-//signals
-void ft_sig_handler();
+//signals.c
+void	ft_sig_handler(int signo);
+void	ft_sig_ignore_EOF(bool ignore);
 
 #endif
