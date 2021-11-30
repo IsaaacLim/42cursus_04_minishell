@@ -69,7 +69,7 @@ int	calc_arg_len(char **str_arr, t_cmd *cmd)
 	2. Updates redirection and calculates argument length (ignore pipe |)
 		checks str_arr is not NULL
 */
-t_cmd	parse_singlecmd(char **str_arr, t_list **env, char *quote_type)
+t_cmd	parse_singlecmd(char **str_arr, t_list **env)
 {
 	int		i;
 	int		j;
@@ -87,10 +87,7 @@ t_cmd	parse_singlecmd(char **str_arr, t_list **env, char *quote_type)
 			i += 2;
 		else
 		{
-			if (quote_type[j] == '\'')
-				(cmd.args)[j++] = ft_strcpy(str_arr[i]);
-			else
-				(cmd.args)[j++] = check_update_env(str_arr[i], env);
+			(cmd.args)[j++] = check_update_env(str_arr[i], env);
 			i++;
 		}
 	}
@@ -139,13 +136,12 @@ t_commands *parse_commands(char *str, t_list **env)
 {
 	char		**str_arr;
 	t_commands	*cmds;
-	char		*quote_type;
 	int			i;
 	int			j;
 
 	i = 0;
 	j = 0;
-	str_arr = ft_split_enhanced(str, ' ', &quote_type);
+	str_arr = ft_split_enhanced(str, ' ');
 	if (str_arr && valid_redirection(str_arr) && valid_pipe(str_arr))
 	{
 		cmds = initialise_t_commands(str_arr);
@@ -153,14 +149,13 @@ t_commands *parse_commands(char *str, t_list **env)
 		{
 			if (i == 0 || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0)
 				(cmds->commands)[j++]
-					= parse_singlecmd(&str_arr[i], env, &(quote_type[i]));
+					= parse_singlecmd(&str_arr[i], env);
 			i++;
 		}
 	}
 	else
 		cmds = NULL;
 	ft_free_double_arr(str_arr);
-	free(quote_type);
 	return (cmds);
 }
 
