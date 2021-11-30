@@ -17,6 +17,11 @@ void	ft_sig_handler(int signo)
 	return ;
 }
 
+// void	ft_getenv_value(char **dir)
+// {
+	// t_list	*found
+// }
+
 /*
 ** Readline
 ** 	If input == NULL 
@@ -32,6 +37,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	signal(SIGQUIT, SIG_IGN);
 	init.env = initialise_env(envp);
+	// init.builtins_dir = ft_builtins_dir();
 	while (1)
 	{
 		signal(SIGINT, ft_sig_handler);

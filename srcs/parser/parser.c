@@ -25,18 +25,6 @@
 */
 
 /*
-	Initialiser for t_cmd variable to 0 or NULL
-*/
-void	initialise_singlecmd(t_cmd *cmd)
-{
-	cmd->args = NULL;
-	cmd->input = 0;
-	cmd->output = 0;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-}
-
-/*
 	Purpose:
 	- Scans str_arr and returns arg_len
 	- Deduct 2 * redir because each redirection would have an arrow and filename
@@ -93,43 +81,6 @@ t_cmd	parse_singlecmd(char **str_arr, t_list **env)
 	}
 	(cmd.args)[arg_len] = NULL;
 	return (cmd);
-}
-
-void	free_commands(t_commands *commands)
-{
-	t_cmd	*cmds;
-	int		i;
-
-	if (!commands)
-		return ;
-	i = 0;
-	cmds = commands->commands;
-	while (i < commands->len)
-	{
-		if (cmds[i].args)
-			ft_free_double_arr(cmds[i].args);
-		if (cmds[i].infile)
-			free(cmds[i].infile);
-		if (cmds[i].outfile)
-			free(cmds[i].outfile);
-		i++;
-	}
-	free(cmds);
-	free(commands);
-}
-
-t_commands	*initialise_t_commands(char **str_arr)
-{
-	int			cmd_len;
-	t_commands	*cmds;
-
-	cmd_len = num_pipes(str_arr) + 1;
-	cmds = malloc(sizeof(t_commands));
-	if (!cmds)
-		return (NULL);
-	cmds->commands = malloc(sizeof(t_cmd) * (cmd_len + 1));
-	cmds->len = cmd_len;
-	return (cmds);
 }
 
 t_commands *parse_commands(char *str, t_list **env)

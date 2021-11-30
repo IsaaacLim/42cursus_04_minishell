@@ -1,12 +1,14 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-PARSER_LST	=	parser/parser.c	parser/parser_utils.c parser/valid_quotes.c
+PARSER_LST	=	parser/parser.c	parser/parser_utils.c parser/parser_utils2.c	\
+				parser/parse_env.c		parser/parse_env_utils.c			\
+				parser/ft_split_enhanced.c
 SRCS_LST	=	error.c			${PARSER_LST}	main.c		\
 				process_init.c	utils.c
 
 EXEC_DIR	=	execute/
-EXEC_LST	=	ft_execute.c	execute_utils.c		ft_execute_paths.c	redirection.c
+EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
 EXEC		=	$(addprefix $(EXEC_DIR), $(EXEC_LST))
 
 PROCS_DIR	=	process/
