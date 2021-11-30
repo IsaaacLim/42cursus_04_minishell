@@ -21,14 +21,14 @@ void	ft_eval_exit(t_process init, t_commands *cmds)
 		argc++;
 	if (argc > 2)
 	{
-		g_exit_status = 1;
+		ft_exit_status(1);
 		printf("exit: too many arguments\n");
 		return ;
 	}
 	else if(argc == 2)
-		g_exit_status = ft_atoi(last_argv[1]);
+		ft_exit_status(ft_atoi(last_argv[1]));
 	else
-		g_exit_status = 0;
+		ft_exit_status(0);
 	free_commands(cmds);
 	ft_exit(&init);
 }

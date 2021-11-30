@@ -3,6 +3,7 @@
 
 # include "libft.h"
 # include "parser.h"
+# include "environment.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -34,7 +35,13 @@ typedef struct s_process
 	t_list	*env;
 }	t_process;
 
-int		g_exit_status;
+struct s_exstat
+{
+	int	exit_status;
+	t_envar *pointer;
+}	;
+
+struct s_exstat	g_exstat;
 
 //error.c
 void	ft_libft_error(char *message);
@@ -63,13 +70,16 @@ bool	ft_is_process(t_commands cmds);
 
 //utils.c
 void	ft_free_double_arr(char **arr);
+void	ft_exit_status(int exit_num);
 
 // process functions
-void	ft_cd(char **argv, t_list *env);
+int		ft_cd(char **argv, t_list *env);
 void	ft_exit(t_process *init);
 void	ft_eval_exit(t_process init, t_commands *cmds);
 
-//signals
-void	ft_sig_handler();
+
+//signals.c
+void	ft_sig_handler(int signo);
+void	ft_sig_ignore_EOF(bool ignore);
 
 #endif

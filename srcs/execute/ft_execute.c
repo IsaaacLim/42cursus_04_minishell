@@ -12,7 +12,7 @@ static void	ft_execve(char **args, char **envp, t_list *env)
 	if (!new_path)
 		ft_libft_error("ft_strjoin_bonus failed in ft_execve");
 	execve(new_path, args, envp);
-	free(new_path); //can't free like this
+	free(new_path);
 	path_arr = split_path(env);
 	if (!path_arr)
 		ft_libft_error("split_path failed in ft_execve");
@@ -35,15 +35,11 @@ static void	ft_execve(char **args, char **envp, t_list *env)
 */
 static void	ft_child_process(char **args, char **envp, t_list *env)
 {
-	int	exit_status;
+	int	exit_num;
 
-	exit_status = 0;
+	exit_num = 0;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	// if (!ft_strncmp(args[0], "env", 4))
-		// exit_status = ft_display_env(env, args);
-		// execve("srcs/built_ins/env", args, envp);
-	// else if (!ft_strncmp(args[0], "export", 7))
 	if (!ft_strncmp(args[0], "export", 7))
 		export_command(env);
 	else
@@ -52,8 +48,10 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 		printf("command not found: %s\n", args[0]);
 		exit (127);
 	}
-	exit (exit_status);
+	exit (exit_num);
 }
+
+
 
 /*
 ** Restore STDIN/OUT fd
@@ -77,17 +75,17 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp)
 	wtermsig = WTERMSIG(child_status);
 	wexitstatus = WEXITSTATUS(child_status);
 	if (wifexited)
-		g_exit_status = wexitstatus;
+		ft_exit_status(wexitstatus);
 	else if (wifsignaled)
 	{
 		if (wtermsig == 2)
 			printf("\n");
 		else if(wtermsig == 3)
 			printf("msh: quit\n");
-		g_exit_status = wtermsig + 128;
+		ft_exit_status(wtermsig + 128);
 	}
 	else
-		g_exit_status = -1;
+		ft_exit_status(-1);
 	ft_free_double_arr(envp);
 }
 
@@ -103,7 +101,6 @@ void	ft_execute(t_commands cmds, t_list *env)
 	int	fdnew[2];
 	pid_t	pid;
 	char	**envp;
-	// char	**path_arr;
 	int	i;
 
 	envp = ft_get_envp(env);

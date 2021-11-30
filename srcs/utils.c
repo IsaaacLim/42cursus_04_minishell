@@ -17,3 +17,8 @@ void	ft_free_double_arr(char **arr)
 	free(arr);
 	return ;
 }
+
+void	ft_exit_status(int exit_status)
+{
+	g_exstat.exit_status = exit_status;
+}

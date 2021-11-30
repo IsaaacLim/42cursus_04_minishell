@@ -82,15 +82,11 @@ Minor
 $ unset Z="asljdfl"
 bash: unset: `Z=asljdfl': not a valid identifier
 
-Signals
+Isaac's To Do:
 
-- input `cat` then ctrl+\ or + C returns child_status of 0 ==> EXIT=0
+- test cd with many paths + ~
+- move `export` to built-ins; remove `env` & `export` from processes
+- remove char \*\*envp away from parent_process
+- clean up ft_error and ft_perror
+- double check expansion of ~ with my ft_cd
 - heredoc ignores all signals, but character is displayed on screen. Registers as one new line
-
-Exit status
-
-- update every status
-
-Env
-
-- error handling for `env more-commands`

@@ -7,10 +7,8 @@
 **	- filled t_list *env from main function, then passed over as an arg
 **	- str compare argv to execute correct function
 **	- ft_lstclear upon "exit"
-**
-** GOT ISSUE WHEN EXECUTING THIS FUNCTION > ONCE
 */
-void	ft_environment(char *argv[], t_list *env)
+int	ft_environment(char *argv[], t_list *env)
 {
 	char	**envp;
 	int		argc;
@@ -22,7 +20,7 @@ void	ft_environment(char *argv[], t_list *env)
 	if (argc < 2)
 	{
 		printf("ft_environment: too little arg. Not supposed to reach here\n");
-		return ;
+		return (1);
 	}
 	i = 1;
 	while (argc > 1 && argv[i])
@@ -33,4 +31,5 @@ void	ft_environment(char *argv[], t_list *env)
 			unset(&env, argv[i]);
 		i++;
 	}
+	return (0);
 }

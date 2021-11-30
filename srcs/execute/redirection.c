@@ -1,30 +1,6 @@
 #include "minishell.h"
 #include "get_next_line.h"
 
-#include <termios.h>
-
-/*
-** display value of EOF character with term1.c_cc[VEOF]
-*/
-static void	ft_sig_ignore_EOF(bool ignore)
-{
-	struct termios term1;
-
-	if (tcgetattr(STDIN_FILENO, &term1) != 0)
-		perror("tcgetattr error");
-	else
-	{
-		if (ignore)
-			term1.c_cc[VEOF] = 0;
-		else
-			term1.c_cc[VEOF] = 04;
-		if (tcsetattr(STDIN_FILENO, TCSANOW, &term1) != 0)
-			perror("tcsetattr() error");
-		if (tcgetattr(STDIN_FILENO, &term1) != 0)
-			perror("tcgetattr() error");
-	}
-}
-
 /*
 ** HEREDOC
 ** Read input (get_next_line) from STDIN

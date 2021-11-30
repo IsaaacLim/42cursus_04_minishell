@@ -43,8 +43,8 @@
 
 3. Process exit status
 
-1. If child process wasn't interupted, WIFEXITED = TRUE and WEXITSTATUS macro returns the exit code specified by the child.
-1. If child process was interupted, WIFEXITED = FALSE and WEXITSTATUS macro has no meaning; If the cause of exit is raised by a signal, WIFSIGNALED = TRUE and WTERMSIG macro is used to determine which signal was raised.
+   1. If child process wasn't interupted, WIFEXITED = TRUE and WEXITSTATUS macro returns the exit code specified by the child.
+   2. If child process was interupted, WIFEXITED = FALSE and WEXITSTATUS macro has no meaning; If the cause of exit is raised by a signal, WIFSIGNALED = TRUE and WTERMSIG macro is used to determine which signal was raised.
 
 - WIFEXITED https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally
 - WEXITSTATUS https://www.ibm.com/docs/en/ztpf/2020?topic=apis-wexitstatusobtain-exit-status-child-process

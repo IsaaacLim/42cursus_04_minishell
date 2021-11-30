@@ -1,22 +1,6 @@
 #include "minishell.h"
 #include "environment.h"
 
-/*
-** signal(SIGQUIT, SIG_IGN); ignores display but can't update EXIT
-*/
-void	ft_sig_handler(int signo)
-{
-	if (signo == SIGINT)
-	{
-		g_exit_status = 130;
-		rl_replace_line("", 0);
-		printf("\n");
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	return ;
-}
-
 char *give_minishell(void)
 {
 	static char *str[4] = {
@@ -46,9 +30,9 @@ int	main(int argc, char *argv[], char *envp[])
 
 	signal(SIGQUIT, SIG_IGN);
 	init.env = initialise_env(envp);
-	// init.builtins_dir = ft_builtins_dir();
 	while (1)
 	{
+		printf("$?: %d\n", g_exstat.exit_status); //JR, find this in utils.c
 		signal(SIGINT, ft_sig_handler);
 		init.input = readline(give_minishell());
 		if (init.input == NULL)
@@ -60,6 +44,11 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		add_history(init.input);
 		read_str(init.input, &commands, &init.env);
+        if (!commands)
+		{
+			ft_exit_status(2);
+            continue ;
+		}
 		if (ft_is_process(*commands))
 			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)
@@ -67,7 +56,6 @@ int	main(int argc, char *argv[], char *envp[])
 		free_commands(commands);
 		init.input = NULL;
 		free(init.input);
-		printf("$?: %d\n", g_exit_status);
 	}
 	// system("leaks minishell");
 }
