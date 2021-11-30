@@ -1,31 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_validate.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/30 17:51:42 by jkhong            #+#    #+#             */
+/*   Updated: 2021/11/30 17:51:42 by jkhong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "environment.h"
+#include "libft.h"
 
-bool is_subset(char c, char *subset)
+/*
+	Definition of valid identifier
+	https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Definitions
+	name
+	A word consisting solely of letters, numbers, and underscores,
+	and beginning with a letter or underscore. Names are used as shell variable
+	and function names. Also referred to as an identifier.
+*/
+bool	valid_identifier(char *str)
 {
-	while (*subset)
-	{
-		if (c == *subset)
-			return (true);
-		subset++;
-	}
-	return (false);
-}
-
-bool valid_identifier(char *name)
-{
-	const char c = name[0];
-	// https://user-web.icecube.wisc.edu/~dglo/c_class/charfunc.html#:~:text=In%20ASCII%2C%20whitespace%20characters%20are,formfeed%20(%20'%5Cf'%20).
-	const char *whitespace = " \t\r\n\v\f";
-	// https://www.oreilly.com/library/view/learning-the-bash/1565923472/ch01s09.html
-	const char *spcial = "~`#$&*()\\|[]{};,<>/?!";
-
-	if (!(c >= 'a' && c <= 'z') || !(c >= 'A' && c <= 'Z') || c != '_')
+	if (!(ft_isalpha(*str) || *str == '_'))
 		return (false);
-	name++;
-	while (name)
+	str++;
+	while (*str)
 	{
-		if (!(c >= 'a' && c <= 'z') || !(c >= 'A' && c <= 'Z') || c != '_' || (c >= '0' && c <= '9'))
+		if (!(ft_isalpha(*str) || ft_isdigit(*str) || *str == '_'))
 			return (false);
+		str++;
 	}
 	return (true);
+}
+
+void	invalid_identifier_msg(char *cmd, char *name)
+{
+	perror(cmd);
+	perror(": \'");
+	perror(name);
+	perror("': not a valid identifier\n");
 }

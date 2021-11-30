@@ -9,7 +9,7 @@ SRCS_LST	=	ft_atoi.c			ft_bzero.c			ft_calloc.c			\
 				ft_strjoin_bonus.c			\
 				ft_strjoin.c		ft_strlen.c			ft_strncmp.c		\
 				ft_strchr.c			ft_substr.c			ft_strcpy.c			\
-				ft_isalpha.clean	ft_isdigit.c		\
+				ft_isalpha.c		ft_isdigit.c		
 GNL_LST		=	get_next_line.c
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(GNL_LST))
 

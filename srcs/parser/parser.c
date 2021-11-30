@@ -83,7 +83,13 @@ t_cmd	parse_singlecmd(char **str_arr, t_list **env)
 	return (cmd);
 }
 
-t_commands *parse_commands(char *str, t_list **env)
+/*
+	Constructs list of single commands t_cmd
+	(i) split str read from readline
+	(ii) validates redirection and pipe
+	(iii) also validates quotation indirectly via str_arr return val
+*/
+t_commands	*parse_commands(char *str, t_list **env)
 {
 	char		**str_arr;
 	t_commands	*cmds;
@@ -115,7 +121,7 @@ void	read_str(char *str, t_commands **commands, t_list **env)
 	*commands = parse_commands(str, env);
 	if (!*commands)
 	{
-		printf("Syntax error near unexpected token\n");
+		perror("Syntax error near unexpected token\n");
 		return ;
 	}
 }

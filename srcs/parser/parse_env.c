@@ -28,8 +28,8 @@ static int	return_env_len(char *str, t_list **env)
 			quote = *str;
 		else if (*str == quote)
 			quote = 0;
-		else if (*str == '$' && *(str + 1) &&
-			!ft_strchr(" $", *(str + 1)) && quote != '\'')
+		else if (*str == '$' && *(str + 1)
+			&& !ft_strchr(" $", *(str + 1)) && quote != '\'')
 		{
 			env_len = get_envlen_and_find(str, &envar, env, quote);
 			if (envar)
