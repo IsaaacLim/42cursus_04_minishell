@@ -49,20 +49,23 @@ typedef struct s_commands
 }			t_commands;
 
 // Utility functions to be used in parser
-int		num_pipes(char **str_arr);
-int		is_redirection(char *str, t_cmd *cmd, char *next);
-bool	valid_redirection(char **str_arr);
-bool	valid_pipe(char **str_arr);
+int			num_pipes(char **str_arr);
+int			is_redirection(char *str, t_cmd *cmd, char *next);
+bool		valid_redirection(char **str_arr);
+bool		valid_pipe(char **str_arr);
+void		initialise_singlecmd(t_cmd *cmd);
+t_commands	*initialise_t_commands(char **str_arr);
+void		free_commands(t_commands *commands);
 
 // Parser env utils
-int     get_envlen_and_find(char *str,
-            t_envar **envar, t_list **env, char quote);
+int			get_envlen_and_find(char *str,
+				t_envar **envar, t_list **env, char quote);
 
 // To update str with environment variable
-char	*check_update_env(char *str, t_list **env);
+char		*check_update_env(char *str, t_list **env);
 
 // Enhanced ft_split to consider validity of quotes 
 // and splitting according to quotes
-char	**ft_split_enhanced(char *str, char c);
+char		**ft_split_enhanced(char *str, char c);
 
 #endif
