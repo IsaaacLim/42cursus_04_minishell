@@ -18,6 +18,7 @@ int	main(int argc, char *argv[], char *envp[])
 	init.env = initialise_env(envp);
 	while (1)
 	{
+		printf("$?: %d\n", g_exstat.exit_status); //JR, find this in utils.c
 		signal(SIGINT, ft_sig_handler);
 		init.input = readline("minishell> ");
 		if (init.input == NULL)
