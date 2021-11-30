@@ -58,6 +58,8 @@ bool	ft_execve(char *cmd, char **args, char **envp, t_list *env)
 	int i;
 	char *new_path;
 
+    // attempt execution from relative path
+    execve(cmd, args, envp);
 	// attempt execution from exiting PATH
 	new_path = ft_strjoin2("srcs/built_ins", cmd);
 	execve(new_path, args, envp);
