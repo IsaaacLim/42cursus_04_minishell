@@ -1,6 +1,20 @@
 #include "minishell.h"
 #include "environment.h"
 
+char *give_minishell(void)
+{
+	static char *str[4] = {
+		BOLD KRED"minishell> "RST,
+		BOLD KGRN"minishell> "RST,
+		BOLD KBLU"minishell> "RST,
+		BOLD KCYN"minishell> "RST
+	};
+	static int i = 0;
+
+	i++;
+	return (str[i % 4]);
+}
+
 /*
 ** Readline
 ** 	If input == NULL 
@@ -20,7 +34,7 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		printf("$?: %d\n", g_exstat.exit_status); //JR, find this in utils.c
 		signal(SIGINT, ft_sig_handler);
-		init.input = readline("minishell> ");
+		init.input = readline(give_minishell());
 		if (init.input == NULL)
 		{
 			printf("exit\n");

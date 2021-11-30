@@ -62,7 +62,7 @@ void	export_command(t_list *env)
 	}
 	sort_env(&tmp_arr, len);
 	i = 0;
-	while (i < len - 1)
+	while (i < len)
 	{
 		printf("%s", tmp_arr[i]->name);
 		if (tmp_arr[i]->set)
