@@ -135,7 +135,7 @@ char *return_quote_type(char **str_arr, char *str, char *track)
 	returns NULL if failed, i.e.
 	- invalid quotes
 */
-char **ft_split_enhanced(char *str, char c, char **quote_type)
+char **ft_split_enhanced(char *str, char c)
 {
 	char **str_arr;
 	char *track;
@@ -144,11 +144,8 @@ char **ft_split_enhanced(char *str, char c, char **quote_type)
 	str_arr = NULL;
 	if (valid_quotes(str, track, c, -1))
 	{
-		replace_quotes(str, c);
 		str_arr = ft_split(str, c);
 		replace_char_quotes(str_arr, str, track, c);
-		if (quote_type)
-			*quote_type = return_quote_type(str_arr, str, track);
 	}
 	free(track);
 	return (str_arr);
@@ -407,7 +404,7 @@ int main3()
 {
 	char str[] = "\"export\"";
 	char str2[] = "export";
-	char **str_arr = ft_split_enhanced(str, ' ', NULL);
+	char **str_arr = ft_split_enhanced(str, ' ');
 	char **str_arr2 = ft_split(str, ' ');
 
 	printf("%i\n", ft_strncmp(str_arr[0], str_arr2[0], INT_MAX));

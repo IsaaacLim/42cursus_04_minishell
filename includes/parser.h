@@ -58,6 +58,6 @@ char	*check_update_env(char *str, t_list **env);
 
 // Enhanced ft_split to consider validity of quotes 
 // and splitting according to quotes
-char	**ft_split_enhanced(char *str, char c, char **quote_type);
+char	**ft_split_enhanced(char *str, char c);
 
 #endif
