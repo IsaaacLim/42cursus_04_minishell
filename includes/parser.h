@@ -14,6 +14,7 @@
 # define PARSER_H
 
 # include "libft.h"
+# include "environment.h"
 # include <stdio.h>
 # include <stdbool.h>
 # include <stdlib.h>
@@ -52,6 +53,10 @@ int		num_pipes(char **str_arr);
 int		is_redirection(char *str, t_cmd *cmd, char *next);
 bool	valid_redirection(char **str_arr);
 bool	valid_pipe(char **str_arr);
+
+// Parser env utils
+int     get_envlen_and_find(char *str,
+            t_envar **envar, t_list **env, char quote);
 
 // To update str with environment variable
 char	*check_update_env(char *str, t_list **env);
