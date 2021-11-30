@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
     i = 1;
     nl = true;
-    if (argc >= 2 && argv[1][0] == '-' && argv[1][1] == 'n')
+    if (argc >= 2 && argv[1][0] == '-' && argv[1][1] == 'n' && !argv[1][2])
     {
         i = 2;
         nl = false;

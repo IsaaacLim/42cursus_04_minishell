@@ -10,15 +10,25 @@ void	ft_exit(t_process *init)
 	exit (0);
 }
 
-// void	ft_eval_exit(t_process init, char **argv)
-// {
-// 	if (!argv[1])
-// 	{
-// 		ft_free_double_arr(argv);
-// 		ft_exit(&init);
-// 	}
-// 	else if (argv[2])
-// 		g_exit_status = 1;
-// 	else if(argv[1])
+void	ft_eval_exit(t_process init, t_commands *cmds)
+{
+	char	**last_argv;
+	int		argc;
 
-// }
+	last_argv = cmds->commands[cmds->len - 1].args;
+	argc = 1;
+	while (last_argv[argc])
+		argc++;
+	if (argc > 2)
+	{
+		g_exit_status = 1;
+		printf("exit: too many arguments\n");
+		return ;
+	}
+	else if(argc == 2)
+		g_exit_status = ft_atoi(last_argv[1]);
+	else
+		g_exit_status = 0;
+	free_commands(cmds);
+	ft_exit(&init);
+}
