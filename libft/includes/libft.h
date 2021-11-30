@@ -25,7 +25,7 @@ void	ft_putstr_fd(char *s, int fd);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strjoin_bonus(char const *s1, char const *s2, char c);
+char	*ft_strjoin_bonus(char const *s1, char const *s2, char const *fill);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);

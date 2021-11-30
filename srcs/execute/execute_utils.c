@@ -30,7 +30,7 @@ char	**ft_get_envp(t_list *env)
 	while(i < lstsize && env)
 	{
 		envar = (t_envar *)env->content;
-		arr[i] = ft_strjoin_bonus(envar->name, envar->word, '=');
+		arr[i] = ft_strjoin_bonus(envar->name, envar->word, "=");
 		if (!arr[i])
 			ft_libft_error("ft_strjoin_bonus failed in ft_get_envp");
 		env = env->next;

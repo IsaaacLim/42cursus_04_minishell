@@ -2,9 +2,18 @@
 #include <unistd.h>
 #include <limits.h>
 
+#include <stdlib.h>
 int	main(int argc, char *argv[])
 {
 	char cwd[PATH_MAX];
+
+
+	char *env;
+	env = getenv("PWD");
+	if (!env)
+		printf("No match\n");
+	else
+		printf("%s => %s\n", "PWD", env);
 
 	if (argc != 1)
 	{

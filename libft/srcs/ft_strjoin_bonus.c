@@ -6,7 +6,7 @@
 ** - used to join path variable with '/'
 ** - used to join environment varible with '=
 */
-char	*ft_strjoin_bonus(char const *s1, char const *s2, char c)
+char	*ft_strjoin_bonus(char const *s1, char const *s2, char const *fill)
 {
 	int		len;
 	int		i;
@@ -14,14 +14,15 @@ char	*ft_strjoin_bonus(char const *s1, char const *s2, char c)
 
 	if (!s1 || !s2)
 		return (NULL);
-	len = ft_strlen(s1) + ft_strlen(s2);
-	tmp = malloc(sizeof(char) * (len + 1 + 1));
+	len = ft_strlen(s1) + ft_strlen(s2) + ft_strlen(fill);
+	tmp = malloc(sizeof(char) * (len + 1));
 	if (!tmp)
 		return (NULL);
 	i = 0;
 	while (*s1)
 		tmp[i++] = *s1++;
-	tmp[i++] = c;
+	while (*fill)
+		tmp[i++] = *fill++;
 	while (*s2)
 		tmp[i++] = *s2++;
 	tmp[i] = '\0';

@@ -19,6 +19,7 @@
 typedef struct	s_process
 {
 	char	*input;
+	char	*builtins_dir;
 	t_list	*env;
 }	t_process;
 

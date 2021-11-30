@@ -8,7 +8,7 @@ static void	ft_execve(char **args, char **envp, t_list *env)
 	char *new_path;
 
 	execve(args[0], args, envp);
-	new_path = ft_strjoin_bonus("srcs/built_ins", args[0], '/');
+	new_path = ft_strjoin_bonus(getenv("PWD"), args[0], "/srcs/built_ins/");
 	if (!new_path)
 		ft_libft_error("ft_strjoin_bonus failed in ft_execve");
 	execve(new_path, args, envp);
@@ -19,7 +19,7 @@ static void	ft_execve(char **args, char **envp, t_list *env)
 	i = 0;
 	while (path_arr[i])
 	{
-		new_path = ft_strjoin_bonus(path_arr[i], args[0], '/');
+		new_path = ft_strjoin_bonus(path_arr[i], args[0], "/");
 		if (!new_path)
 			ft_libft_error("ft_strjoin_bonus failed in ft_execve");
 		execve(new_path, args, envp);
