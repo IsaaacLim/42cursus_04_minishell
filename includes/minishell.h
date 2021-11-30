@@ -1,8 +1,8 @@
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
 # include "libft.h"
-#include "parser.h"
+# include "parser.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -15,15 +15,14 @@
 # include <sys/wait.h>
 # include <sys/signal.h>
 
-
-typedef struct	s_process
+typedef struct s_process
 {
 	char	*input;
 	char	*builtins_dir;
 	t_list	*env;
 }	t_process;
 
-int	g_exit_status;
+int		g_exit_status;
 
 //error.c
 void	ft_libft_error(char *message);
@@ -44,8 +43,7 @@ void	ft_redir_pipe(int fdnew[2], int fdpipe[2]);
 
 // parser.c
 void	read_str(char *str, t_commands **commands, t_list **env);
-void free_commands(t_commands *commands);
-void print_commands(t_commands *cmds); //temp
+void	free_commands(t_commands *commands);
 
 // process_init.c
 void	ft_process(t_commands *cmds, t_process init);
@@ -59,8 +57,7 @@ void	ft_cd(char **argv, t_list *env);
 void	ft_exit(t_process *init);
 void	ft_eval_exit(t_process init, t_commands *cmds);
 
-
 //signals
-void ft_sig_handler();
+void	ft_sig_handler();
 
 #endif

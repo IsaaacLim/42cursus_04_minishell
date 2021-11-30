@@ -51,8 +51,6 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		add_history(init.input);
 		read_str(init.input, &commands, &init.env);
-        if (!commands)
-            continue ;
 		if (ft_is_process(*commands))
 			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)

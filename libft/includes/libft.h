@@ -31,5 +31,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strcpy(char *str);
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
 
 #endif

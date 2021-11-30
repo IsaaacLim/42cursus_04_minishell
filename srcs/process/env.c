@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/30 15:17:18 by jkhong            #+#    #+#             */
+/*   Updated: 2021/11/30 15:17:18 by jkhong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "environment.h"
 
-static void env_command(t_list *env)
+static void	env_command(t_list *env)
 {
-	t_envar *envar;
+	t_envar	*envar;
 
 	while (env)
 	{

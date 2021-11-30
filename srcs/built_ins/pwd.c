@@ -4,7 +4,7 @@
 
 int	main(int argc, char *argv[])
 {
-	char cwd[PATH_MAX];
+	char	cwd[PATH_MAX];
 
 	if (argc != 1)
 	{
