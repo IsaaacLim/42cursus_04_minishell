@@ -127,11 +127,11 @@ t_commands	*initialise_t_commands(char **str_arr)
 	t_commands	*cmds;
 
 	cmd_len = num_pipes(str_arr) + 1;
-	cmds->len = cmd_len;
 	cmds = malloc(sizeof(t_commands));
 	if (!cmds)
 		return (NULL);
 	cmds->commands = malloc(sizeof(t_cmd) * (cmd_len + 1));
+	cmds->len = cmd_len;
 	return (cmds);
 }
 
@@ -158,7 +158,7 @@ t_commands *parse_commands(char *str, t_list **env)
 		}
 	}
 	else
-		return (NULL);
+		cmds = NULL;
 	ft_free_double_arr(str_arr);
 	free(quote_type);
 	return (cmds);
