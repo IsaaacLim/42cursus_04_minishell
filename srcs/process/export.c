@@ -87,10 +87,12 @@ void	export_add(t_list **env, char *env_str)
 	// if (!valid_identifier(parse_env->name))
 	if (error)
 	{
-		invalid_identifier_msg("unset", parse_env->name);
+		invalid_identifier_msg("export", parse_env->name);
 		free_envar((void *)parse_env);
 		return ;
 	}
+	printf("%s\n", parse_env->name);
+	printf("%s\n", parse_env->word);
 	found = found_env(env, NULL, parse_env->name, INT_MAX);
 	if (!found)
 		ft_lstadd_back(env, ft_lstnew((void *)parse_env));
