@@ -61,8 +61,12 @@ void	free_envar(void *content)
 	t_envar	*envar;
 
 	envar = (t_envar *)content;
-	free(envar->name);
-	free(envar->word);
+	if (!envar)
+		return ;
+	if (envar->name)
+		free(envar->name);
+	if (envar->word)
+		free(envar->word);
 	free(content);
 }
 

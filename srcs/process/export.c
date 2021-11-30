@@ -1,25 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/30 18:17:41 by jkhong            #+#    #+#             */
+/*   Updated: 2021/11/30 18:17:41 by jkhong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "environment.h"
 
-int ft_lstlen(t_list *lst)
+/*
+	Purpose:
+	Sorts environment variable by NAME in alphabetical order
+*/
+static void	sort_env(t_envar ***env, int len)
 {
-	int len;
-
-	len = 0;
-	while (lst)
-	{
-		len++;
-		lst = lst->next;
-	}
-	return (len);
-}
-
-// do i even need to do this?
-void sort_print(t_envar ***env, int len)
-{
-	int i;
-	int j;
-	t_envar **ptr;
-	t_envar *tmp;
+	int		i;
+	int		j;
+	t_envar	**ptr;
+	t_envar	*tmp;
 
 	ptr = *env;
 	i = 0;
@@ -28,7 +30,7 @@ void sort_print(t_envar ***env, int len)
 		j = i + 1;
 		while (j < len)
 		{
-			if (ft_strncmp(ptr[i]->name, ptr[j]->name, __INT_MAX__) > 0)
+			if (ft_strncmp(ptr[i]->name, ptr[j]->name, INT_MAX) > 0)
 			{
 				tmp = ptr[i];
 				ptr[i] = ptr[j];
@@ -40,13 +42,17 @@ void sort_print(t_envar ***env, int len)
 	}
 }
 
-void export_command(t_list *env)
+/*
+	Constructs temporary array tmp_arr to order
+	environment variables alphabetically using sort_env
+*/
+void	export_command(t_list *env)
 {
-	int len;
-	t_envar **tmp_arr;
-	int i;
+	int		len;
+	t_envar	**tmp_arr;
+	int		i;
 
-	len = ft_lstlen(env);
+	len = ft_lstsize(env);
 	tmp_arr = malloc(sizeof(t_envar *) * len);
 	i = 0;
 	while (env)
@@ -54,11 +60,8 @@ void export_command(t_list *env)
 		tmp_arr[i++] = (env)->content;
 		env = env->next;
 	}
-	// SORT
-	sort_print(&tmp_arr, len);
-	// PRINT
+	sort_env(&tmp_arr, len);
 	i = 0;
-	// to exclude environment variable _
 	while (i < len - 1)
 	{
 		printf("%s", tmp_arr[i]->name);
@@ -72,17 +75,21 @@ void export_command(t_list *env)
 
 int error = false;
 
-
-void export_add(t_list **env, char *env_str)
+/*
+	Adds additional variable into env struct
+*/
+void	export_add(t_list **env, char *env_str)
 {
-	t_envar *parse_env;
-	t_list *found;
-	// code validation function to check string for both environment name and word
+	t_envar		*parse_env;
+	t_list		*found;
+
 	parse_env = parse_env_var(env_str);
+	// if (!valid_identifier(parse_env->name))
 	if (error)
 	{
+		invalid_identifier_msg("unset", parse_env->name);
 		free_envar((void *)parse_env);
-		return;
+		return ;
 	}
 	found = found_env(env, NULL, parse_env->name, INT_MAX);
 	if (!found)
@@ -91,40 +98,6 @@ void export_add(t_list **env, char *env_str)
 	{
 		free_envar(found->content);
 		found->content = parse_env;
-		return;
+		return ;
 	}
 }
-
-
-// int main(int argc, char *argv[], char *envp[])
-// {
-// 	t_list *env;
-
-// 	env = initialise_env(envp);
-
-// 	unset(&env, "XDG_DATA_DIRS");
-// 	unset(&env, "WSL_INTEROP");
-// 	unset(&env, "WSL_DISTRO_NAME");
-// 	// export_add(&env, "WSL_DISTRO_NAME=lsajfd");
-// 	// env(env);
-// 	export_command(env);
-
-// 	// to free -> include towards end of main
-// 	ft_lstclear(&env, free_envar);
-// 	return (0);
-// }
-
-/* considerations
-	- capture open and close quotes, even if user didnt add them
-	- e.g. export what=asd asd -> what="asd"
-		- export display will show open and close quotes
-	- trim export input via parsing?
-
-*/
-// int main(void)
-// {
-// 	t_envar *envar = parse_env_var("TERM_PROGRAM=vscode");
-
-// 	printf("%s, %i, %s\n", envar->name, envar->set, envar->word);
-// 	return (0);
-// }

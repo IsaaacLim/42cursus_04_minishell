@@ -12,10 +12,7 @@
 
 #include "environment.h"
 
-// replace this with validation checks
-static int error = false;
-
-void	unset(t_list **env, char *env_str)
+int	unset(t_list **env, char *env_str)
 {
 	t_envar	*parse_env;
 	t_list	*found;
@@ -23,8 +20,14 @@ void	unset(t_list **env, char *env_str)
 
 	prev = NULL;
 	parse_env = parse_env_var(env_str);
-	if (error)
+	if (false)
 		;
+	// if (!valid_identifier(parse_env->name))
+	// {
+	// 	invalid_identifier_msg("unset", parse_env->name);
+	// 	free_envar((void *)parse_env);
+	// 	return (1);
+	// }
 	else
 	{
 		found = found_env(env, &prev, parse_env->name, INT_MAX);
@@ -34,4 +37,5 @@ void	unset(t_list **env, char *env_str)
 			ft_lstdelone(found, free_envar);
 		}
 	}
+	return (0);
 }
