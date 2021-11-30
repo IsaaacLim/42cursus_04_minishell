@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
 int	num_pipes(char **str_arr)
@@ -27,27 +26,17 @@ int	num_pipes(char **str_arr)
 	return (pipes);
 }
 
-// TODO - free commands
-// TODO - process error
-
 /*
-	This somehow works
-	- cat -n < what
-	- cat < what -n
-
-*/
-
-/*
-	4 Scenarios
+	Purpose:
+	1. Verification of whether str relates to a redirection
+	2. Updates t_cmd variable for redirection found.
+	   t_cmd variable is initialised to zero previously if not updated
+	3. Four types of redirections:
 	- << & char *
 	- < & char *
 	- > & char *
-	- >> & char *
-
-	Check against str_arr + 1 incase its null terminated
-
-	returns redirection enum,
-	0 would mean a redirection is not found
+	- >> & char * 
+	4. Returns 0 (not found) or integer value (found)
 */
 int	is_redirection(char *str, t_cmd *cmd, char *next)
 {
@@ -78,6 +67,13 @@ int	is_redirection(char *str, t_cmd *cmd, char *next)
 	return (redir);
 }
 
+/*
+	Purpose:
+	Validates if redirection is followed by a filename
+	Returns:
+	false if followed by (i) nothing or (ii) pipe
+	true if followed by filename
+*/
 bool	valid_redirection(char **str_arr)
 {
 	while (*str_arr)
@@ -93,6 +89,13 @@ bool	valid_redirection(char **str_arr)
 	return (true);
 }
 
+/*
+	Validates if pipe is valid:
+	Returns false if:
+	(i) first str arg is a pipe (index 0)
+	(ii) next string is a pipe
+	(iii) pipe is the last str in the array
+*/
 bool	valid_pipe(char **str_arr)
 {
 	int	i;
@@ -100,12 +103,10 @@ bool	valid_pipe(char **str_arr)
 	i = 0;
 	while (str_arr[i])
 	{
-		// return false if pipe is first arg
 		if (i == 0 && ft_strncmp(str_arr[i], "|", INT_MAX) == 0)
 			return (false);
 		if (ft_strncmp(str_arr[i], "|", INT_MAX) == 0)
 		{
-			// checks if previous/next arg is pipe, and if next is NULL
 			if (str_arr[i + 1] == NULL
 				|| ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0
 				|| ft_strncmp(str_arr[i + 1], "|", INT_MAX) == 0)

@@ -14,13 +14,20 @@
 #include "parser.h"
 
 /*
-** Copy of parser/parser.c file
-** Without main, ft_readline, ft_free_double_arr
-** Additional minishell.h, parser.h located in minishell.h
-** read_str takes in pointer to t_commands variable, moved free to int_main
+	Considerations for redirection
+	Edge cases for handling redirection
+		- redirection must be an arrow followed by a filename
+	Sequence doesn't matter
+		- > hi cat < README.md
+	Prompts syntax error if missing filename
+		- > [missing filename]
+		- [missing filename] <
 */
 
-void initialise_singlecmd(t_cmd *cmd)
+/*
+	Initialiser for t_cmd variable to 0 or NULL
+*/
+void	initialise_singlecmd(t_cmd *cmd)
 {
 	cmd->args = NULL;
 	cmd->input = 0;
@@ -30,44 +37,48 @@ void initialise_singlecmd(t_cmd *cmd)
 }
 
 /*
-	Edge cases for handling redirection
-	- no other commands (works)
-		- < filename.txt
-		- > filename.txt - creates empty file
-	Sequence doesn't matter
-		- > hi cat < README.md
-	Prompts syntax error if missing filename
-		- > [missing filename]
-		- [missing filename] <
-	
-	Return NULL if syntax error found
+	Purpose:
+	- Scans str_arr and returns arg_len
+	- Deduct 2 * redir because each redirection would have an arrow and filename
 */
-t_cmd parse_singlecmd(char **str_arr, t_list **env, char *quote_type)
+int	calc_arg_len(char **str_arr, t_cmd *cmd)
 {
-	int i;
-	int j;
-	int arg_len;
-	int redir;
-	t_cmd cmd;
+	int	i;
+	int	redir;
 
 	i = 0;
-	j = 0;
-	arg_len = 0;
 	redir = 0;
-	initialise_singlecmd(&cmd);
-	// checks that str_arr is not null terminated
+	initialise_singlecmd(cmd);
 	while (str_arr[i] && ft_strncmp(str_arr[i], "|", INT_MAX) != 0)
 	{
-		if (is_redirection(str_arr[i], &cmd, str_arr[i + 1]))
-			arg_len++;
+		if (is_redirection(str_arr[i], cmd, str_arr[i + 1]))
+			redir++;
 		i++;
 	}
-	/* 
-		- arg_len calculated above stores the number of redirections
-		- I'm assuming that our function below would have cleaned and made sure that every redirection
-			is paired with a corresponding filename
-	*/
-	arg_len = i - (2 * arg_len);
+	return (i - (2 * redir));
+}
+
+/*
+	Purpose:
+	Returns a t_cmd variable which contains:
+	(i) arguments in type (char **)
+	(ii) redirection for input and output
+	(iii) if redirection is necessary, filename of infile and outfile
+	Steps:
+	1. Initialise t_cmd
+	2. Updates redirection and calculates argument length (ignore pipe |)
+		checks str_arr is not NULL
+*/
+t_cmd	parse_singlecmd(char **str_arr, t_list **env, char *quote_type)
+{
+	int		i;
+	int		j;
+	int		arg_len;
+	int		redir;
+	t_cmd	cmd;
+
+	j = 0;
+	arg_len = calc_arg_len(str_arr, &cmd);
 	cmd.args = malloc(sizeof(char *) * (arg_len + 1));
 	i = 0;
 	while (str_arr[i] && ft_strncmp(str_arr[i], "|", INT_MAX) != 0)
@@ -87,23 +98,13 @@ t_cmd parse_singlecmd(char **str_arr, t_list **env, char *quote_type)
 	return (cmd);
 }
 
-/*
-	// NO LONGER NEED NULL TERMINATOR
-	Assumes str is a single string of commands
-	- Passing in argument with no pipe, will malloc t_cmd ** of 2
-		a. first t_cmd * for first command
-		b. 2nd t_cmd for NULL terminate
-		c. This assumes that the first command will have a command
-	- Passing in arg with 1 pipe and above
-		a. will malloc t_cmd ** of 1 pipe + 2 (1 for a command and another for NULL)
-*/
-void free_commands(t_commands *commands)
+void	free_commands(t_commands *commands)
 {
-	t_cmd *cmds;
-	int i;
+	t_cmd	*cmds;
+	int		i;
 
 	if (!commands)
-		return;
+		return ;
 	i = 0;
 	cmds = commands->commands;
 	while (i < commands->len)
@@ -117,77 +118,58 @@ void free_commands(t_commands *commands)
 		i++;
 	}
 	free(cmds);
-	// if (commands->quote_type)
-	// 	free(commands->quote_type);
 	free(commands);
 }
 
-// Do i even need to return a pointer for this?
+t_commands	*initialise_t_commands(char **str_arr)
+{
+	int			cmd_len;
+	t_commands	*cmds;
+
+	cmd_len = num_pipes(str_arr) + 1;
+	cmds->len = cmd_len;
+	cmds = malloc(sizeof(t_commands));
+	if (!cmds)
+		return (NULL);
+	cmds->commands = malloc(sizeof(t_cmd) * (cmd_len + 1));
+	return (cmds);
+}
+
 t_commands *parse_commands(char *str, t_list **env)
 {
-	char **str_arr;
-	t_commands *commands;
-	char *quote_type;
-	int cmd_len;
-	int i;
-	int j;
+	char		**str_arr;
+	t_commands	*cmds;
+	char		*quote_type;
+	int			i;
+	int			j;
 
 	i = 0;
 	j = 0;
-	quote_type = NULL;
 	str_arr = ft_split_enhanced(str, ' ', &quote_type);
-	if (!str_arr || !valid_redirection(str_arr) || !valid_pipe(str_arr))
+	if (str_arr && valid_redirection(str_arr) && valid_pipe(str_arr))
 	{
-		printf("Syntax error near unexpected token\n");
-		free(quote_type);
-		ft_free_double_arr(str_arr);
+		cmds = initialise_t_commands(str_arr);
+		while (str_arr[i])
+		{
+			if (i == 0 || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0)
+				(cmds->commands)[j++]
+					= parse_singlecmd(&str_arr[i], env, &(quote_type[i]));
+			i++;
+		}
+	}
+	else
 		return (NULL);
-	}
-	cmd_len = num_pipes(str_arr) + 1;
-	commands = malloc(sizeof(t_commands));
-	commands->commands = malloc(sizeof(t_cmd) * (cmd_len + 1));
-	commands->len = cmd_len;
-	// Parse commands
-	while (str_arr[i])
-	{
-		if (i == 0 || ft_strncmp(str_arr[i - 1], "|", INT_MAX) == 0)
-			(commands->commands)[j++] = parse_singlecmd(&str_arr[i], env, &(quote_type[i]));
-		i++;
-	}
 	ft_free_double_arr(str_arr);
 	free(quote_type);
-	return (commands);
+	return (cmds);
 }
 
-void print_commands(t_commands *cmds)
+void	read_str(char *str, t_commands **commands, t_list **env)
 {
-	int i;
-	char **args;
-
-	i = 0;
-	while (i < cmds->len)
-	{
-		if (i != 0)
-			printf("<----------------->\n");
-		args = cmds->commands[i].args;
-		while (*args)
-		{
-			printf("%s ", *args);
-			args++;
-		}
-		printf("\n");
-		printf("input: %i - %s\n", cmds->commands[i].input, cmds->commands[i].infile);
-		printf("input: %i - %s\n", cmds->commands[i].output, cmds->commands[i].outfile);
-		i++;
-	}
-}
-
-void read_str(char *str, t_commands **commands, t_list **env)
-{
-	// t_commands *commands;
 	*commands = parse_commands(str, env);
 	if (!*commands)
-		return;
-	// print_commands(commands);
-	// free_commands(commands);
+	{
+		printf("Syntax error near unexpected token\n");
+		return ;
+	}
 }
