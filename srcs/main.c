@@ -30,7 +30,10 @@ int	main(int argc, char *argv[], char *envp[])
 		add_history(init.input);
 		read_str(init.input, &commands, &init.env);
         if (!commands)
+		{
+			ft_exit_status(2);
             continue ;
+		}
 		if (ft_is_process(*commands))
 			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)
@@ -38,7 +41,6 @@ int	main(int argc, char *argv[], char *envp[])
 		free_commands(commands);
 		init.input = NULL;
 		free(init.input);
-		printf("$?: %d\n", g_exit_status);
 	}
 	// system("leaks minishell");
 }

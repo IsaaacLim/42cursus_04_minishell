@@ -9,7 +9,7 @@ void	ft_sig_handler(int signo)
 {
 	if (signo == SIGINT)
 	{
-		g_exit_status = 130;
+		ft_exit_status(130);
 		rl_replace_line("", 0);
 		printf("\n");
 		rl_on_new_line();

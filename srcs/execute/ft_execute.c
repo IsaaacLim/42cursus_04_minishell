@@ -35,9 +35,9 @@ static void	ft_execve(char **args, char **envp, t_list *env)
 */
 static void	ft_child_process(char **args, char **envp, t_list *env)
 {
-	int	exit_status;
+	int	exit_num;
 
-	exit_status = 0;
+	exit_num = 0;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
 	if (!ft_strncmp(args[0], "export", 7))
@@ -48,8 +48,10 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 		printf("command not found: %s\n", args[0]);
 		exit (127);
 	}
-	exit (exit_status);
+	exit (exit_num);
 }
+
+
 
 /*
 ** Restore STDIN/OUT fd
@@ -73,17 +75,17 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp)
 	wtermsig = WTERMSIG(child_status);
 	wexitstatus = WEXITSTATUS(child_status);
 	if (wifexited)
-		g_exit_status = wexitstatus;
+		ft_exit_status(wexitstatus);
 	else if (wifsignaled)
 	{
 		if (wtermsig == 2)
 			printf("\n");
 		else if(wtermsig == 3)
 			printf("msh: quit\n");
-		g_exit_status = wtermsig + 128;
+		ft_exit_status(wtermsig + 128);
 	}
 	else
-		g_exit_status = -1;
+		ft_exit_status(-1);
 	ft_free_double_arr(envp);
 }
 
