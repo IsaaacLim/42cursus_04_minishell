@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/30 15:24:43 by jkhong            #+#    #+#             */
+/*   Updated: 2021/11/30 15:24:43 by jkhong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "environment.h"
 
 // replace this with validation checks
 static int error = false;
 
-void unset(t_list **env, char *env_str)
+void	unset(t_list **env, char *env_str)
 {
-	t_envar *parse_env;
-	t_list *found;
-	t_list *prev;
+	t_envar	*parse_env;
+	t_list	*found;
+	t_list	*prev;
 
 	prev = NULL;
 	parse_env = parse_env_var(env_str);
