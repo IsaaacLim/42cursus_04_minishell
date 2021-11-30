@@ -6,7 +6,7 @@
 ** - used to join path variable with '/'
 ** - used to join environment varible with '=
 */
-char	*ft_strjoin2(char const *s1, char const *s2, char c)
+char	*ft_strjoin_bonus(char const *s1, char const *s2, char c)
 {
 	int		len;
 	int		i;
