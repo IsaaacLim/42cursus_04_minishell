@@ -1,38 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 15:17:18 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 15:17:18 by jkhong           ###   ########.fr       */
+/*   Created: 2021/04/27 17:21:33 by jkhong            #+#    #+#             */
+/*   Updated: 2021/05/02 11:41:34 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "environment.h"
-
-static void	env_command(t_list *env)
+int	ft_isalpha(int c)
 {
-	t_envar	*envar;
-
-	while (env)
-	{
-		envar = (t_envar *)env->content;
-		if (envar->set)
-			printf("%s=%s\n", envar->name, envar->word);
-		env = env->next;
-	}
-}
-
-int	ft_display_env(t_list *env, char **args)
-{
-	if (args[1])
-	{
-		printf("only env with no options or arguments\n");
-		return (127);
-	}
-	else
-		env_command(env);
-	return (0);
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }
