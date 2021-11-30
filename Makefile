@@ -1,11 +1,7 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-PARSER_LST	=	parser/parser.c	parser/parser_utils.c parser/parser_utils2.c	\
-				parser/parse_env.c		parser/parse_env_utils.c			\
-				parser/ft_split_enhanced.c
-SRCS_LST	=	error.c			${PARSER_LST}	main.c		\
-				process_init.c	utils.c
+SRCS_LST	=	error.c		main.c		process_init.c		utils.c			\
 
 EXEC_DIR	=	execute/
 EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
@@ -17,7 +13,13 @@ PROCS_LST	=	env_validate.c		env.c			environment_utils.c		\
 				ft_cd.c				ft_exit.c
 PROCS		=	$(addprefix $(PROCS_DIR), $(PROCS_LST))
 
-SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(EXEC) $(PROCS))
+PARSER_DIR	=	parser/
+PARSER_LST	=	parser.c			parser_utils.c 		parser_utils2.c		\
+				parse_env.c			parse_env_utils.c						\
+				ft_split_enhanced.c
+PARSER		=	$(addprefix $(PARSER_DIR), $(PARSER_LST))
+
+SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(EXEC) $(PROCS) $(PARSER))
 OBJS		=	$(SRCS:.c=.o)
 
 HDRS_DIR	=	./includes/

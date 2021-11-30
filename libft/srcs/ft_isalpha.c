@@ -1,29 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcpy.c                                        :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 18:27:09 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 18:27:09 by jkhong           ###   ########.fr       */
+/*   Created: 2021/04/27 17:21:33 by jkhong            #+#    #+#             */
+/*   Updated: 2021/05/02 11:41:34 by jkhong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-char	*ft_strcpy(char *str)
+int	ft_isalpha(int c)
 {
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	tmp = malloc(sizeof(ft_strlen(str) + 1));
-	while (*str)
-	{
-		tmp[i++] = *str;
-		str++;
-	}
-	tmp[i] = '\0';
-	return (tmp);
+	return ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'));
 }
