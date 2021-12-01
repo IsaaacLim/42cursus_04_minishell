@@ -10,26 +10,22 @@
 */
 int	ft_environment(char *argv[], t_list *env)
 {
-	char	**envp;
-	int		argc;
-	int		i;
+	int	i;
+	int	ret;
 
-	argc = 0;
-	while (argv[argc])
-		argc++;
-	if (argc < 2)
+	if (!argv[1])
 	{
-		printf("ft_environment: too little arg. Not supposed to reach here\n");
+		printf("unset: not enough arguments\n");
 		return (1);
 	}
 	i = 1;
-	while (argc > 1 && argv[i])
+	while (argv[i])
 	{
 		if(!ft_strncmp(argv[0], "export", 7))
 			export_add(&env, argv[i]);
 		else if(!ft_strncmp(argv[0], "unset", 6))
-			unset(&env, argv[i]);
+			ret = unset(&env, argv[i]);
 		i++;
 	}
-	return (0);
+	return (ret);
 }
