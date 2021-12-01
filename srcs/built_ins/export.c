@@ -1,16 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 19:59:32 by jinlim            #+#    #+#             */
+/*   Updated: 2021/12/01 20:27:34 by jinlim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
-
-static int	ft_strlen(char *str)
-{
-	int	len;
-
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
-}
 
 static char	*ft_strdup(const char *s1)
 {
@@ -48,9 +50,9 @@ static int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 static void	ft_sort_envp(char **envp, int envp_len)
 {
-	char *tmp;
-	int	i;
-	int	j;
+	char	*tmp;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < envp_len)
@@ -67,6 +69,24 @@ static void	ft_sort_envp(char **envp, int envp_len)
 			j++;
 		}
 		i++;
+	}
+}
+
+static void	ft_display(char **tmp_arr)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (tmp_arr[++i])
+	{
+		printf("%s", tmp_arr[i]);
+		j = 0;
+		while (tmp_arr[i][j])
+			j++;
+		if (tmp_arr[i][j - 1] == '=')
+			printf("''");
+		printf("\n");
 	}
 }
 
@@ -94,14 +114,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	tmp_arr[new_len] = NULL;
 	ft_sort_envp(tmp_arr, new_len);
-	i = -1;
-	while (tmp_arr[++i])
-	{
-		printf("%s", tmp_arr[i]);
-		if (tmp_arr[i][ft_strlen(tmp_arr[i]) - 1] == '=')
-			printf("''");
-		printf("\n");
-	}
+	ft_display(tmp_arr);
 	free (tmp_arr);
 	return (0);
 }
