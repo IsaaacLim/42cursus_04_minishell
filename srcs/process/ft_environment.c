@@ -15,16 +15,22 @@ int	ft_environment(char *argv[], t_list *env)
 
 	if (!argv[1])
 	{
+		//only for unset because export without any arg won't reach here
 		printf("unset: not enough arguments\n");
 		return (1);
 	}
+	ret = 0;
 	i = 1;
 	while (argv[i])
 	{
 		if(!ft_strncmp(argv[0], "export", 7))
-			export_add(&env, argv[i]);
+		{
+			if (export_add(&env, argv[i]) != 0)
+				ret = 1;
+		}
 		else if(!ft_strncmp(argv[0], "unset", 6))
-			ret = unset(&env, argv[i]);
+			if (unset(&env, argv[i]) != 0)
+				ret = 1;
 		i++;
 	}
 	return (ret);
