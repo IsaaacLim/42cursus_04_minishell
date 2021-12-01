@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 20:50:54 by jinlim            #+#    #+#             */
+/*   Updated: 2021/12/01 20:50:55 by jinlim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "environment.h"
 
@@ -27,7 +39,7 @@ char	**ft_get_envp(t_list *env)
 	if (!arr)
 		ft_libft_error("malloc failed in ft_get_envp");
 	i = 0;
-	while(i < lstsize && env)
+	while (i < lstsize && env)
 	{
 		envar = (t_envar *)env->content;
 		arr[i] = ft_strjoin_bonus(envar->name, envar->word, "=");
@@ -45,14 +57,14 @@ char	**ft_get_envp(t_list *env)
 */
 char	**split_path(t_list *env)
 {
-	t_envar *envar;
+	t_envar	*envar;
 
 	envar = NULL;
 	while (env)
 	{
 		envar = (t_envar *)(env->content);
 		if (ft_strncmp(envar->name, "PATH", 5) == 0)
-			break ;		
+			break ;
 		env = env->next;
 	}
 	if (!envar)
