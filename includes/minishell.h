@@ -31,7 +31,6 @@
 typedef struct s_process
 {
 	char	*input;
-	char	*builtins_dir;
 	t_list	*env;
 }	t_process;
 
@@ -61,7 +60,7 @@ void	ft_redir_out(t_cmd commands, int *fdout, int stdout);
 void	ft_redir_pipe(int fdnew[2], int fdpipe[2]);
 
 // parser.c
-void	read_str(char *str, t_commands **commands, t_list **env);
+int	read_str(char *str, t_commands **commands, t_list **env);
 void	free_commands(t_commands *commands);
 
 // process_init.c
