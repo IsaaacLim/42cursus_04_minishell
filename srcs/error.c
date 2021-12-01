@@ -1,8 +1,8 @@
 #include "minishell.h"
 
 /*
-** Used as error handling for libft functions
-** perror / strerror will be used for built-in library functions
+** Used as error handling for UNEXPECTING libft functions
+** exit program if occurs
 */
 void	ft_libft_error(char *strerror)
 {
@@ -11,11 +11,11 @@ void	ft_libft_error(char *strerror)
 }
 
 /*
-** Used as error handling for library functions
-** Prints error message then exit program
+** Used as error handling for UNEXPECTING library functions
+** exit program if occurs
 */
-void	ft_perror(char *message)
+void	ft_perror_exit(char *message)
 {
 	perror(message);
-	exit (2);
+	exit (24);
 }

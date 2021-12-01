@@ -10,7 +10,7 @@ char	**arr_process(void)
 
 	process = (char **)malloc(sizeof(char *) * 5);
 	if (!process)
-		ft_perror("arr_process()");
+		ft_perror_exit("arr_process()");
 	process[0] = ft_strdup("cd");
 	process[1] = ft_strdup("export");
 	process[2] = ft_strdup("unset");

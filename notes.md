@@ -87,6 +87,6 @@ Isaac's To Do:
 - test cd with many paths + ~
 - move `export` to built-ins; remove `env` & `export` from processes
 - remove char \*\*envp away from parent_process
-- clean up ft_error and ft_perror
+- clean up ft_error and ft_perror_exit
 - double check expansion of ~ with my ft_cd
 - heredoc ignores all signals, but character is displayed on screen. Registers as one new line

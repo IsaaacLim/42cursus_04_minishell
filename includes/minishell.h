@@ -44,7 +44,7 @@ struct s_exstat	g_exstat;
 
 //error.c
 void	ft_libft_error(char *message);
-void	ft_perror(char *message);
+void	ft_perror_exit(char *message);
 
 // execute_utils.c
 char	**ft_get_envp(t_list *env);

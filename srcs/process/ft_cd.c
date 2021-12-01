@@ -4,7 +4,7 @@
 static void	ft_getcwd(char **cwd)
 {
 	if (getcwd(*cwd, sizeof(*cwd)) == NULL)
-		ft_perror("getcwd failed in ft_cd");
+		ft_perror_exit("getcwd failed in ft_cd");
 }
 
 static int	ft_chdir(char *dir, t_list *env)
@@ -13,7 +13,7 @@ static int	ft_chdir(char *dir, t_list *env)
 	char	*pwd_env;
 
 	if (getcwd(pwd, sizeof(pwd)) == NULL)
-		ft_perror("getcwd failed in ft_cd");
+		ft_perror_exit("getcwd failed in ft_cd");
 	if (chdir(dir) != 0)
 	{
 		printf("cd: No such file or directory: %s\n", dir);
@@ -25,7 +25,7 @@ static int	ft_chdir(char *dir, t_list *env)
 		export_add(&env, pwd_env);
 		free(pwd_env);
 		if (getcwd(pwd, sizeof(pwd)) == NULL)
-			ft_perror("getcwd failed in ft_cd");
+			ft_perror_exit("getcwd failed in ft_cd");
 		pwd_env = ft_strjoin("PWD=", pwd);
 		export_add(&env, pwd_env);
 		free(pwd_env);
