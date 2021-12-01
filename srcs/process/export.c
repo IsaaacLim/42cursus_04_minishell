@@ -70,7 +70,6 @@ void	export_command(t_list *env)
 		if (tmp_arr[i]->set)
 			printf("=\"%s\"", tmp_arr[i]->word);
 		printf("\n");
-		i++;
 	}
 	free(tmp_arr);
 }
@@ -80,18 +79,17 @@ int error = false;
 /*
 	Adds additional variable into env struct
 */
-void	export_add(t_list **env, char *env_str)
+int	export_add(t_list **env, char *env_str)
 {
 	t_envar		*parse_env;
 	t_list		*found;
 
 	parse_env = parse_env_var(env_str);
 	if (!valid_identifier(parse_env->name))
-	// if (error)
 	{
 		invalid_identifier_msg("export", parse_env->name);
 		free_envar((void *)parse_env);
-		return ;
+		return (1);
 	}
 	found = found_env(env, NULL, parse_env->name, INT_MAX);
 	if (!found)
@@ -100,6 +98,6 @@ void	export_add(t_list **env, char *env_str)
 	{
 		free_envar(found->content);
 		found->content = parse_env;
-		return ;
 	}
+	return (0);
 }
