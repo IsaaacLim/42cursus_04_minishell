@@ -78,13 +78,36 @@ static void	*update_with_env(char *str, t_list **env, int tot_len, char *ptr)
 	ptr[tot_len] = '\0';
 }
 
+int	find_tilde(char *str, t_list **env, char **home_ptr)
+{
+	int		len;
+	t_list	*found;
+	t_envar	*envar;
+
+	if (*str != '~' || !ft_strchr("/\0", *(str + 1)))
+		return (0);
+	found = found_env(env, NULL, "HOME", 5);
+	if (!found)
+		return (0);
+	envar = (t_envar *)(found->content);
+	*home_ptr = envar->word;
+	return (envar->word_len);
+}
+
 char	*check_update_env(char *str, t_list **env)
 {
+	int		home_len;
+	char	*home_ptr;
 	int		tot_len;
 	char	*ptr;
 
-	tot_len = return_env_len(str, env);
+	home_len = find_tilde(str, env, &home_ptr);
+	if (home_len > 0)
+		str++;
+	tot_len = return_env_len(str, env) + home_len;
 	ptr = malloc(sizeof(char) * (tot_len + 1));
-	update_with_env(str, env, tot_len, ptr);
+	if (home_len > 0)
+		ft_memcpy(ptr, home_ptr, home_len);
+	update_with_env(str, env, tot_len, &(ptr[home_len]));
 	return (ptr);
 }

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "environment.h"
+#include "minishell.h"
 
 t_envar	*parse_env_var(char *env_str)
 {
@@ -32,8 +33,8 @@ t_envar	*parse_env_var(char *env_str)
 	(envar->name)[len] = '\0';
 	// move position to after equals, =
 	env_str += len;
-    if (envar->set)
-        env_str++;
+	if (envar->set)
+		env_str++;
 	len = ft_strlen(env_str);
 	envar->word = malloc(sizeof(char) * (len + 1));
 	ft_memcpy(envar->word, env_str, sizeof(char) * (len + 1));
@@ -43,6 +44,7 @@ t_envar	*parse_env_var(char *env_str)
 
 /*
 	Basically copies envp to env list format
+	// initialise 
 */
 t_list	*initialise_env(char **envp)
 {
@@ -53,6 +55,9 @@ t_list	*initialise_env(char **envp)
 	env_ptr = NULL;
 	while (envp[i])
 		ft_lstadd_back(&env_ptr, ft_lstnew(parse_env_var(envp[i++])));
+	g_exstat.env = parse_env_var("?=000");
+	(g_exstat.env->word)[1] = '\0';
+	ft_lstadd_back(&env_ptr, ft_lstnew(g_exstat.env));
 	return (env_ptr);
 }
 

@@ -61,9 +61,11 @@ void	export_command(t_list *env)
 		env = env->next;
 	}
 	sort_env(&tmp_arr, len);
-	i = 0;
-	while (i < len)
+	i = -1;
+	while (++i < len)
 	{
+		if (ft_strncmp(tmp_arr[i]->name, "?", 2) == 0)
+			continue ;
 		printf("%s", tmp_arr[i]->name);
 		if (tmp_arr[i]->set)
 			printf("=\"%s\"", tmp_arr[i]->word);
@@ -84,8 +86,8 @@ void	export_add(t_list **env, char *env_str)
 	t_list		*found;
 
 	parse_env = parse_env_var(env_str);
-	// if (!valid_identifier(parse_env->name))
-	if (error)
+	if (!valid_identifier(parse_env->name))
+	// if (error)
 	{
 		invalid_identifier_msg("export", parse_env->name);
 		free_envar((void *)parse_env);

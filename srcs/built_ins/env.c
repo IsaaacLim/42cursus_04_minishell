@@ -11,6 +11,10 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	i = -1;
 	while (envp[++i])
+	{
+		if (envp[i][0] == '?' && envp[i][1] == '=')
+			continue ;
 		printf("%s\n", envp[i]);
+	}
 	return (0);
 }

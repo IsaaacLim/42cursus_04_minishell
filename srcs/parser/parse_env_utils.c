@@ -10,18 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   valid_quotes.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/30 13:50:11 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 13:50:11 by jkhong           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include "environment.h"
 #include "parser.h"
@@ -47,11 +35,11 @@ static t_envar	*found_null_term_env(t_list **env, char *ptr, int env_len)
 }
 
 /*
-    Purpose
-    - Parses str and searches t_list using found_null_term_env function above
-    - updates t_envar variable if found
-    - envar stores NULL if not found
-    - returns environment variable name length inputted as str
+	Purpose
+	- Parses str and searches t_list using found_null_term_env function above
+	- updates t_envar variable if found
+	- envar stores NULL if not found
+	- returns environment variable name length inputted as str
 */
 int	get_envlen_and_find(char *str, t_envar **envar, t_list **env, char quote)
 {
