@@ -1,12 +1,6 @@
 #include "minishell.h"
 #include "environment.h"
 
-static void	ft_getcwd(char **cwd)
-{
-	if (getcwd(*cwd, sizeof(*cwd)) == NULL)
-		ft_perror_exit("getcwd failed in ft_cd");
-}
-
 static int	ft_chdir(char *dir, t_list *env)
 {
 	char	pwd[PATH_MAX];

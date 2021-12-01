@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_enhanced.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:54:59 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 14:54:59 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:59:26 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 */
 static bool	valid_quotes(char *str, char *track, char to_rep, char rep_to)
 {
-	char	*ptr;
 	char	quote;
 
 	quote = 0;

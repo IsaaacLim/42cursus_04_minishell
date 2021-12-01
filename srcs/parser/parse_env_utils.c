@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 14:57:00 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 14:57:00 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:59:31 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 static t_envar	*found_null_term_env(t_list **env, char *ptr, int env_len)
 {
 	t_list	*found;
-	t_envar	*envar;
 	char	c;
 
 	c = ptr[env_len];

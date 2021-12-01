@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:59:32 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 20:45:44 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 21:04:55 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ static int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
+/*
+** Print env variables in lexicographic order
+*/
 static void	ft_display(char **envp, int envp_len)
 {
 	char	*tmp;

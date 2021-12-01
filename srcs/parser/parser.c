@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 12:16:40 by jkhong            #+#    #+#             */
-/*   Updated: 2021/12/01 17:45:35 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:59:43 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ t_cmd	parse_singlecmd(char **str_arr, t_list **env)
 	int		i;
 	int		j;
 	int		arg_len;
-	int		redir;
 	t_cmd	cmd;
 
 	j = 0;

@@ -37,7 +37,7 @@ RL_LIB		=	-L/usr/include -lreadline
 #gcc test.c -o test -lreadline -L .brew/opt/readline/lib -I .brew/opt/readline/include
 # -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 CC			=	gcc
-CFLAGS		=	-g
+CFLAGS		=	-g -Wall -Wextra -Werror
 
 BUILT_INS	=	./srcs/built_ins/
 

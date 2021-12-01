@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:18:25 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 18:58:39 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:54:05 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ int	main(int argc, char *argv[], char *envp[])
 	t_process	init;
 	t_commands	*commands;
 
+	(void)argc;
+	(void)argv;
 	signal(SIGQUIT, SIG_IGN);
 	welcome();
 	init.env = initialise_env(envp);

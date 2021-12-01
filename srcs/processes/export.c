@@ -3,44 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 18:17:41 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 18:17:41 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 21:03:49 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "environment.h"
-
-/*
-	Purpose:
-	Sorts environment variable (t_envar) by NAME in alphabetical order
-*/
-static void	sort_env(t_envar ***env, int len)
-{
-	int		i;
-	int		j;
-	t_envar	**ptr;
-	t_envar	*tmp;
-
-	ptr = *env;
-	i = 0;
-	while (i < len)
-	{
-		j = i + 1;
-		while (j < len)
-		{
-			if (ft_strncmp(ptr[i]->name, ptr[j]->name, INT_MAX) > 0)
-			{
-				tmp = ptr[i];
-				ptr[i] = ptr[j];
-				ptr[j] = tmp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
 
 /*
 	Adds additional variable into env struct

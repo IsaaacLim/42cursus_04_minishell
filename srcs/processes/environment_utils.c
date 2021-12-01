@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environment_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:18:16 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 15:18:16 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:59:54 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_envar	*parse_env_var(char *env_str)
 
 	envar = malloc(sizeof(t_envar));
 	len = 0;
-	env_str = env_str;
 	while (env_str[len] != '=' && env_str[len] != '\0')
 		len++;
 	if (env_str[len] == '=')

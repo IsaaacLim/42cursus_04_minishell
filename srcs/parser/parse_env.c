@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   valid_quotes.c                                     :+:      :+:    :+:   */
+/*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 13:50:11 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 13:50:11 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:59:36 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ static void	update_with_env(char *str, t_list **env, int tot_len, char *ptr)
 
 int	find_tilde(char *str, t_list **env, char **home_ptr)
 {
-	int		len;
 	t_list	*found;
 	t_envar	*envar;
 
