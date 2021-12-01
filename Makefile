@@ -1,7 +1,7 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-SRCS_LST	=	error.c		main.c		process_init.c		utils.c		signals.c	\
+SRCS_LST	=	main.c		process_init.c		utils.c		signals.c	\
 
 EXEC_DIR	=	execute/
 EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
