@@ -1,13 +1,13 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-SRCS_LST	=	main.c		process_init.c		utils.c		signals.c	\
+SRCS_LST	=	main.c		process.c		utils.c		signals.c	\
 
 EXEC_DIR	=	execute/
 EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
 EXEC		=	$(addprefix $(EXEC_DIR), $(EXEC_LST))
 
-PROCS_DIR	=	process/
+PROCS_DIR	=	processes/
 PROCS_LST	=	env_validate.c		environment_utils.c						\
 				ft_environment.c	export.c		unset.c					\
 				ft_cd.c				ft_exit.c
