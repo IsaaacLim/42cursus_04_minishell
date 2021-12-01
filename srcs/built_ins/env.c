@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:59:27 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 19:59:28 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:31:09 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int	i;
 	int	j;
 
+	(void)argv;
 	if (argc != 1)
 	{
 		printf("env: execute without options or arguments\n");

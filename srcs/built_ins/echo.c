@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:23:06 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 15:23:06 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:30:51 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char *argv[])
 	}
 	while (i < argc)
 	{
-		if (nl && i > 1 || !nl && i > 2)
+		if ((nl && i > 1) || (!nl && i > 2))
 			printf(" ");
 		printf("%s", argv[i]);
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:59:38 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 19:59:39 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:31:29 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char *argv[])
 {
 	char	cwd[PATH_MAX];
 
+	(void)argv;
 	if (argc != 1)
 	{
 		printf("pwd: too many arguments\n");

@@ -10,7 +10,7 @@ SRCS	=	$(addsuffix .c, $(ALL))
 OBJS	=	$(SRCS:.c=.o)
 
 CC		=	gcc
-CFLAGS	=	-g
+CFLAGS	=	-g -Wall -Wextra -Werror
 
 all: $(ALL)
 

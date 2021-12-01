@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 19:59:32 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 20:27:34 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 20:45:44 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ static int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-static void	ft_sort_envp(char **envp, int envp_len)
+static void	ft_display(char **envp, int envp_len)
 {
 	char	*tmp;
 	int		i;
 	int		j;
 
-	i = 0;
-	while (i < envp_len)
+	i = -1;
+	while (++i < envp_len)
 	{
-		j = i + 1;
-		while (j < envp_len)
+		j = i;
+		while (++j < envp_len)
 		{
 			if (ft_strncmp(envp[i], envp[j], INT_MAX) > 0)
 			{
@@ -66,25 +66,12 @@ static void	ft_sort_envp(char **envp, int envp_len)
 				envp[i] = envp[j];
 				envp[j] = tmp;
 			}
-			j++;
 		}
-		i++;
-	}
-}
-
-static void	ft_display(char **tmp_arr)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (tmp_arr[++i])
-	{
-		printf("%s", tmp_arr[i]);
+		printf("%s", envp[i]);
 		j = 0;
-		while (tmp_arr[i][j])
+		while (envp[i][j])
 			j++;
-		if (tmp_arr[i][j - 1] == '=')
+		if (envp[i][j - 1] == '=')
 			printf("''");
 		printf("\n");
 	}
@@ -93,28 +80,28 @@ static void	ft_display(char **tmp_arr)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	**tmp_arr;
-	int		ori_len;
-	int		new_len;
+	int		len;
 	int		i;
 
-	ori_len = 0;
-	while (envp[ori_len])
-		ori_len++;
-	tmp_arr = (char **)malloc(sizeof(char *) * (ori_len + 1));
+	(void)argc;
+	(void)argv;
+	len = 0;
+	while (envp[len])
+		len++;
+	tmp_arr = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!tmp_arr)
 		perror("malloc failed in export.c");
 	i = -1;
-	new_len = 0;
+	len = 0;
 	while (envp[++i])
 	{
 		if (envp[i][0] == '?' && envp[i][1] == '=')
 			continue ;
-		tmp_arr[new_len] = ft_strdup(envp[i]);
-		new_len++;
+		tmp_arr[len] = ft_strdup(envp[i]);
+		len++;
 	}
-	tmp_arr[new_len] = NULL;
-	ft_sort_envp(tmp_arr, new_len);
-	ft_display(tmp_arr);
+	tmp_arr[len] = NULL;
+	ft_display(tmp_arr, len);
 	free (tmp_arr);
 	return (0);
 }
