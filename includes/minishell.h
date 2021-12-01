@@ -36,8 +36,8 @@ typedef struct s_process
 
 struct s_exstat
 {
-	int		exit_status;
-	t_envar	*env;
+	unsigned char	exit_status;
+	t_envar			*env;
 }	;
 
 struct s_exstat	g_exstat;
@@ -69,7 +69,7 @@ bool	ft_is_process(t_commands cmds);
 
 //utils.c
 void	ft_free_double_arr(char **arr);
-void	ft_exit_status(int exit_num);
+void	ft_exit_status(unsigned char exit_num);
 
 // process functions
 int		ft_cd(char **argv, t_list *env);

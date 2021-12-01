@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 18:22:05 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 18:22:50 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 18:31:18 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 ** Set global exit status
 ** Helper function for $?
 */
-void	ft_exit_status(int exit_status)
+void	ft_exit_status(unsigned char exit_status)
 {
 	int		status_len;
 	char	*ptr;

@@ -8,7 +8,7 @@ EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
 EXEC		=	$(addprefix $(EXEC_DIR), $(EXEC_LST))
 
 PROCS_DIR	=	process/
-PROCS_LST	=	env_validate.c		env.c			environment_utils.c		\
+PROCS_LST	=	env_validate.c		environment_utils.c						\
 				ft_environment.c	export.c		unset.c					\
 				ft_cd.c				ft_exit.c
 PROCS		=	$(addprefix $(PROCS_DIR), $(PROCS_LST))

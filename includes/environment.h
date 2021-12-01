@@ -34,18 +34,15 @@ void	free_envar(void *content);
 void	print_env(t_list *env);
 t_list	*found_env(t_list **env, t_list **prev, char *env_str, int search_len);
 
-// Commands
 // Check for valid identifier
 bool	valid_identifier(char *str);
 void	invalid_identifier_msg(char *cmd, char *name);
 
-// void env_command(t_list *env); //use ft_display_env
-int		ft_display_env(t_list *env, char **args);
+// Commands
 int		unset(t_list **env, char *env_str);
-void	export_command(t_list *env);
 int		export_add(t_list **env, char *env_str);
 
 // main function call
-int	ft_environment(char *argv[], t_list *env);
+int		ft_environment(char *argv[], t_list *env);
 
 #endif

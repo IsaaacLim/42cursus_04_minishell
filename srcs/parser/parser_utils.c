@@ -56,12 +56,12 @@ int	is_redirection(char *str, t_cmd *cmd, char *next)
 		if (redir == in || redir == in_heredoc)
 		{
 			cmd->input = redir;
-			cmd->infile = ft_strcpy(next);
+			cmd->infile = ft_strdup(next);
 		}
 		else if (redir == out || redir == out_append)
 		{
 			cmd->output = redir;
-			cmd->outfile = ft_strcpy(next);
+			cmd->outfile = ft_strdup(next);
 		}
 	}
 	return (redir);
