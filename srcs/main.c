@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 17:18:25 by jinlim            #+#    #+#             */
+/*   Updated: 2021/12/01 17:57:35 by jinlim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "environment.h"
 
-void	welcome(void)
+static void	welcome(void)
 {
 	printf(BOLD KBLU"           _       _     _          _ _ \n"
 		" _ __ ___ (_)_ __ (_)___| |__   ___| | |\n"
@@ -11,18 +23,30 @@ void	welcome(void)
 		RST KYEL"	  	     by: jinlim & jkhong\n\n"RST);
 }
 
-char *give_minishell(void)
+static char	*give_minishell(void)
 {
-	static char *str[4] = {
+	static char	*str[4] = {
 		BOLD KRED"minishell> "RST,
 		BOLD KGRN"minishell> "RST,
 		BOLD KBLU"minishell> "RST,
 		BOLD KCYN"minishell> "RST
 	};
-	static int i = 0;
+	static int	i = 0;
 
 	i++;
 	return (str[i % 4]);
+}
+
+static bool	is_empty_input(char *input, t_process init)
+{
+	if (input == NULL)
+	{
+		printf("exit\n");
+		ft_exit(&init);
+	}
+	else if (ft_strlen(input) == 0)
+		return (true);
+	return (false);
 }
 
 /*
@@ -43,23 +67,13 @@ int	main(int argc, char *argv[], char *envp[])
 	init.env = initialise_env(envp);
 	while (1)
 	{
-		printf("$?: %d\n", g_exstat.exit_status); //JR, find this in utils.c
 		signal(SIGINT, ft_sig_handler);
 		init.input = readline(give_minishell());
-		if (init.input == NULL)
-		{
-			printf("exit\n");
-			ft_exit(&init);
-		}
-		if (ft_strlen(init.input) == 0)
+		if (is_empty_input(init.input, init))
 			continue ;
 		add_history(init.input);
-		read_str(init.input, &commands, &init.env);
-		if (!commands)
-		{
-			ft_exit_status(2);
+		if (read_str(init.input, &commands, &init.env) == 2)
 			continue ;
-		}
 		if (ft_is_process(*commands))
 			ft_process(commands, init);
 		else if (ft_strlen(init.input) > 0)
@@ -68,5 +82,4 @@ int	main(int argc, char *argv[], char *envp[])
 		init.input = NULL;
 		free(init.input);
 	}
-	// system("leaks minishell");
 }
