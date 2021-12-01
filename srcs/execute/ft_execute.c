@@ -45,20 +45,20 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 	else
 	{
 		ft_execve(args, envp, env);
-		printf("command not found: %s\n", args[0]);
+		printf("msh: command not found: %s\n", args[0]);
 		exit (127);
 	}
 	exit (exit_num);
 }
 
-
+#include <signal.h>
 
 /*
 ** Restore STDIN/OUT fd
 ** Wait for child process (only last) to complete
 ** Stores the exit status of the last command
 */
-static void	ft_parent_process(int fdstd[2], int pid, char **envp)
+static void	ft_parent_process(int fdstd[2], int *pid, char **envp, int cmds_len)
 {
 	int child_status;
 	int	wifexited;
@@ -69,7 +69,12 @@ static void	ft_parent_process(int fdstd[2], int pid, char **envp)
 	signal(SIGINT, SIG_IGN);
 	ft_dup2(fdstd[0], 0);
 	ft_dup2(fdstd[1], 1);
-	waitpid(pid, &child_status, 0);
+	int i = -1;
+	while (++i < cmds_len - 1)
+		waitpid(pid[i], &child_status, 0);
+	waitpid(pid[cmds_len - 1], &child_status, 0);
+	// while (++i < cmds_len - 1)
+		// kill(pid[i], SIGINT);
 	wifexited = WIFEXITED(child_status);
 	wifsignaled = WIFSIGNALED(child_status);
 	wtermsig = WTERMSIG(child_status);
@@ -99,7 +104,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 	int	fdstd[2];
 	int fdpipe[2];
 	int	fdnew[2];
-	pid_t	pid;
+	pid_t	pid[cmds.len];
 	char	**envp;
 	int	i;
 
@@ -116,10 +121,10 @@ void	ft_execute(t_commands cmds, t_list *env)
 		else
 			ft_redir_pipe(fdnew, fdpipe);
 		ft_dup2(fdnew[1], 1);
-		pid = fork();
-		if (pid == 0)
+		pid[i] = fork();
+		if (pid[i] == 0)
 			ft_child_process(cmds.commands[i].args, envp, env);
 		i++;
 	}
-	ft_parent_process(fdstd, pid, envp);
+	ft_parent_process(fdstd, pid, envp, cmds.len);
 }
