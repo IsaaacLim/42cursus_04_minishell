@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 18:02:48 by jinlim            #+#    #+#             */
+/*   Updated: 2021/12/01 18:12:58 by jinlim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <termios.h>
 
@@ -23,9 +35,9 @@ void	ft_sig_handler(int signo)
 ** may show value of EOF character with (int)term1.c_cc[VEOF]
 **	Only declared in ft_heredoc()
 */
-void	ft_sig_ignore_EOF(bool ignore)
+void	ft_sig_ignore_eof(bool ignore)
 {
-	struct termios term1;
+	struct termios	term1;
 
 	if (tcgetattr(STDIN_FILENO, &term1) != 0)
 		perror("tcgetattr error");

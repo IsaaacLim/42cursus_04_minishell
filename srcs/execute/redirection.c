@@ -13,7 +13,7 @@ static void	ft_heredoc(char *infile, int *fdin)
 	int		ret;
 	int		fdtemp[2];
 
-	ft_sig_ignore_EOF(true);
+	ft_sig_ignore_eof(true);
 	signal(SIGINT, SIG_IGN);
 	pipe(fdtemp);
 	ft_putstr_fd("heredoc> ", 1);
@@ -30,7 +30,7 @@ static void	ft_heredoc(char *infile, int *fdin)
 	free(line);
 	*fdin = fdtemp[0];
 	close(fdtemp[1]);
-	ft_sig_ignore_EOF(false);
+	ft_sig_ignore_eof(false);
 	signal(SIGINT, ft_sig_handler);
 }
 

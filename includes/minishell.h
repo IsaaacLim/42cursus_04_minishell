@@ -78,6 +78,6 @@ void	ft_eval_exit(t_process init, t_commands *cmds);
 
 //signals.c
 void	ft_sig_handler(int signo);
-void	ft_sig_ignore_EOF(bool ignore);
+void	ft_sig_ignore_eof(bool ignore);
 
 #endif
