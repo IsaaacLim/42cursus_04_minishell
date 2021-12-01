@@ -33,24 +33,6 @@ static int	ft_chdir(char *dir, t_list *env)
 	}
 }
 
-// static int	ft_cd_home(char *argv, char *home, t_list *env)
-// {
-// 	char	*join_home;
-// 	int		exit_status;
-
-// 	if (!ft_strncmp(argv, "~", 2) || !ft_strncmp(argv, "~/", 3))
-// 		exit_status = ft_chdir(home, env);
-// 	else if(!ft_strncmp(argv, "~/", 2))
-// 	{
-// 		join_home = ft_strjoin(home, ++argv);
-// 		exit_status = ft_chdir(join_home, env);
-// 		free(join_home);
-// 	}
-// 	else
-// 		exit_status = ft_chdir(argv, env);
-// 	return (exit_status);
-// }
-
 static int ft_cd_oldpwd(t_list *env)
 {
 	t_list	*found;
@@ -83,8 +65,6 @@ int	ft_cd(char **argv, t_list *env)
 		exit_status = ft_chdir(home, env);
 	else if (!argv[2])
 	{
-		// if (argv[1][0] == '~')
-			// exit_status = ft_cd_home(argv[1], home, env);
 		if (!ft_strncmp(argv[1], "-", 2))
 			exit_status = ft_cd_oldpwd(env);
 		else
