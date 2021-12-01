@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 18:22:05 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 18:22:07 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/01 18:22:50 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	ft_perror_exit(char *message)
 
 void	ft_free_double_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	if (!arr)
 		return ;
