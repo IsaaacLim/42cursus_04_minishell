@@ -32,8 +32,10 @@ LIBFT_HDRS	=	$(LIBFT_DIR)includes/
 
 INCLUDES	=	-I $(HDRS_DIR) -I $(LIBFT_HDRS)
 
+# RL_LIB		=	-lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 RL_LIB		=	-L/usr/include -lreadline
-
+#gcc test.c -o test -lreadline -L .brew/opt/readline/lib -I .brew/opt/readline/include
+# -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 CC			=	gcc
 CFLAGS		=	-g
 
