@@ -18,7 +18,7 @@ void	ft_free_double_arr(char **arr)
 	return ;
 }
 
-void	ft_exit_status(int exit_status)
+void	ft_exit_status(unsigned char exit_status)
 {
 	int		status_len;
 	char	*ptr;

@@ -13,6 +13,12 @@
 #include "environment.h"
 #include "minishell.h"
 
+/*
+	Validation of env_str occurs prior to execution of function
+	- refer env_validate.c
+	Traverses through env_str and malloc name and word delimited by '='
+	variables without '=' specified will marked false for set attribute
+*/
 t_envar	*parse_env_var(char *env_str)
 {
 	int		len;
@@ -28,10 +34,8 @@ t_envar	*parse_env_var(char *env_str)
 	else
 		envar->set = false;
 	envar->name = malloc(sizeof(char) * (len + 1));
-	// update name
 	ft_memcpy(envar->name, env_str, len);
 	(envar->name)[len] = '\0';
-	// move position to after equals, =
 	env_str += len;
 	if (envar->set)
 		env_str++;
@@ -43,8 +47,13 @@ t_envar	*parse_env_var(char *env_str)
 }
 
 /*
-	Basically copies envp to env list format
-	// initialise 
+	Reads preliminary envp variable passed in via main function
+	- to be executed once in main
+	Also initialises error variable, ?, called via $? in terminal
+	- error variable is allocated ?=000 as min/max error value is 0/255
+	  which is equivalent to unsigned char type
+	- global variable is set to point ?=000 and is NUL terminated to
+	  appropriately output 0
 */
 t_list	*initialise_env(char **envp)
 {
@@ -90,6 +99,15 @@ void	print_env(t_list *env)
 }
 
 // Accepts NULL as *prev in case we don't need our prev t_list
+/*
+	Performs 2 functionalities:
+	i. find env variable of search_len
+		- return ptr_add or NULL if not found
+	ii. (optional) to pass in pointer to t_list *prev
+		- pass in NULL to ignore
+		- else *prev updated with previous list node address
+		- primarily for use in unset.c
+*/
 t_list	*found_env(t_list **env, t_list **prev, char *env_str, int search_len)
 {
 	t_list	*tmp_lst;
@@ -98,7 +116,6 @@ t_list	*found_env(t_list **env, t_list **prev, char *env_str, int search_len)
 	tmp_lst = *env;
 	while (tmp_lst)
 	{
-		// need to typecast that's why pretty confusing
 		tmp_env = (t_envar *)tmp_lst->content;
 		if (ft_strncmp(tmp_env->name, env_str, search_len) == 0)
 			return (tmp_lst);
