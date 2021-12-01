@@ -1,6 +1,16 @@
 #include "minishell.h"
 #include "environment.h"
 
+void	welcome(void)
+{
+	printf(BOLD KBLU"           _       _     _          _ _ \n"
+		" _ __ ___ (_)_ __ (_)___| |__   ___| | |\n"
+		"| '_ ` _ \\| | '_ \\| / __| '_ \\ / _ \\ | |\n"
+		"| | | | | | | | | | \\__ \\ | | |  __/ | |\n"
+		"|_| |_| |_|_|_| |_|_|___/_| |_|\\___|_|_|\n"
+		RST KYEL"	  	     by: jinlim & jkhong\n\n"RST);
+}
+
 char *give_minishell(void)
 {
 	static char *str[4] = {
@@ -29,6 +39,7 @@ int	main(int argc, char *argv[], char *envp[])
 	t_commands	*commands;
 
 	signal(SIGQUIT, SIG_IGN);
+	welcome();
 	init.env = initialise_env(envp);
 	while (1)
 	{
@@ -44,10 +55,10 @@ int	main(int argc, char *argv[], char *envp[])
 			continue ;
 		add_history(init.input);
 		read_str(init.input, &commands, &init.env);
-        if (!commands)
+		if (!commands)
 		{
 			ft_exit_status(2);
-            continue ;
+			continue ;
 		}
 		if (ft_is_process(*commands))
 			ft_process(commands, init);

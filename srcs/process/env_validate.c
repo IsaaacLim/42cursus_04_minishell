@@ -37,8 +37,9 @@ bool	valid_identifier(char *str)
 
 void	invalid_identifier_msg(char *cmd, char *name)
 {
-	perror(cmd);
-	perror(": \'");
-	perror(name);
-	perror("': not a valid identifier\n");
+	// perror(cmd);
+	// perror(": \'");
+	// perror(name);
+	// perror("': not a valid identifier\n");
+	printf("%s: \'%s\': not a valid identifier\n", cmd, name);
 }

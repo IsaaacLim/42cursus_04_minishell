@@ -37,8 +37,8 @@ typedef struct s_process
 
 struct s_exstat
 {
-	int	exit_status;
-	t_envar *pointer;
+	int		exit_status;
+	t_envar	*env;
 }	;
 
 struct s_exstat	g_exstat;
@@ -76,7 +76,6 @@ void	ft_exit_status(int exit_num);
 int		ft_cd(char **argv, t_list *env);
 void	ft_exit(t_process *init);
 void	ft_eval_exit(t_process init, t_commands *cmds);
-
 
 //signals.c
 void	ft_sig_handler(int signo);
