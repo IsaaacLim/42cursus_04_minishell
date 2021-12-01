@@ -1,8 +1,9 @@
-ENV		=	env
 ECHO	=	echo
+ENV		=	env
+EXPORT	=	export
 PWD		=	pwd
 
-ALL		=	$(ECHO) $(PWD) $(ENV)
+ALL		=	$(ECHO) $(ENV) $(EXPORT) $(PWD) 
 
 SRCS	=	$(addsuffix .c, $(ALL))
 
@@ -17,6 +18,9 @@ $(ECHO) : $(ECHO).o
 	$(CC) $(CFLAGS) $< -o $@
 
 $(ENV) : $(ENV).o
+	$(CC) $(CFLAGS) $< -o $@
+
+$(EXPORT) : $(EXPORT).o
 	$(CC) $(CFLAGS) $< -o $@
 
 $(PWD) : $(PWD).o

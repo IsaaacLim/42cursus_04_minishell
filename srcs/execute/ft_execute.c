@@ -40,14 +40,14 @@ static void	ft_child_process(char **args, char **envp, t_list *env)
 	exit_num = 0;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	if (!ft_strncmp(args[0], "export", 7))
-		export_command(env);
-	else
-	{
+	// if (!ft_strncmp(args[0], "export", 7))
+		// export_command(env);
+	// else
+	// {
 		ft_execve(args, envp, env);
 		printf("msh: command not found: %s\n", args[0]);
 		exit (127);
-	}
+	// }
 	exit (exit_num);
 }
 
