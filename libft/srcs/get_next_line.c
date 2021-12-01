@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/01 17:57:32 by jkhong            #+#    #+#             */
+/*   Updated: 2021/12/01 17:57:32 by jkhong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "get_next_line.h"
 
@@ -40,7 +52,7 @@ int	get_next_line(int fd, char **line)
 	if (!arr)
 		arr = (char *)ft_calloc(1, 1);
 	ret = read(fd, buf, BUFFER_SIZE);
-	while (ret > 0 )
+	while (ret > 0)
 	{
 		buf[ret] = '\0';
 		temp = ft_strjoin(arr, buf);

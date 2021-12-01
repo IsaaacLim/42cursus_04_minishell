@@ -14,7 +14,7 @@
 
 /*
 	Purpose:
-	Sorts environment variable by NAME in alphabetical order
+	Sorts environment variable (t_envar) by NAME in alphabetical order
 */
 static void	sort_env(t_envar ***env, int len)
 {
@@ -41,40 +41,6 @@ static void	sort_env(t_envar ***env, int len)
 		i++;
 	}
 }
-
-/*
-	Constructs temporary array tmp_arr to order
-	environment variables alphabetically using sort_env
-*/
-void	export_command(t_list *env)
-{
-	int		len;
-	t_envar	**tmp_arr;
-	int		i;
-
-	len = ft_lstsize(env);
-	tmp_arr = malloc(sizeof(t_envar *) * len);
-	i = 0;
-	while (env)
-	{
-		tmp_arr[i++] = (env)->content;
-		env = env->next;
-	}
-	sort_env(&tmp_arr, len);
-	i = -1;
-	while (++i < len)
-	{
-		if (ft_strncmp(tmp_arr[i]->name, "?", 2) == 0)
-			continue ;
-		printf("%s", tmp_arr[i]->name);
-		if (tmp_arr[i]->set)
-			printf("=\"%s\"", tmp_arr[i]->word);
-		printf("\n");
-	}
-	free(tmp_arr);
-}
-
-int error = false;
 
 /*
 	Adds additional variable into env struct
