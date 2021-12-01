@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 12:16:40 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 01:01:08 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/01 17:45:35 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,14 @@ t_commands	*parse_commands(char *str, t_list **env)
 	return (cmds);
 }
 
-void	read_str(char *str, t_commands **commands, t_list **env)
+int	read_str(char *str, t_commands **commands, t_list **env)
 {
 	*commands = parse_commands(str, env);
 	if (!*commands)
 	{
-		perror("Syntax error near unexpected token\n");
-		return ;
+		perror("Syntax error near unexpected token");
+		ft_exit_status(2);
+		return (2);
 	}
+	return (0);
 }
