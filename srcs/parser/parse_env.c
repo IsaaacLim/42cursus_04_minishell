@@ -49,7 +49,7 @@ static void	ft_memcpy_env(void *dst, const void *src, size_t n, int *i)
 	*i += n;
 }
 
-static void	*update_with_env(char *str, t_list **env, int tot_len, char *ptr)
+static void	update_with_env(char *str, t_list **env, int tot_len, char *ptr)
 {
 	int			i;
 	int			env_len;
