@@ -20,7 +20,6 @@ int	unset(t_list **env, char *env_str)
 
 	prev = NULL;
 	parse_env = parse_env_var(env_str);
-	// if (false)
 	if (!valid_identifier(parse_env->name))
 	{
 		invalid_identifier_msg("unset", parse_env->name);

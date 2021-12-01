@@ -43,7 +43,7 @@ void	invalid_identifier_msg(char *cmd, char *name);
 int		ft_display_env(t_list *env, char **args);
 int		unset(t_list **env, char *env_str);
 void	export_command(t_list *env);
-void	export_add(t_list **env, char *env_str);
+int		export_add(t_list **env, char *env_str);
 
 // main function call
 int	ft_environment(char *argv[], t_list *env);
