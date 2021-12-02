@@ -6,18 +6,17 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:13:42 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 21:13:43 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 14:35:29 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "environment.h"
 
 static void	ft_execve(char **args, char **envp, t_list *env)
 {
-	char **path_arr;
-	int i;
-	char *new_path;
+	char	**path_arr;
+	char	*new_path;
+	int		i;
 
 	execve(args[0], args, envp);
 	new_path = ft_strjoin_bonus(getenv("PWD"), args[0], "/srcs/built_ins/");
@@ -45,65 +44,50 @@ static void	ft_execve(char **args, char **envp, t_list *env)
 ** Child process execute commands
 ** If invalid command, return 1 to parent
 */
-static void	ft_child_process(char **args, char **envp, t_list *env)
+static void	ft_child_process(char **args, t_list *env)
 {
-	int	exit_num;
+	char	**envp;
 
-	exit_num = 0;
 	signal(SIGQUIT, SIG_DFL);
 	signal(SIGINT, SIG_DFL);
-	// if (!ft_strncmp(args[0], "export", 7))
-		// export_command(env);
-	// else
-	// {
-		ft_execve(args, envp, env);
-		printf("msh: command not found: %s\n", args[0]);
-		exit (127);
-	// }
-	exit (exit_num);
+	envp = ft_get_envp(env);
+	ft_execve(args, envp, env);
+	printf("msh: command not found: %s\n", args[0]);
+	ft_free_double_arr(envp);
+	exit (127);
 }
-
-#include <signal.h>
 
 /*
 ** Restore STDIN/OUT fd
 ** Wait for child process (only last) to complete
 ** Stores the exit status of the last command
 */
-static void	ft_parent_process(int fdstd[2], int *pid, char **envp, int cmds_len)
+static void	ft_parent_process(int fdstd[2], int *pid, int cmds_len)
 {
-	int child_status;
-	int	wifexited;
-	int	wifsignaled;
+	int	child_status;
 	int	wtermsig;
-	int wexitstatus;
+	int	wexitstatus;
+	int	i;
 
 	signal(SIGINT, SIG_IGN);
 	ft_dup2(fdstd[0], 0);
 	ft_dup2(fdstd[1], 1);
-	int i = -1;
-	while (++i < cmds_len - 1)
+	i = -1;
+	while (++i < cmds_len)
 		waitpid(pid[i], &child_status, 0);
-	waitpid(pid[cmds_len - 1], &child_status, 0);
-	// while (++i < cmds_len - 1)
-		// kill(pid[i], SIGINT);
-	wifexited = WIFEXITED(child_status);
-	wifsignaled = WIFSIGNALED(child_status);
-	wtermsig = WTERMSIG(child_status);
 	wexitstatus = WEXITSTATUS(child_status);
-	if (wifexited)
+	wtermsig = WTERMSIG(child_status);
+	if (WIFEXITED(child_status))
 		ft_exit_status(wexitstatus);
-	else if (wifsignaled)
+	else if (WIFSIGNALED(child_status))
 	{
 		if (wtermsig == 2)
 			printf("\n");
-		else if(wtermsig == 3)
+		else if (wtermsig == 3)
 			printf("msh: quit\n");
 		ft_exit_status(wtermsig + 128);
 	}
-	else
-		ft_exit_status(-1);
-	ft_free_double_arr(envp);
+	free(pid);
 }
 
 /*
@@ -113,19 +97,18 @@ static void	ft_parent_process(int fdstd[2], int *pid, char **envp, int cmds_len)
 */
 void	ft_execute(t_commands cmds, t_list *env)
 {
-	int	fdstd[2];
-	int fdpipe[2];
-	int	fdnew[2];
-	pid_t	pid[cmds.len];
-	char	**envp;
-	int	i;
+	int		fdstd[2];
+	int		fdpipe[2];
+	int		fdnew[2];
+	pid_t	*pid;
+	int		i;
 
-	envp = ft_get_envp(env);
 	fdstd[0] = dup(0);
 	fdstd[1] = dup(1);
 	fdnew[0] = dup(fdstd[0]);
-	i = 0;
-	while (i < cmds.len)
+	pid = (pid_t *)malloc(sizeof(pid_t) * cmds.len);
+	i = -1;
+	while (++i < cmds.len)
 	{
 		ft_redir_in(cmds.commands[i], &fdnew[0]);
 		if (i == cmds.len - 1)
@@ -135,8 +118,7 @@ void	ft_execute(t_commands cmds, t_list *env)
 		ft_dup2(fdnew[1], 1);
 		pid[i] = fork();
 		if (pid[i] == 0)
-			ft_child_process(cmds.commands[i].args, envp, env);
-		i++;
+			ft_child_process(cmds.commands[i].args, env);
 	}
-	ft_parent_process(fdstd, pid, envp, cmds.len);
+	ft_parent_process(fdstd, pid, cmds.len);
 }

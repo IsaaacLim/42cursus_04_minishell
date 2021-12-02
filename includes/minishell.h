@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:13:25 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 21:13:27 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 14:14:41 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/signal.h>
+# include <signal.h>
 
 # define RST  "\x1B[0m"
 # define KRED  "\x1B[31m"
