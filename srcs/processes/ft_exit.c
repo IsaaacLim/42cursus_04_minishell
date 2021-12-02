@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:14:20 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 21:14:21 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 14:39:24 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_eval_exit(t_process init, t_commands *cmds)
 		printf("exit: too many arguments\n");
 		return ;
 	}
-	else if(argc == 2)
+	else if (argc == 2)
 		ft_exit_status(ft_atoi(last_argv[1]));
 	else
 		ft_exit_status(0);

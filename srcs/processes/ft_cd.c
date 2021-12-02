@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:14:15 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 21:14:16 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 14:39:06 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int	ft_chdir(char *dir, t_list *env)
 	}
 }
 
-static int ft_cd_oldpwd(t_list *env)
+static int	ft_cd_oldpwd(t_list *env)
 {
 	t_list	*found;
 	char	*old_pwd;
