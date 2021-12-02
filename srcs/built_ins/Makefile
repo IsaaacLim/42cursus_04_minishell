@@ -5,9 +5,6 @@ PWD		=	pwd
 
 ALL		=	$(ECHO) $(ENV) $(EXPORT) $(PWD) 
 
-# SRCS	=	$(addsuffix .c, $(ALL))
-
-# OBJS	=	$(SRCS:.c=.o)
 OBJS	=	$(addsuffix .o, $(ALL))
 
 

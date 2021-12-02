@@ -32,10 +32,8 @@ LIBFT_HDRS	=	$(LIBFT_DIR)includes/
 
 INCLUDES	=	-I $(HDRS_DIR) -I $(LIBFT_HDRS)
 
-# RL_LIB		=	-lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 RL_LIB		=	-L/usr/include -lreadline
-#gcc test.c -o test -lreadline -L .brew/opt/readline/lib -I .brew/opt/readline/include
-# -lreadline -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+
 CC			=	gcc
 CFLAGS		=	-g -Wall -Wextra -Werror
 
@@ -43,7 +41,6 @@ BLT_INS_DIR	=	./srcs/built_ins/
 BUILT_INS	=	$(BLT_INS_DIR)env
 
 all: $(NAME) $(BUILT_INS)
-
 
 $(NAME) : $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
@@ -66,13 +63,11 @@ clean:
 	@rm -f $(OBJS)
 	@echo "$(RED)removed $(YELLOW)$(NAME) $(RED)object files $(RESET)"
 
-
 fclean:	clean
 	@make fclean -C $(BLT_INS_DIR)
 	@make fclean -C $(LIBFT_DIR)
 	@rm -f $(NAME)
 	@echo "$(RED)removed $(BLUE)$(NAME)$(RESET)"
-
 
 re: fclean all
 

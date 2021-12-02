@@ -39,10 +39,10 @@ clean:
 	@rm -rf $(OBJS)
 	@echo "$(RED)removed $(YELLOW)$(NAME) $(RED)object files $(RESET)"
 
-
 fclean:		clean
 	@rm -rf $(NAME)
 	@echo "$(RED)removed $(BLUE)$(NAME)$(RESET)"
+
 re:			fclean all
 
 .PHONY:		all clean fclean re
