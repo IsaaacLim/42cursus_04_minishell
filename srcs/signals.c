@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 18:02:48 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/01 18:12:58 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 17:46:09 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_sig_handler(int signo)
 	if (signo == SIGINT)
 	{
 		ft_exit_status(130);
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		printf("\n");
 		rl_on_new_line();
 		rl_redisplay();
