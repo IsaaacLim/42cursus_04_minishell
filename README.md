@@ -1,52 +1,59 @@
-# Minishell
+# Minishell 🐚
 
-## Project Structure
+## Project Description
 
-1. File structure
+1. Display
+   - Show a prompt when waiting for a new commands
+   - Have a working history
 
-- Headers are in `includes`, source files are in `src`, Makefile is in the root dir.
-- libft has it's own separate, but similar structure.
+2. Expanding & Parsing
+   - Environment variables expansion
+   - Doesn't interpret unclosed quotes or unspecified special characters like `\` or `;`
+     - handle undefined
+   - Single `'` and double `"` quote support
+   - `$?` should expand to the exit status of the most recently executed foreground pipeline.
 
-2. Header file
+3. Signals
+    - `ctrl-C` print a new prompt on a newline
+    - `ctrl-D` exit the shell.
+    - `ctrl-\` do nothing
 
-- Functions are arranged alphabetically according to function **name**, not function **type**. _(let me know your preference)_
+4. Built-ins
+    - `cd` with relative or absolute path
+    - `echo` with -n
+    - `pwd`
+    - `export`
+    - `unset`
+    - `env`
+    - `exit`
 
-3. Libft functions
+5. Piping & Redirection
+    - `<` should redirect input
+    - `>` should redirect output
+    - `<<` read input from the current source until a line containing only the delimiter is seen
+    - `>>` should redirect output with append mode
+    - Piping `|`
 
-- I try to work with the original libft as much as possible.
-- I only include functions that are being used for the project so that it'll be less clustered.
-- Currently all libft functions are unmodified. If modified, I'll append a "\_bonus" to the file and function name. _(let me know your preference)_
-
-4. Minishell functions
-
-- Functions name are as concise as my creativity allows it.
-  > But for clarity purposes, I'll make it as long as it's required.
-- Static functions are declared for tracability.
-- Functions under the same functionality category are grouped under the same file.
-  > But for clarity purposes, I won't purposely design each function to be compact, but rather create many functions that does only one task
-
-> "//temporary" are noted on features will that likely be relocated.
-
-- Object files are named according to the general purpose of the functions contained in it.
-
+---
 ## Resources
 
 1. Executor:
 
-- (unused) https://jameshfisher.com/2017/02/17/how-do-i-call-a-program-in-c-with-pipes/
-- (used) https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf
+- Creating pipelines between parent and child *(unused)* [jameshfisher](https://jameshfisher.com/2017/02/17/how-do-i-call-a-program-in-c-with-pipes/)
+- Creating pipelines between multiple childrens *(used)* [purdue.edu](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf)
 
 2. Signals:
 
-- (ctrl-D / EOF) https://unix.stackexchange.com/questions/110240/why-does-ctrl-d-eof-exit-the-shell
-- handling EOF https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-tcsetattr-set-attributes-terminal#:~:text=FeedbackProduct%20list-,tcsetattr()%20%E2%80%94%20Set%20the%20attributes%20for%20a%20terminal,-Standards
+- ctrl-D / EOF
+    - What's with ctrl-D [stack exchange](https://unix.stackexchange.com/questions/110240/why-does-ctrl-d-eof-exit-the-shell)
+    - How to handle it [IBM tcsetattr](https://www.ibm.com/docs/en/zos/2.3.0?topic=functions-tcsetattr-set-attributes-terminal#:~:text=FeedbackProduct%20list-,tcsetattr()%20%E2%80%94%20Set%20the%20attributes%20for%20a%20terminal,-Standards)
 
 3. Process exit status
 
    1. If child process wasn't interupted, WIFEXITED = TRUE and WEXITSTATUS macro returns the exit code specified by the child.
    2. If child process was interupted, WIFEXITED = FALSE and WEXITSTATUS macro has no meaning; If the cause of exit is raised by a signal, WIFSIGNALED = TRUE and WTERMSIG macro is used to determine which signal was raised.
 
-- WIFEXITED https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally
-- WEXITSTATUS https://www.ibm.com/docs/en/ztpf/2020?topic=apis-wexitstatusobtain-exit-status-child-process
-- WIFSIGNALED https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifsignaledquery-status-see-if-child-process-ended-abnormally
-- WTERMSIG https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wtermsig-determine-which-signal-caused-child-process-exit
+- WIFEXITED [IBM wifexited](https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally)
+- WEXITSTATUS [IBM wexitstatus](https://www.ibm.com/docs/en/ztpf/2020?topic=apis-wexitstatusobtain-exit-status-child-process)
+- WIFSIGNALED [IBM wifsignaled](https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wifsignaledquery-status-see-if-child-process-ended-abnormally)
+- WTERMSIG [IBM wtermsig](https://www.ibm.com/docs/en/ztpf/2020?topic=zca-wtermsig-determine-which-signal-caused-child-process-exit)
