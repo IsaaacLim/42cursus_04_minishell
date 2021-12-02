@@ -2,13 +2,14 @@ NAME		=	libft.a
 
 SRCS_DIR	=	./srcs/
 SRCS_LST	=	ft_atoi.c			ft_bzero.c			ft_calloc.c			\
-				ft_lstadd_back.c	ft_lstclear.c		\
-				ft_lstdelone.c		ft_lstlast.c		ft_lstnew.c			\
-				ft_lstsize.c		ft_memcpy.c			ft_putendl_fd.c		\
-				ft_putstr_fd.c		ft_split.c			ft_strdup.c			\
-				ft_strjoin.c		ft_strjoin_bonus.c	ft_strlen.c			\
-				ft_strncmp.c		ft_strchr.c			ft_substr.c			\
-				ft_isalpha.c		ft_isdigit.c		
+				ft_isalpha.c		ft_isdigit.c		ft_lstadd_back.c	\
+				ft_lstclear.c		ft_lstdelone.c		ft_lstlast.c		\
+				ft_lstnew.c			ft_lstsize.c		ft_memcpy.c			\
+				ft_putendl_fd.c		ft_putstr_fd.c		ft_split.c			\
+				ft_strchr.c			ft_strdup.c			ft_strjoin.c		\
+				ft_strjoin_bonus.c	ft_strlen.c			ft_strncmp.c		\
+				ft_substr.c
+						
 GNL_LST		=	get_next_line.c
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(GNL_LST))
 

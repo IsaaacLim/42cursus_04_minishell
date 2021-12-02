@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:13:25 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/02 14:14:41 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 15:03:33 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,42 +55,40 @@ struct s_exstat
 
 struct s_exstat	g_exstat;
 
-//error.c
+//signals.c
+void	ft_sig_handler(int signo);
+void	ft_sig_ignore_eof(bool ignore);
+
+//utils.c
+void	ft_exit_status(unsigned char exit_num);
 void	ft_libft_error(char *message);
 void	ft_perror_exit(char *message);
+void	ft_free_double_arr(char **arr);
 
-// execute_utils.c
-char	**ft_get_envp(t_list *env);
+// parser.c
+int		read_str(char *str, t_commands **commands, t_list **env);
+void	free_commands(t_commands *commands);
+
+//EXECUTE: execute_utils.c
 void	ft_dup2(int oldfd, int newfd);
+char	**ft_get_envp(t_list *env);
 char	**split_path(t_list *env);
 
-//ft_execute.c
+//EXECUTE: ft_execute.c
 void	ft_execute(t_commands cmds, t_list *env);
 
-//redirection.c
+//EXECUTE: redirection.c
 void	ft_redir_in(t_cmd commands, int *fdin);
 void	ft_redir_out(t_cmd commands, int *fdout, int stdout);
 void	ft_redir_pipe(int fdnew[2], int fdpipe[2]);
 
-// parser.c
-int	read_str(char *str, t_commands **commands, t_list **env);
-void	free_commands(t_commands *commands);
-
-// process_init.c
+//PROCESSES: process.c
 void	ft_process(t_commands *cmds, t_process init);
 bool	ft_is_process(t_commands cmds);
 
-//utils.c
-void	ft_free_double_arr(char **arr);
-void	ft_exit_status(unsigned char exit_num);
-
-// process functions
+//PROCESSES functions
 int		ft_cd(char **argv, t_list *env);
 void	ft_exit(t_process *init);
 void	ft_eval_exit(t_process init, t_commands *cmds);
-
-//signals.c
-void	ft_sig_handler(int signo);
-void	ft_sig_ignore_eof(bool ignore);
 
 #endif

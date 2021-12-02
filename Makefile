@@ -1,22 +1,22 @@
 NAME		=	minishell
 
 SRCS_DIR	=	./srcs/
-SRCS_LST	=	main.c		process.c		utils.c		signals.c	\
+SRCS_LST	=	main.c				signals.c				utils.c
 
 EXEC_DIR	=	execute/
-EXEC_LST	=	ft_execute.c	execute_utils.c		redirection.c
+EXEC_LST	=	execute_utils.c		ft_execute.c			redirection.c
 EXEC		=	$(addprefix $(EXEC_DIR), $(EXEC_LST))
 
 PROCS_DIR	=	processes/
-PROCS_LST	=	env_validate.c		environment_utils.c						\
-				ft_environment.c	export.c		unset.c					\
-				ft_cd.c				ft_exit.c
+PROCS_LST	=	env_validate.c		environment_utils.c		ft_cd.c			\
+				export.c			ft_environment.c		ft_exit.c		\
+				process.c			unset.c	
 PROCS		=	$(addprefix $(PROCS_DIR), $(PROCS_LST))
 
 PARSER_DIR	=	parser/
-PARSER_LST	=	parser.c			parser_utils.c 		parser_utils2.c		\
-				parse_env.c			parse_env_utils.c						\
-				ft_split_enhanced.c
+PARSER_LST	=	ft_split_enhanced.c	parse_env_utils.c		parse_env.c		\
+				parser_utils.c 		parser_utils2.c			parser.c
+				
 PARSER		=	$(addprefix $(PARSER_DIR), $(PARSER_LST))
 
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST) $(EXEC) $(PROCS) $(PARSER))
