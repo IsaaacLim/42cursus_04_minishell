@@ -44,7 +44,7 @@ BUILT_INS	=	./srcs/built_ins/
 all: $(NAME) 
 # $(BUILT_INS)
 
-$(NAME) : $(OBJS) $(LIBFT)
+$(NAME) : $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
 	@echo " $(YELLOW)$(NAME) $(GREEN)object files created"
 	@echo "$(BLUE)$(NAME)$(GREEN) created"
@@ -55,14 +55,14 @@ $(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
 
 
 $(LIBFT) :
-	make -C $(LIBFT_DIR)
-	make -C $(BUILT_INS) #need to fix this
+	@make -C $(LIBFT_DIR)
+	@make -C $(BUILT_INS) #need to fix this
 
 # $(BUILT_INS) :
 
 clean:
-	make clean -C $(BUILT_INS)
-	make clean -C $(LIBFT_DIR)
+	@make clean -C $(BUILT_INS)
+	@make clean -C $(LIBFT_DIR)
 	@rm -f $(OBJS)
 	@echo "$(RED)removed $(YELLOW)$(NAME) $(RED)object files $(RESET)"
 

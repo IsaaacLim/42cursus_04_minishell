@@ -5,9 +5,11 @@ PWD		=	pwd
 
 ALL		=	$(ECHO) $(ENV) $(EXPORT) $(PWD) 
 
-SRCS	=	$(addsuffix .c, $(ALL))
+# SRCS	=	$(addsuffix .c, $(ALL))
 
-OBJS	=	$(SRCS:.c=.o)
+# OBJS	=	$(SRCS:.c=.o)
+OBJS	=	$(addsuffix .o, $(ALL))
+
 
 CC		=	gcc
 CFLAGS	=	-g -Wall -Wextra -Werror
@@ -15,23 +17,51 @@ CFLAGS	=	-g -Wall -Wextra -Werror
 all: $(ALL)
 
 $(ECHO) : $(ECHO).o
-	$(CC) $(CFLAGS) $< -o $@
+	@$(CC) $< -o $@
+	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
+
+$(ECHO).o : $(ECHO).c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
 
 $(ENV) : $(ENV).o
-	$(CC) $(CFLAGS) $< -o $@
+	@$(CC) $< -o $@
+	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
+
+$(ENV).o : $(ENV).c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
 
 $(EXPORT) : $(EXPORT).o
-	$(CC) $(CFLAGS) $< -o $@
+	@$(CC) $< -o $@
+	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
+
+$(EXPORT).o : $(EXPORT).c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
 
 $(PWD) : $(PWD).o
-	$(CC) $(CFLAGS) $< -o $@
+	@$(CC) $< -o $@
+	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
+
+$(PWD).o : $(PWD).c
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
 
 clean :
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
+	@echo "$(RED)removed $(YELLOW)$(ALL)$(RED)object files $(RESET)"
 
 fclean : clean
-	rm -f $(ALL)
+	@rm -f $(ALL)
+	@echo "$(RED)removed $(BLUE)$(ALL)$(RESET)"
 
 re: fclean all
 
-.PHONY = clean fclean re
+.PHONY: clean fclean re
+
+RED		=	\033[00;31m
+YELLOW	=	\033[03;33m
+GREEN	=	\033[00;32m
+BLUE	=	\033[01;36m
+RESET	=	\033[0m
