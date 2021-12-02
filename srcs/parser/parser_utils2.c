@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jkhong <jkhong@student.42kl.edu.my>        +#+  +:+       +#+        */
+/*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 15:07:21 by jkhong            #+#    #+#             */
-/*   Updated: 2021/11/30 15:07:21 by jkhong           ###   ########.fr       */
+/*   Updated: 2021/12/02 14:37:53 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "minishell.h"
+
 /*
 	Initialiser for t_cmd variable to 0 or NULL
 */
