@@ -8,11 +8,4 @@ srcs/built_ins/*
 !srcs/built_ins/Makefile
 
 # Temp
-testing-isaac/*
-!testing-isaac/*.c
-!testing-isaac/execute
-echo
-cat
-grep
-wc
 *.txt
