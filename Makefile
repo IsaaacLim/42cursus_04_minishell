@@ -45,10 +45,14 @@ all: $(NAME)
 # $(BUILT_INS)
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
+	@$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
+	@echo " $(YELLOW)$(NAME) $(GREEN)object files created"
+	@echo "$(BLUE)$(NAME)$(GREEN) created"
 
 $(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
-	$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
+	@echo "$(GREEN).$(RESET)\c"
+
 
 $(LIBFT) :
 	make -C $(LIBFT_DIR)
@@ -59,13 +63,24 @@ $(LIBFT) :
 clean:
 	make clean -C $(BUILT_INS)
 	make clean -C $(LIBFT_DIR)
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
+	@echo "$(RED)removed $(YELLOW)$(NAME) $(RED)object files $(RESET)"
+
 
 fclean:	clean
-	make fclean -C $(BUILT_INS)
-	make fclean -C $(LIBFT_DIR)
-	rm -f $(NAME)
+	@make fclean -C $(BUILT_INS)
+	@make fclean -C $(LIBFT_DIR)
+	@rm -f $(NAME)
+	@echo "$(RED)removed $(BLUE)$(NAME)$(RESET)"
+
 
 re: fclean all
 
-.PHONY = clean fclean re
+.PHONY: clean fclean re
+
+RED		=	\033[00;31m
+YELLOW	=	\033[03;33m
+GREEN	=	\033[00;32m
+BLUE	=	\033[01;36m
+NOTE	=	\033[02;33m
+RESET	=	\033[0m
