@@ -15,10 +15,11 @@ CC		=	gcc
 CFLAGS	=	-g -Wall -Wextra -Werror
 
 all: $(ALL)
+	@echo " $(YELLOW)$(ALL) $(GREEN)object files created"
+	@echo "$(BLUE)$(ALL)$(GREEN) created$(RESET)"
 
 $(ECHO) : $(ECHO).o
 	@$(CC) $< -o $@
-	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
 
 $(ECHO).o : $(ECHO).c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -26,7 +27,6 @@ $(ECHO).o : $(ECHO).c
 
 $(ENV) : $(ENV).o
 	@$(CC) $< -o $@
-	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
 
 $(ENV).o : $(ENV).c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -34,7 +34,6 @@ $(ENV).o : $(ENV).c
 
 $(EXPORT) : $(EXPORT).o
 	@$(CC) $< -o $@
-	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
 
 $(EXPORT).o : $(EXPORT).c
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -42,7 +41,6 @@ $(EXPORT).o : $(EXPORT).c
 
 $(PWD) : $(PWD).o
 	@$(CC) $< -o $@
-	@echo " $(BLUE)$@$(GREEN) created$(RESET)"
 
 $(PWD).o : $(PWD).c
 	@$(CC) $(CFLAGS) -c $< -o $@

@@ -39,36 +39,36 @@ RL_LIB		=	-L/usr/include -lreadline
 CC			=	gcc
 CFLAGS		=	-g -Wall -Wextra -Werror
 
-BUILT_INS	=	./srcs/built_ins/
+BLT_INS_DIR	=	./srcs/built_ins/
+BUILT_INS	=	$(BLT_INS_DIR)env
 
-all: $(NAME) 
-# $(BUILT_INS)
+all: $(NAME) $(BUILT_INS)
+
 
 $(NAME) : $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $^ $(RL_LIB) -o $@
 	@echo " $(YELLOW)$(NAME) $(GREEN)object files created"
-	@echo "$(BLUE)$(NAME)$(GREEN) created"
+	@echo "$(BLUE)$(NAME)$(GREEN) created$(RESET)"
 
 $(SRCS_DIR)%.o : $(SRCS_DIR)%.c $(HDRS)
 	@$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@
 	@echo "$(GREEN).$(RESET)\c"
 
-
 $(LIBFT) :
 	@make -C $(LIBFT_DIR)
-	@make -C $(BUILT_INS) #need to fix this
 
-# $(BUILT_INS) :
+$(BUILT_INS) :
+	@make -C $(BLT_INS_DIR)
 
 clean:
-	@make clean -C $(BUILT_INS)
+	@make clean -C $(BLT_INS_DIR)
 	@make clean -C $(LIBFT_DIR)
 	@rm -f $(OBJS)
 	@echo "$(RED)removed $(YELLOW)$(NAME) $(RED)object files $(RESET)"
 
 
 fclean:	clean
-	@make fclean -C $(BUILT_INS)
+	@make fclean -C $(BLT_INS_DIR)
 	@make fclean -C $(LIBFT_DIR)
 	@rm -f $(NAME)
 	@echo "$(RED)removed $(BLUE)$(NAME)$(RESET)"
