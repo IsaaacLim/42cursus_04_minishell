@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 21:14:20 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/02 14:39:24 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/02 14:41:27 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_exit(t_process *init)
 	if (init->input != NULL)
 		free(init->input);
 	ft_lstclear(&init->env, free_envar);
-	//rl_clear_history(); implicit declaration of function
+	// rl_clear_history();
 	exit (0);
 }
 
