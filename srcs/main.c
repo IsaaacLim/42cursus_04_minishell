@@ -6,7 +6,7 @@
 /*   By: jinlim <jinlim@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:18:25 by jinlim            #+#    #+#             */
-/*   Updated: 2021/12/02 16:29:16 by jinlim           ###   ########.fr       */
+/*   Updated: 2021/12/03 17:54:08 by jinlim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static char	*give_minishell(void)
 
 static bool	is_empty_input(char *input, t_process init)
 {
+	int i;
 	if (input == NULL)
 	{
 		printf("exit\n");
@@ -47,15 +48,28 @@ static bool	is_empty_input(char *input, t_process init)
 	}
 	else if (ft_strlen(input) == 0)
 		return (true);
+	else
+	{
+		i = 0;
+		while(input[i])
+		{
+			if (!((input[i] >= 9 && input[i] <= 13) || input[i] == ' '))
+				break;
+			i++;
+		}
+		if (!input[i])
+			return (true);
+	}
+
 	return (false);
 }
 
 /*
 ** Readline
-** 	If input == NULL 
+** 	If input == NULL
 **		when input is blank and ctrl-D is entered
 **	If input == 0
-**		when input is blank and Enter key is entered	 
+**		when input is blank and Enter key is entered
 **	If argc > 0, evaluate input as process/executables
 */
 int	main(int argc, char *argv[], char *envp[])
