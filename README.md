@@ -1,5 +1,8 @@
 # Minishell 🐚
 
+## In Collaboration with
+[Jia Ren](https://github.com/jiaaren)
+
 ## Project Description
 
 1. Display
