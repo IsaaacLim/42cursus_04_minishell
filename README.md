@@ -1,7 +1,6 @@
 # Minishell 🐚
 
-## In Collaboration with
-[Jia Ren](https://github.com/jiaaren)
+#### In Collaboration with: [Jia Ren](https://github.com/jiaaren)
 
 ## Project Description
 
